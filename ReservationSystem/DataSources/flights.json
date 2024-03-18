@@ -15,5 +15,56 @@
             "name": "Boeing 737",
             "passengers": 210
         }
+    },
+    {
+        "id": 2,
+        "flight_numer": "AB5678",
+        "from": "Rotterdam",
+        "destination": "Paris",
+        "departure_date": "15-04-2024",
+        "departure_time": "10:45",
+        "flight_duration": "01:20",
+        "arrival_date": "15-04-2024",
+        "arrival_time": "12:05",
+        "plane": {
+            "id": 2,
+            "airline": "Rotterdam Airlines",
+            "name": "Boeing 787",
+            "passengers": 234
+        }
+    },
+    {
+        "id": 3,
+        "flight_numer": "AB9101",
+        "from": "Rotterdam",
+        "destination": "Berlin",
+        "departure_date": "20-04-2024",
+        "departure_time": "14:20",
+        "flight_duration": "01:35",
+        "arrival_date": "20-04-2024",
+        "arrival_time": "15:55",
+        "plane": {
+            "id": 3,
+            "airline": "Rotterdam Airlines",
+            "name": "Airbus 330",
+            "passengers": 270
+        }
+    },
+    {
+        "id": 4,
+        "flight_numer": "AB1122",
+        "from": "Rotterdam",
+        "destination": "Madrid",
+        "departure_date": "25-04-2024",
+        "departure_time": "17:10",
+        "flight_duration": "02:10",
+        "arrival_date": "25-04-2024",
+        "arrival_time": "19:20",
+        "plane": {
+            "id": 1,
+            "airline": "Rotterdam Airlines",
+            "name": "Boeing 737",
+            "passengers": 210
+        }
     }
 ]
