@@ -10,13 +10,22 @@ static class Menu
     {
         Console.WriteLine("\nChoose one of the menu options:");
         Console.WriteLine(new string('-', 20));
-        Console.WriteLine("L | Login");
+        if (AccountsLogic.CurrentAccount == null)
+        {
+            Console.WriteLine("L | Login");
+            Console.WriteLine("C | Create account");
+        }
         Console.WriteLine("F | Flight overview");
 
         string input = Console.ReadLine().ToLower();
-        if (input == "l")
+
+        if (input == "l" && AccountsLogic.CurrentAccount == null)
         {
             UserLogin.Start();
+        }
+        else if (input == "c" && AccountsLogic.CurrentAccount == null)
+        {
+            // Add create-account menu start method
         }
         else if (input == "f")
         {
@@ -24,6 +33,7 @@ static class Menu
         }
         else
         {
+            Console.Clear();
             Console.WriteLine("Invalid input");
             Start();
         }
