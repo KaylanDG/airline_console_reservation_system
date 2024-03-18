@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 static class Menu
 {
 
@@ -6,17 +8,19 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to do something else in the future");
+        Console.WriteLine("\nChoose one of the menu options:");
+        Console.WriteLine(new string('-', 20));
+        Console.WriteLine("L | Login");
+        Console.WriteLine("F | Flight overview");
 
-        string input = Console.ReadLine();
-        if (input == "1")
+        string input = Console.ReadLine().ToLower();
+        if (input == "l")
         {
             UserLogin.Start();
         }
-        else if (input == "2")
+        else if (input == "f")
         {
-            Console.WriteLine("This feature is not yet implemented");
+            FlightOverview.Start();
         }
         else
         {
