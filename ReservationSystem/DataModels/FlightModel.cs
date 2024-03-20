@@ -13,17 +13,11 @@ public class Flight
     [JsonPropertyName("destination")]
     public string Destination { get; set; }
 
-    [JsonPropertyName("departure_date")]
-    public string DepartureDate { get; set; }
-
     [JsonPropertyName("departure_time")]
     public string DepartureTime { get; set; }
 
     [JsonPropertyName("flight_duration")]
     public string FlightDuration { get; set; }
-
-    [JsonPropertyName("arrival_date")]
-    public string ArrivalDate { get; set; }
 
     [JsonPropertyName("arrival_time")]
     public string ArrivalTime { get; set; }

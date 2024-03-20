@@ -20,7 +20,7 @@ static class FlightOverview
             else
             {
                 Flight flight = _availableFlights[i - 2];
-                Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureDate + " " + flight.DepartureTime, flight.Destination, flight.ArrivalDate + " " + flight.ArrivalTime);
+                Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
             }
         }
     }

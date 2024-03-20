@@ -16,8 +16,8 @@ class FlightLogic
         // if not add the flight to availableFlights.
         foreach (Flight flight in _flights)
         {
-            string departureDateTimeString = $"{flight.DepartureDate} {flight.DepartureTime}";
-            string format = "dd-MM-yyyy HH:mm";
+            string departureDateTimeString = flight.DepartureTime;
+            string format = "dd-MM-yyyy HH:mm tt";
 
             DateTime departureDateTime = DateTime.ParseExact(departureDateTimeString, format, System.Globalization.CultureInfo.InvariantCulture);
             DateTime today = DateTime.Now;
