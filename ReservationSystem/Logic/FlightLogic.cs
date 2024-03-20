@@ -33,13 +33,18 @@ class FlightLogic
 
     public List<Flight> GetAvailableFlightsForDestination(string destination)
     {
-        List<Flight> availableFlights = new List<Flight>();
+        List<Flight> availableFlightsForDestination = new List<Flight>();
 
+        // For each available flight check if the destination is equel to the given argument
+        // if so add the flight to the list
         foreach (Flight flight in GetAvailableFlights())
         {
-
+            if (flight.Destination.ToLower() == destination.ToLower())
+            {
+                availableFlightsForDestination.Add(flight);
+            }
         }
 
-        return availableFlights;
+        return availableFlightsForDestination;
     }
 }
