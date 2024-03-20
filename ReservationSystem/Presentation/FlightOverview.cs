@@ -6,22 +6,24 @@ static class FlightOverview
     public static void Start()
     {
         Console.Clear();
-        for (int i = 0; i < _availableFlights.Count + 2; i++)
+
+        // top part of overview
+        Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
+        Console.WriteLine(new string('-', 120));
+
+        // Show flights if there are any
+        if (_availableFlights.Count > 0)
         {
-            if (i == 0)
+            for (int i = 0; i < _availableFlights.Count; i++)
             {
-                Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
-            }
-            else if (i == 1)
-            {
-                string line = new string('-', 120);
-                Console.WriteLine(line);
-            }
-            else
-            {
-                Flight flight = _availableFlights[i - 2];
+                Flight flight = _availableFlights[i];
                 Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
+
             }
+        }
+        else
+        {
+            Console.WriteLine("\nNo flights found!\n");
         }
     }
 }
