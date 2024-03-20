@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "reservation_code": "WXYZ5678",
+        "reservation_date": "14-04-2024 13:02 PM",
+        "flight_number": "AB1234",
+        "user_id": 1,
+        "total_cost": 255,
+        "passengers": [
+            {
+                "passenger_id": 1,
+                "full_name": "John Doe",
+                "seat_number": "A1"
+            }
+        ]
+    }
+]
