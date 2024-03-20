@@ -30,4 +30,16 @@ class FlightLogic
 
         return availableFlights;
     }
+
+    public List<Flight> GetAvailableFlightsForDestination(string destination)
+    {
+        List<Flight> availableFlights = new List<Flight>();
+
+        foreach (Flight flight in GetAvailableFlights())
+        {
+
+        }
+
+        return availableFlights;
+    }
 }
