@@ -53,6 +53,85 @@ class AccountsLogic
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
     }
+
+    public bool ValidEmail(string email)
+    {
+        if (email.Contains("@") && email.Contains(".") && email != null)
+        {
+            return true;
+        }
+        else
+        {
+            // Console.WriteLine("Incorrect E-Mail format.");
+            return false;
+        }
+    }
+
+    public bool ValidPassword(string password)
+    {
+        if (password.Length > 7)
+        {
+            return true;
+        }
+        else
+        {
+            // Console.WriteLine("Password needs to be at least 8 characters.");
+            return false;
+        }
+    }
+
+    public bool ValidPhone(string phone)
+    {
+        if (phone[0] == "0" && phone.Length == 10 && phone.All(char.IsDigit))
+        {
+            return true;
+        }
+        else
+        {
+            // Console.WriteLine("Phone number needs to be at least 10 characters.");
+            // Console.WriteLine("Start with a \"0\".");
+            // Console.WriteLine("And needs to be all numbers.");
+            return false;
+
+        }
+    }
+
+    public bool ValidInput(string input)
+    {
+        if (input != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public AccountModel CreateAccount(string email, string password, string FullName, string Phone, string DateOfBirth, bool Invalid, string role = "user")
+    {
+        int id_var = 0;
+        foreach (AccountModel s in _accounts)
+        {
+            if (s.EmailAddress == email)
+            {
+                // Console.WriteLine("Account with this E-mail Adress already exists.")
+                return null;
+            }
+            if (s.Id > id_var)
+            {
+                id_var = s.Id;
+            }
+        }
+
+
+        id_var++;
+        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role);
+        UpdateList(acc);
+        CurrentAccount = acc;
+        return acc;
+
+    }
 }
 
 
