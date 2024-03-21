@@ -25,6 +25,7 @@ static class Menu
         }
         else if (input == "c" && AccountsLogic.CurrentAccount == null)
         {
+            CreateAccount.Start();
             // Add create-account menu start method
         }
         else if (input == "f")

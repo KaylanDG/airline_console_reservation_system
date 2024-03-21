@@ -62,7 +62,7 @@ class AccountsLogic
         }
         else
         {
-            // Console.WriteLine("Incorrect E-Mail format.");
+            // 
             return false;
         }
     }
@@ -75,22 +75,18 @@ class AccountsLogic
         }
         else
         {
-            // Console.WriteLine("Password needs to be at least 8 characters.");
             return false;
         }
     }
 
     public bool ValidPhone(string phone)
     {
-        if (phone[0] == "0" && phone.Length == 10 && phone.All(char.IsDigit))
+        if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
         {
             return true;
         }
         else
         {
-            // Console.WriteLine("Phone number needs to be at least 10 characters.");
-            // Console.WriteLine("Start with a \"0\".");
-            // Console.WriteLine("And needs to be all numbers.");
             return false;
 
         }
@@ -115,7 +111,7 @@ class AccountsLogic
         {
             if (s.EmailAddress == email)
             {
-                // Console.WriteLine("Account with this E-mail Adress already exists.")
+                // 
                 return null;
             }
             if (s.Id > id_var)
