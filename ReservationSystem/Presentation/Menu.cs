@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 static class Menu
 {
 
@@ -15,6 +13,8 @@ static class Menu
             Console.WriteLine("L | Login");
             Console.WriteLine("C | Create account");
         }
+
+        Console.WriteLine("A | Airport info");
         Console.WriteLine("F | Flight overview");
 
         string input = Console.ReadLine().ToLower();
@@ -30,6 +30,10 @@ static class Menu
         else if (input == "f")
         {
             FlightOverview.Start();
+        }
+        else if (input == "a")
+        {
+            AirportInfo.Start();
         }
         else
         {
