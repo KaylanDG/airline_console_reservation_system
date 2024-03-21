@@ -34,20 +34,22 @@ static class FlightOverview
         Console.WriteLine(new string('-', 20));
         Console.WriteLine("G | Go back");
         Console.WriteLine("S | Search for flights");
-        int choice = Convert.ToInt32(Console.ReadLine());
+        string choice = Console.ReadLine().ToLower();
 
-        if (choice == 1)
+        if (choice == "g")
         {
-            return;
+            Menu.Start();
         }
-        else if (choice == 2)
+        else if (choice == "s")
         {
-            return;
+            Console.Write("Enter destination: ");
+            string destination = Console.ReadLine();
+            _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
+            Start();
         }
         else
         {
             Console.WriteLine("Invalid choice. Please try again.");
         }
-
     }
 }
