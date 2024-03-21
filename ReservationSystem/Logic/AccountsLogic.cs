@@ -53,6 +53,81 @@ class AccountsLogic
         CurrentAccount = _accounts.Find(i => i.EmailAddress == email && i.Password == password);
         return CurrentAccount;
     }
+
+    public bool ValidEmail(string email)
+    {
+        if (email.Contains("@") && email.Contains(".") && email != null)
+        {
+            return true;
+        }
+        else
+        {
+            // 
+            return false;
+        }
+    }
+
+    public bool ValidPassword(string password)
+    {
+        if (password.Length > 7)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool ValidPhone(string phone)
+    {
+        if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+
+        }
+    }
+
+    public bool ValidInput(string input)
+    {
+        if (input != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public AccountModel CreateAccount(string email, string password, string FullName, string Phone, string DateOfBirth, bool Invalid, string role = "user")
+    {
+        int id_var = 0;
+        foreach (AccountModel s in _accounts)
+        {
+            if (s.EmailAddress == email)
+            {
+                // 
+                return null;
+            }
+            if (s.Id > id_var)
+            {
+                id_var = s.Id;
+            }
+        }
+
+
+        id_var++;
+        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role);
+        UpdateList(acc);
+        CurrentAccount = acc;
+        return acc;
+
+    }
 }
 
 
