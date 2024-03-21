@@ -29,7 +29,7 @@ static class Menu
             }
             else if (input == "c" && AccountsLogic.CurrentAccount == null)
             {
-                // Add create-account menu start method
+                CreateAccount.Start();
             }
             else if (input == "f")
             {

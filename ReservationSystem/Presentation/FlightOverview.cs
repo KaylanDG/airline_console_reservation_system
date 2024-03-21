@@ -20,10 +20,36 @@ static class FlightOverview
                 Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
+            SmallMenu();
         }
         else
         {
             Console.WriteLine("\nNo flights found!\n");
+        }
+    }
+
+    public static void SmallMenu()
+    {
+        Console.WriteLine("\nChoose one of the menu options:");
+        Console.WriteLine(new string('-', 20));
+        Console.WriteLine("G | Go back");
+        Console.WriteLine("S | Search for flights");
+        string choice = Console.ReadLine().ToLower();
+
+        if (choice == "g")
+        {
+            Menu.Start();
+        }
+        else if (choice == "s")
+        {
+            Console.Write("Enter destination: ");
+            string destination = Console.ReadLine();
+            _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
+            Start();
+        }
+        else
+        {
+            Console.WriteLine("Invalid choice. Please try again.");
         }
     }
 }
