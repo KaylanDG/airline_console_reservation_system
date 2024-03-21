@@ -1,32 +1,32 @@
 [
-    {
-        "id": 1,
-        "emailAddress": "admin@admin.com",
-        "password": "admin",
-        "fullName": "Admin",
-        "phone": "0612345678",
-        "date_of_birth": "18-09-2003",
-        "invalid": false,
-        "role": "admin"
-    },
-    {
-        "id": 2,
-        "emailAddress": "n@b.c",
-        "password": "xyz",
-        "fullName": "Nikola Tesla",
-        "phone": "0612345678",
-        "date_of_birth": "18-09-2003",
-        "invalid": false,
-        "role": "user"
-    },
-    {
-        "id": 3,
-        "emailAddress": "t@b.c",
-        "password": "xyz",
-        "fullName": "Thomas Edison",
-        "date_of_birth": "18-09-2003",
-        "phone": "0612345678",
-        "invalid": true,
-        "role": "user"
-    }
+  {
+    "id": 1,
+    "emailAddress": "admin@admin.com",
+    "password": "admin",
+    "fullName": "Admin",
+    "phone": "0612345678",
+    "date_of_birth": "18-09-2003",
+    "invalid": false,
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "emailAddress": "n@b.c",
+    "password": "xyz",
+    "fullName": "Nikola Tesla",
+    "phone": "0612345678",
+    "date_of_birth": "18-09-2003",
+    "invalid": false,
+    "role": "user"
+  },
+  {
+    "id": 3,
+    "emailAddress": "t@b.c",
+    "password": "xyz",
+    "fullName": "Thomas Edison",
+    "phone": "0612345678",
+    "date_of_birth": "18-09-2003",
+    "invalid": true,
+    "role": "user"
+  }
 ]

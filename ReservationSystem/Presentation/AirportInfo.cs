@@ -2,6 +2,8 @@ static class AirportInfo
 {
     public static void Start()
     {
+        Console.Clear();
+
         Console.WriteLine("╔═══════════════════════════════════╗");
         Console.WriteLine("║         Contact Information       ║");
         Console.WriteLine("╠═══════════════════════════════════╣");
