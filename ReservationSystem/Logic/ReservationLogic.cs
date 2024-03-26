@@ -5,10 +5,12 @@ public class ReservationLogic
     private List<ReservationModel> _reservations;
     private ReservationAccess _reservationAccess;
 
+    private FlightLogic _flightLogic;
+
     public ReservationLogic()
     {
-        _reservations = ReservationAccess.LoadAll();
         _reservationAccess = new ReservationAccess();
+        _flightLogic = new FlightLogic();
     }
 
 
@@ -28,9 +30,15 @@ public class ReservationLogic
         _reservationAccess.WriteAll(_reservations);
     }
 
-    // Method to retrieve all reservations
-    public List<ReservationModel> GetAllReservations()
+    public bool DoesFlightExist(string flightNumber)
     {
-        return _reservations;
+        foreach (var flight in _flightLogic.GetAvailableFlights())
+        {
+            if (flight.FlightNumber == flightNumber)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
