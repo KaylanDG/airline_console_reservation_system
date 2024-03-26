@@ -42,7 +42,7 @@ static class Menu
             {
                 CreateAccount.Start();
             }
-            else if (input == "r")
+            else if (input == "r" && AccountsLogic.CurrentAccount != null)
             {
                 ReservationMenu.Start();
             }
