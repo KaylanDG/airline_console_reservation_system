@@ -13,20 +13,5 @@
         "seat_number": "A1"
       }
     ]
-  },
-  {
-    "id": 2,
-    "reservation_code": "L2RB5K0T",
-    "reservation_date": "3/24/2024 11:47:07 PM",
-    "flight_number": "AB5678",
-    "user_id": 0,
-    "total_cost": 0,
-    "passengers": [
-      {
-        "passenger_id": 0,
-        "full_name": "Damian van Dams",
-        "seat_number": null
-      }
-    ]
   }
 ]

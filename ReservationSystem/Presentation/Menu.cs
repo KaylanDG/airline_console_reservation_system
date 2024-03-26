@@ -16,10 +16,13 @@ static class Menu
                 Console.WriteLine("L | Login");
                 Console.WriteLine("C | Create account");
             }
+            else
+            {
+                Console.WriteLine("R | Make an reservation");
+            }
             Console.WriteLine("F | Flight overview");
             Console.WriteLine("A | Airport info");
             Console.WriteLine("Q | Quit program");
-            Console.WriteLine("R | Make an reservation");
 
             input = Console.ReadLine().ToLower();
 
@@ -33,7 +36,7 @@ static class Menu
             }
             else if (input == "r")
             {
-                Reservation.MakeReservation();
+                ReservationMenu.Start();
             }
             else if (input == "f")
             {
