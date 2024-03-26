@@ -22,6 +22,10 @@ static class Menu
             }
             Console.WriteLine("F | Flight overview");
             Console.WriteLine("A | Airport info");
+            if (AccountsLogic.CurrentAccount != null)
+            {
+                Console.WriteLine("L | Logout");
+            }
             Console.WriteLine("Q | Quit program");
 
             input = Console.ReadLine().ToLower();
@@ -29,6 +33,10 @@ static class Menu
             if (input == "l" && AccountsLogic.CurrentAccount == null)
             {
                 UserLogin.Start();
+            }
+            if (input == "l" && AccountsLogic.CurrentAccount != null)
+            {
+                AccountsLogic.Logout();
             }
             else if (input == "c" && AccountsLogic.CurrentAccount == null)
             {
