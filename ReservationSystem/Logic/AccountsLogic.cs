@@ -128,6 +128,11 @@ class AccountsLogic
         return acc;
 
     }
+
+    public static void Logout()
+    {
+        CurrentAccount = null;
+    }
 }
 
 

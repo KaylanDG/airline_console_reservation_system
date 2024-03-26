@@ -48,7 +48,8 @@ static class Menu
             }
             else if (input == "o" && AccountsLogic.CurrentAccount != null)
             {
-                AccountsLogic.CurrentAccount = null;
+
+                AccountsLogic.Logout();
             }
             else
             {
