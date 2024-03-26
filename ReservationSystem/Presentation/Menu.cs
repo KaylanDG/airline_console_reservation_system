@@ -16,6 +16,10 @@ static class Menu
                 Console.WriteLine("L | Login");
                 Console.WriteLine("C | Create account");
             }
+            else
+            {
+                Console.WriteLine("R | Make an reservation");
+            }
             Console.WriteLine("F | Flight overview");
             Console.WriteLine("A | Airport info");
             Console.WriteLine("Q | Quit program");
@@ -29,6 +33,10 @@ static class Menu
             else if (input == "c" && AccountsLogic.CurrentAccount == null)
             {
                 CreateAccount.Start();
+            }
+            else if (input == "r")
+            {
+                ReservationMenu.Start();
             }
             else if (input == "f")
             {

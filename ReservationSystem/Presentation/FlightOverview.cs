@@ -36,7 +36,11 @@ static class FlightOverview
         Console.WriteLine(new string('-', 20));
         Console.WriteLine("G | Go back");
         Console.WriteLine("S | Search for flights");
-        Console.WriteLine("M | Make reservation");
+        if (AccountsLogic.CurrentAccount != null)
+        {
+            Console.WriteLine("M | Make reservation");
+        }
+
         string choice = Console.ReadLine().ToLower();
 
         if (choice == "g")
@@ -50,29 +54,14 @@ static class FlightOverview
             _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
             Start();
         }
-        else if (choice == "m")
+        else if (choice == "m" && AccountsLogic.CurrentAccount != null)
         {
-            if (AccountsLogic.CurrentAccount != null)
-            {
-                Console.Write("Enter flight number: ");
-                string flightNumber = Console.ReadLine();
-                if (_reservationLogic.DoesFlightExist(flightNumber))
-                {
-                    Console.WriteLine($"Reservation made for flight number: {flightNumber}");
-                }
-                else
-                {
-                    Console.WriteLine("Flight number does not exist. Please try again.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("You must be logged in to make a reservation.");
-            }
+            ReservationMenu.Start();
         }
         else
         {
             Console.WriteLine("Invalid choice. Please try again.");
+            Menu.Start();
         }
     }
 }
