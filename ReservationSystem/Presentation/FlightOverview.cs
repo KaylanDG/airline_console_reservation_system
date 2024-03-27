@@ -22,12 +22,13 @@ static class FlightOverview
                 Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
-            SmallMenu();
         }
         else
         {
             Console.WriteLine("\nNo flights found!\n");
         }
+
+        SmallMenu();
     }
 
     public static void SmallMenu()
@@ -45,23 +46,30 @@ static class FlightOverview
 
         if (choice == "g")
         {
+            // If user goes back to main menu set the value of _availableFlights back to all available flights
+            // So that is doesnt show the search results if the user goes back to the flight overview
+            _availableFlights = _flightLogic.GetAvailableFlights();
             Menu.Start();
         }
         else if (choice == "s")
         {
             Console.Write("Enter destination: ");
             string destination = Console.ReadLine();
+
+            // Set _availableFlights value to the returned list of flights for destination
             _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
+            // Start the overview again so that it shows the search results
             Start();
         }
         else if (choice == "m" && AccountsLogic.CurrentAccount != null)
         {
+            // Start reservation menu
             ReservationMenu.Start();
         }
         else
         {
-            Console.WriteLine("Invalid choice. Please try again.");
-            Menu.Start();
+            _availableFlights = _flightLogic.GetAvailableFlights();
+            Console.WriteLine("\nInvalid choice. Please try again.\n");
         }
     }
 }
