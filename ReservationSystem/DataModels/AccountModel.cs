@@ -21,13 +21,13 @@ class AccountModel
     [JsonPropertyName("date_of_birth")]
     public string DateOfBirth { get; set; }
 
-    [JsonPropertyName("invalid")]
-    public bool Invalid { get; set; }
+    [JsonPropertyName("disabled")]
+    public bool Disabled { get; set; }
 
     [JsonPropertyName("role")]
     public string Role { get; set; }
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, string phone, string dateofbirth, bool invalid, string role)
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phone, string dateofbirth, bool disabled, string role)
     {
         Id = id;
         EmailAddress = emailAddress;
@@ -35,7 +35,7 @@ class AccountModel
         FullName = fullName;
         Phone = phone;
         DateOfBirth = dateofbirth;
-        Invalid = invalid;
+        Disabled = disabled;
         Role = role;
     }
 

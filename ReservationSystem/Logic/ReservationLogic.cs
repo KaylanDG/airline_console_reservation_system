@@ -13,35 +13,36 @@ public class ReservationLogic
         _flightLogic = new FlightLogic();
     }
 
-    public void CreateReservation(string flightNumber, string passengerName)
+    public Reservation CreateReservation(string flightNumber, string passengerName)
     {
         DateTime now = DateTime.Now;
         string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
         int userID = AccountsLogic.CurrentAccount.Id;
 
+        // Has to be changed
         List<Passenger> passengers = new List<Passenger>
         {
             new Passenger(1, passengerName, "")
         };
 
-
+        Flight flight = _flightLogic.GetFlightByFlightNumber(flightNumber);
 
         // Still has to be implemented:
         // Seats
-        // Reservation Code
         // Total cost calculation
 
         Reservation newReservation = new Reservation(
             GenerateReservationId(),
-            "",
+            GenerateRandomReservationCode(),
             reservationDate,
-            flightNumber,
+            flight,
             userID,
             0.0,
             passengers
         );
 
         UpdateList(newReservation);
+        return newReservation;
     }
 
     public void UpdateList(Reservation reservation)
@@ -86,5 +87,14 @@ public class ReservationLogic
 
         // Increment the highest existing ID by one to generate a new ID
         return maxId + 1;
+    }
+
+    private string GenerateRandomReservationCode()
+    {
+        var random = new Random();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        return new string(Enumerable.Repeat(chars, 8)
+        .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }

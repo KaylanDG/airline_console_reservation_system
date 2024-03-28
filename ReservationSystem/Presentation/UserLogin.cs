@@ -6,10 +6,16 @@ static class UserLogin
     public static void Start()
     {
         Console.Clear();
-        Console.WriteLine("Welcome to the login page\n");
-        Console.WriteLine("Please enter your email address");
+
+        Console.WriteLine("\n██       ██████   ██████  ██ ███    ██ ");
+        Console.WriteLine("██      ██    ██ ██       ██ ████   ██");
+        Console.WriteLine("██      ██    ██ ██   ███ ██ ██ ██  ██");
+        Console.WriteLine("██      ██    ██ ██    ██ ██ ██  ██ ██");
+        Console.WriteLine("███████  ██████   ██████  ██ ██   ████\n");
+
+        Console.WriteLine("\nPlease enter your email address");
         string email = Console.ReadLine();
-        Console.WriteLine("Please enter your password");
+        Console.WriteLine("\nPlease enter your password");
         string password = Console.ReadLine();
 
         // Check if account exists
@@ -20,13 +26,18 @@ static class UserLogin
         if (acc != null)
         {
             Console.Clear();
-            Console.WriteLine("Welcome back " + acc.FullName);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nWelcome back " + acc.FullName);
+            Console.ResetColor();
 
         }
         else
         {
             Console.Clear();
-            Console.WriteLine("No account found with that email and password");
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("\nNo account found with that email and password\n");
+            Console.ResetColor();
         }
 
         Menu.Start();

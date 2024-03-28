@@ -47,4 +47,18 @@ class FlightLogic
 
         return availableFlightsForDestination;
     }
+
+    public Flight GetFlightByFlightNumber(string number)
+    {
+        List<Flight> flights = GetAvailableFlights();
+        foreach (Flight flight in flights)
+        {
+            if (flight.FlightNumber == number)
+            {
+                return flight;
+            }
+        }
+
+        return null;
+    }
 }

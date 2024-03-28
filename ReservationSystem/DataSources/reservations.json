@@ -3,7 +3,21 @@
     "id": 1,
     "reservation_code": "WXYZ5678",
     "reservation_date": "14-04-2024 13:02 PM",
-    "flight_number": "AB1234",
+    "flight": {
+      "id": 1,
+      "flight_numer": "AB1234",
+      "from": "Rotterdam",
+      "destination": "London",
+      "departure_time": "12-04-2024 12:35 PM",
+      "flight_duration": "00:55",
+      "arrival_time": "12-04-2024 13:30 PM",
+      "plane": {
+        "id": 1,
+        "airline": "Rotterdam Airlines",
+        "name": "Boeing 737",
+        "passengers": 210
+      }
+    },
     "user_id": 1,
     "total_cost": 255,
     "passengers": [
