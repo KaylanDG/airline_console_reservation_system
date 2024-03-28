@@ -20,9 +20,13 @@ static class ReservationMenu
         Console.Write("Enter passenger name: ");
         string passengerName = Console.ReadLine();
 
-        _reservationLogic.CreateReservation(flightNumber, passengerName);
+        Reservation reservation = _reservationLogic.CreateReservation(flightNumber, passengerName);
+        if (reservation != null)
+        {
+            Console.WriteLine("\nReservation successfully created!\n");
+            Console.WriteLine($"Your reservation code is: {reservation.ReservationCode}");
+        }
 
-        Console.WriteLine("\nReservation successfully created!\n");
         Menu.Start();
     }
 

@@ -1,3 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Welcome to this amazing program");
+Console.Clear();
+
+Console.WriteLine("\n██     ██ ███████ ██       ██████  ██████  ███    ███ ███████");
+Console.WriteLine("██     ██ ██      ██      ██      ██    ██ ████  ████ ██     ");
+Console.WriteLine("██  █  ██ █████   ██      ██      ██    ██ ██ ████ ██ █████  ");
+Console.WriteLine("██ ███ ██ ██      ██      ██      ██    ██ ██  ██  ██ ██     ");
+Console.WriteLine(" ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████\n");
+
 Menu.Start();

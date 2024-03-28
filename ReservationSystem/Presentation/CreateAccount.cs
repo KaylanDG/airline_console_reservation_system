@@ -8,46 +8,60 @@ public class CreateAccount
         while (!stop)
         {
             Console.Clear();
-            Console.WriteLine("Welcome to the sign up page\n");
-            Console.WriteLine("Please enter your Full Name");
+            Console.WriteLine("\n██████  ███████  ██████  ██ ███████ ████████ ███████ █████");
+            Console.WriteLine("██   ██ ██      ██       ██ ██         ██    ██      ██   ██");
+            Console.WriteLine("██████  █████   ██   ███ ██ ███████    ██    █████   ██████");
+            Console.WriteLine("██   ██ ██      ██    ██ ██      ██    ██    ██      ██   ██");
+            Console.WriteLine("██   ██ ███████  ██████  ██ ███████    ██    ███████ ██   ██\n");
+
+
+            Console.WriteLine("\nPlease enter your Full Name");
             string fullName = Console.ReadLine();
 
-
-            Console.WriteLine("Please enter your email address");
+            Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
 
             if (!accountsLogic.ValidEmail(email))
             {
-                Console.WriteLine("Incorrect E-Mail format.");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nIncorrect E-Mail format.\n");
+                Console.ResetColor();
                 break;
             }
 
-            Console.WriteLine("Please enter your password");
+            Console.WriteLine("\nPlease enter your password");
             string password = Console.ReadLine();
 
             if (!accountsLogic.ValidPassword(password))
             {
-                Console.WriteLine("Password needs to be at least 8 characters.");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nPassword needs to be at least 8 characters.\n");
+                Console.ResetColor();
                 break;
             }
 
-            Console.WriteLine("Please enter your phone number");
+            Console.WriteLine("\nPlease enter your phone number");
             string phone = Console.ReadLine();
 
             if (!accountsLogic.ValidPhone(phone))
             {
-                Console.WriteLine("Phone number needs to be at least 10 characters.");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nPhone number needs to be at least 10 characters.");
                 Console.WriteLine("Start with a \"0\".");
-                Console.WriteLine("And needs to be all numbers.");
+                Console.WriteLine("And needs to be all numbers.\n");
+                Console.ResetColor();
                 break;
             }
 
-            Console.WriteLine("Please enter your date of birth");
+            Console.WriteLine("\nPlease enter your date of birth");
             string dateOfBirth = Console.ReadLine();
 
 
             bool invalid = false;
-            Console.WriteLine("Are you invalid (yes/no)?");
+            Console.WriteLine("\nAre you disabled (yes/no)?");
             string userInput = Console.ReadLine().ToLower();
 
 
@@ -63,9 +77,12 @@ public class CreateAccount
             }
             else
             {
-                Console.WriteLine("Account with this E-mail Adress already exists.");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nAccount with this E-mail Adress already exists.\n");
+                Console.ResetColor();
             }
-
+            break;
         }
 
 

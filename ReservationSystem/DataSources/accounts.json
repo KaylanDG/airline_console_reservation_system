@@ -6,7 +6,7 @@
     "fullName": "Admin",
     "phone": "0612345678",
     "date_of_birth": "18-09-2003",
-    "invalid": false,
+    "disabled": false,
     "role": "admin"
   },
   {
@@ -16,7 +16,7 @@
     "fullName": "Nikola Tesla",
     "phone": "0612345678",
     "date_of_birth": "18-09-2003",
-    "invalid": false,
+    "disabled": false,
     "role": "user"
   },
   {
@@ -26,7 +26,17 @@
     "fullName": "Thomas Edison",
     "phone": "0612345678",
     "date_of_birth": "18-09-2003",
-    "invalid": true,
+    "disabled": false,
+    "role": "user"
+  },
+  {
+    "id": 4,
+    "emailAddress": "kaylan@gmail.com",
+    "password": "kaylan1234",
+    "fullName": "Kaylan de Groot",
+    "phone": "0675431266",
+    "date_of_birth": "18-03-2003",
+    "disabled": false,
     "role": "user"
   }
 ]

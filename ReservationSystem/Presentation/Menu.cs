@@ -14,7 +14,7 @@ static class Menu
             if (AccountsLogic.CurrentAccount == null)
             {
                 Console.WriteLine("L | Login");
-                Console.WriteLine("C | Create account");
+                Console.WriteLine("R | Register");
             }
             else
             {
@@ -37,8 +37,13 @@ static class Menu
             if (input == "l" && AccountsLogic.CurrentAccount != null)
             {
                 AccountsLogic.Logout();
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("successfully logged out!");
+                Console.ResetColor();
+                Start();
             }
-            else if (input == "c" && AccountsLogic.CurrentAccount == null)
+            else if (input == "r" && AccountsLogic.CurrentAccount == null)
             {
                 CreateAccount.Start();
             }
@@ -61,7 +66,10 @@ static class Menu
             else
             {
                 Console.Clear();
-                Console.WriteLine("Invalid input");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nInvalid input\n");
+                Console.ResetColor();
                 Start();
             }
         }
