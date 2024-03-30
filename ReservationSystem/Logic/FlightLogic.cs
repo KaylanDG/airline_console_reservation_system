@@ -1,4 +1,4 @@
-class FlightLogic
+public class FlightLogic
 {
     private List<Flight> _flights;
 
@@ -48,17 +48,22 @@ class FlightLogic
         return availableFlightsForDestination;
     }
 
-    public Flight GetFlightByFlightNumber(string number)
+    public Flight GetById(int id)
     {
         List<Flight> flights = GetAvailableFlights();
-        foreach (Flight flight in flights)
+        return flights.Find(i => i.Id == id);
+    }
+
+    public bool DoesFlightExist(int flightID)
+    {
+        // Check if given flight number is in the list of available flights
+        foreach (var flight in GetAvailableFlights())
         {
-            if (flight.FlightNumber == number)
+            if (flight.Id == flightID)
             {
-                return flight;
+                return true;
             }
         }
-
-        return null;
+        return false;
     }
 }

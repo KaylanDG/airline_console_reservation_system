@@ -8,26 +8,34 @@ static class ReservationMenu
     // Method to start the reservation process
     public static void Start()
     {
-        Console.Write("\nEnter flight number: ");
-        string flightNumber = Console.ReadLine();
-
-        if (!_reservationLogic.DoesFlightExist(flightNumber))
+        try
         {
-            Console.WriteLine("\nThe flight number you entered does not exist!\n");
+            Console.Write("\nEnter the index number of the flight you wish to book: ");
+            int flightID = Convert.ToInt32(Console.ReadLine());
+
+            if (!_flightLogic.DoesFlightExist(flightID))
+            {
+                Console.WriteLine("\nThis flight does not exist!\n");
+                Menu.Start();
+            }
+
+            Console.Write("Enter passenger name: ");
+            string passengerName = Console.ReadLine();
+
+            Reservation reservation = _reservationLogic.CreateReservation(flightID, passengerName);
+            if (reservation != null)
+            {
+                Console.WriteLine("\nReservation successfully created!\n");
+                Console.WriteLine($"Your reservation code is: {reservation.ReservationCode}");
+            }
+
             Menu.Start();
         }
-
-        Console.Write("Enter passenger name: ");
-        string passengerName = Console.ReadLine();
-
-        Reservation reservation = _reservationLogic.CreateReservation(flightNumber, passengerName);
-        if (reservation != null)
+        catch (FormatException)
         {
-            Console.WriteLine("\nReservation successfully created!\n");
-            Console.WriteLine($"Your reservation code is: {reservation.ReservationCode}");
+            Console.WriteLine("\nThis flight does not exist!\n");
+            Menu.Start();
         }
-
-        Menu.Start();
     }
 
 }

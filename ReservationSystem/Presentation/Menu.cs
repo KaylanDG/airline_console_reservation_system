@@ -49,6 +49,7 @@ static class Menu
             }
             else if (input == "r" && AccountsLogic.CurrentAccount != null)
             {
+                FlightOverview.ShowOverview();
                 ReservationMenu.Start();
             }
             else if (input == "f")

@@ -13,7 +13,7 @@ public class ReservationLogic
         _flightLogic = new FlightLogic();
     }
 
-    public Reservation CreateReservation(string flightNumber, string passengerName)
+    public Reservation CreateReservation(int flightID, string passengerName)
     {
         DateTime now = DateTime.Now;
         string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
@@ -25,7 +25,7 @@ public class ReservationLogic
             new Passenger(1, passengerName, "")
         };
 
-        Flight flight = _flightLogic.GetFlightByFlightNumber(flightNumber);
+        Flight flight = _flightLogic.GetById(flightID);
 
         // Still has to be implemented:
         // Seats
@@ -59,19 +59,6 @@ public class ReservationLogic
         }
 
         _reservationAccess.WriteAll(_reservations);
-    }
-
-    public bool DoesFlightExist(string flightNumber)
-    {
-        // Check if given flight number is in the list of available flights
-        foreach (var flight in _flightLogic.GetAvailableFlights())
-        {
-            if (flight.FlightNumber == flightNumber)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     private int GenerateReservationId()

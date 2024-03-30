@@ -7,10 +7,16 @@ static class FlightOverview
 
     public static void Start()
     {
+        ShowOverview();
+        FlightOverviewMenu();
+    }
+
+    public static void ShowOverview()
+    {
         Console.Clear();
 
         // top part of overview
-        Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
+        Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
         Console.WriteLine(new string('-', 120));
 
         // Show flights if there are any
@@ -19,7 +25,7 @@ static class FlightOverview
             for (int i = 0; i < _availableFlights.Count; i++)
             {
                 Flight flight = _availableFlights[i];
-                Console.WriteLine("{0,-20} | {1, -15} | {2,-15} {3,-20} -->   {4,-15} {5,-20}", flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
+                Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
         }
@@ -27,11 +33,9 @@ static class FlightOverview
         {
             Console.WriteLine("\nNo flights found!\n");
         }
-
-        SmallMenu();
     }
 
-    public static void SmallMenu()
+    public static void FlightOverviewMenu()
     {
         Console.WriteLine("\nChoose one of the menu options:");
         Console.WriteLine(new string('-', 20));
@@ -39,7 +43,7 @@ static class FlightOverview
         Console.WriteLine("S | Search for flights");
         if (AccountsLogic.CurrentAccount != null)
         {
-            Console.WriteLine("M | Make reservation");
+            Console.WriteLine("R | Make reservation");
         }
 
         string choice = Console.ReadLine().ToLower();
@@ -61,7 +65,7 @@ static class FlightOverview
             // Start the overview again so that it shows the search results
             Start();
         }
-        else if (choice == "m" && AccountsLogic.CurrentAccount != null)
+        else if (choice == "r" && AccountsLogic.CurrentAccount != null)
         {
             // Start reservation menu
             ReservationMenu.Start();
