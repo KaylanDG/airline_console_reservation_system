@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class ReservationLogic
+class ReservationLogic
 {
     private List<Reservation> _reservations;
     private ReservationAccess _reservationAccess;
@@ -84,4 +84,16 @@ public class ReservationLogic
         return new string(Enumerable.Repeat(chars, 8)
         .Select(s => s[random.Next(s.Length)]).ToArray());
     }
+
+    public int ExtraLuggage(int howmany)
+    {
+        int TotalPrice = 0;
+        for (int i = 1; i < howmany + 1; i++)
+        {
+            int price = i * 25;
+            TotalPrice += price;
+        }
+        return TotalPrice;
+    }
+
 }

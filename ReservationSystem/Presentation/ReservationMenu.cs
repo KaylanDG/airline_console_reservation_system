@@ -22,6 +22,9 @@ static class ReservationMenu
             Console.Write("Enter passenger name: ");
             string passengerName = Console.ReadLine();
 
+            Console.WriteLine("Do you want extra luggage (Y/N): ");
+            string extraLuggage = Console.ReadLine();
+
             Reservation reservation = _reservationLogic.CreateReservation(flightID, passengerName);
             if (reservation != null)
             {
