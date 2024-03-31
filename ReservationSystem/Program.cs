@@ -8,8 +8,7 @@ Console.WriteLine("██ ███ ██ ██      ██      ██      �
 Console.WriteLine(" ███ ███  ███████ ███████  ██████  ██████  ██      ██ ███████\n");
 
 
-ReservationLogic _reservationLogic = new ReservationLogic();
-Console.WriteLine(_reservationLogic.ExtraLuggage(2));
+Menu.Start();
 
 
 
