@@ -13,7 +13,7 @@ class ReservationLogic
         _flightLogic = new FlightLogic();
     }
 
-    public Reservation CreateReservation(int flightID, string passengerName)
+    public Reservation CreateReservation(int flightID, string passengerName, int ExtraLug)
     {
         DateTime now = DateTime.Now;
         string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
@@ -30,14 +30,14 @@ class ReservationLogic
         // Still has to be implemented:
         // Seats
         // Total cost calculation
-
+        int TotalFullyCost = ReservationLogic.TotalCost(flight) + ExtraLug;
         Reservation newReservation = new Reservation(
             GenerateReservationId(),
             GenerateRandomReservationCode(),
             reservationDate,
             flight,
             userID,
-            0.0,
+            TotalFullyCost,
             passengers
         );
 
@@ -84,6 +84,8 @@ class ReservationLogic
         return new string(Enumerable.Repeat(chars, 8)
         .Select(s => s[random.Next(s.Length)]).ToArray());
     }
+    public Reservation CreateReservation(int flightID, string passengerName) => CreateReservation(flightID, passengerName, 0);
+
 
     public int ExtraLuggage(int howmany)
     {
@@ -95,5 +97,14 @@ class ReservationLogic
         }
         return TotalPrice;
     }
+
+    public static int TotalCost(Flight flight)
+    {
+        string[] ListHM = flight.FlightDuration.Split(":");
+        int hours = Convert.ToInt32(ListHM[0]);
+        int minutes = Convert.ToInt32(ListHM[1]) + hours * 60;
+        return minutes * 5;
+    }
+
 
 }

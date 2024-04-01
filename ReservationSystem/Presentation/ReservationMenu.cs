@@ -31,10 +31,9 @@ static class ReservationMenu
                 Console.WriteLine("Do you want extra luggage (Y/N): ");
                 extraLuggage = Console.ReadLine().ToLower();
             }
-
+            int extraLuggageAmount = 0;
             if (extraLuggage == "y")
             {
-                int extraLuggageAmount = 0;
                 bool LoopBool = true;
                 while (LoopBool)
                 {
@@ -49,11 +48,22 @@ static class ReservationMenu
                         Console.WriteLine("That's not a number!");
                     }
                 }
-                int extraLuggageTotalPrice = _reservationLogic.ExtraLuggage(extraLuggageAmount);
+
             }
 
+            int extraLuggageTotalPrice = _reservationLogic.ExtraLuggage(extraLuggageAmount);
             Reservation reservation = _reservationLogic.CreateReservation(flightID, passengerName);
-            if (reservation != null)
+            if (extraLuggage == "y")
+            {
+                reservation = _reservationLogic.CreateReservation(flightID, passengerName, extraLuggageTotalPrice);
+            }
+
+            Flight flight = _flightLogic.GetById(flightID);
+
+            Console.WriteLine($"\nYour total cost is: {ReservationLogic.TotalCost(flight) + _reservationLogic.ExtraLuggage(extraLuggageAmount)}");
+            Console.Writeline("Do you wish to continue? (Y/N) (Any other input will cancel this reservation)");
+            string ReservationChoice = Console.ReadLine().ToLower();
+            if (reservation != null && ReservationChoice == "y")
             {
                 Console.WriteLine("\nReservation successfully created!\n");
                 Console.WriteLine($"Your reservation code is: {reservation.ReservationCode}");
