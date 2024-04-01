@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-public class Flight
+public class FlightModel
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -23,5 +23,56 @@ public class Flight
     public string ArrivalTime { get; set; }
 
     [JsonPropertyName("plane")]
-    public Plane Plane { get; set; }
+    public PlaneModel Plane { get; set; }
+
+    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, string flightDuration, string arrivalTime, PlaneModel plane)
+    {
+        Id = id;
+        FlightNumber = flightNumber;
+        From = from;
+        Destination = destination;
+        DepartureTime = departureTime;
+        FlightDuration = flightDuration;
+        ArrivalTime = arrivalTime;
+        Plane = plane;
+    }
+
+    public List<ReservationModel> GetFlightReservations()
+    {
+        List<ReservationModel> flightReservations = new List<ReservationModel>();
+
+        foreach (var reservation in ReservationAccess.LoadAll())
+        {
+            if (reservation.Flight.Id == Id)
+            {
+                flightReservations.Add(reservation);
+            }
+        }
+
+        return flightReservations;
+    }
+
+    public List<SeatModel> GetFlightSeats()
+    {
+        List<SeatModel> flightSeats = Plane.GetPlaneSeats();
+        List<ReservationModel> flightReservations = GetFlightReservations();
+
+        foreach (SeatModel seat in flightSeats)
+        {
+            bool reserved = flightReservations.Any(reservation => reservation.Passengers.Any(passenger => passenger.SeatNumber == seat.SeatNumber));
+
+            if (reserved)
+            {
+                seat.IsReserved = true;
+            }
+        }
+
+        return flightSeats;
+    }
+
+    public bool IsSeatReserved(string seatNumber)
+    {
+        List<SeatModel> flightSeats = GetFlightSeats();
+        return flightSeats.Any(seat => seat.SeatNumber == seatNumber && seat.IsReserved);
+    }
 }

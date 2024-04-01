@@ -1,7 +1,7 @@
 static class FlightOverview
 {
     static private FlightLogic _flightLogic = new FlightLogic();
-    static private List<Flight> _availableFlights = _flightLogic.GetAvailableFlights();
+    static private List<FlightModel> _availableFlights = _flightLogic.GetAvailableFlights();
     static private AccountsLogic _accountsLogic = new AccountsLogic();
     static private ReservationLogic _reservationLogic = new ReservationLogic();
 
@@ -24,7 +24,7 @@ static class FlightOverview
         {
             for (int i = 0; i < _availableFlights.Count; i++)
             {
-                Flight flight = _availableFlights[i];
+                FlightModel flight = _availableFlights[i];
                 Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
@@ -68,7 +68,7 @@ static class FlightOverview
         else if (choice == "r" && AccountsLogic.CurrentAccount != null)
         {
             // Start reservation menu
-            ReservationMenu.Start();
+            Reservation.SelectFlight();
         }
         else
         {

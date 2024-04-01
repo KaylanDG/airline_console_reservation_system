@@ -38,5 +38,15 @@
     "date_of_birth": "18-03-2003",
     "disabled": false,
     "role": "user"
+  },
+  {
+    "id": 5,
+    "emailAddress": "test",
+    "password": "test",
+    "fullName": "test",
+    "phone": "0675431266",
+    "date_of_birth": "18-03-2003",
+    "disabled": false,
+    "role": "admin"
   }
 ]

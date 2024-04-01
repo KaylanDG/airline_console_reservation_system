@@ -15,7 +15,8 @@
         "id": 1,
         "airline": "Rotterdam Airlines",
         "name": "Boeing 737",
-        "passengers": 210
+        "economy_seats": 192,
+        "first_class_seats": 0
       }
     },
     "user_id": 1,
@@ -24,7 +25,7 @@
       {
         "passenger_id": 1,
         "full_name": "John Doe",
-        "seat_number": "A1"
+        "seat_number": "A-01"
       }
     ]
   }

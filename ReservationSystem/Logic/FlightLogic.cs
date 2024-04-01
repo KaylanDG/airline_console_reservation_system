@@ -1,6 +1,6 @@
 public class FlightLogic
 {
-    private List<Flight> _flights;
+    private List<FlightModel> _flights;
 
     public FlightLogic()
     {
@@ -8,13 +8,13 @@ public class FlightLogic
         _flights = FlightsAccess.LoadAllFlights();
     }
 
-    public List<Flight> GetAvailableFlights()
+    public List<FlightModel> GetAvailableFlights()
     {
-        List<Flight> availableFlights = new List<Flight>();
+        List<FlightModel> availableFlights = new List<FlightModel>();
 
         // For each flight check if the departure date hasn't passed.
         // if not add the flight to availableFlights.
-        foreach (Flight flight in _flights)
+        foreach (FlightModel flight in _flights)
         {
             string departureDateTimeString = flight.DepartureTime;
             string format = "dd-MM-yyyy HH:mm tt";
@@ -31,13 +31,13 @@ public class FlightLogic
         return availableFlights;
     }
 
-    public List<Flight> GetAvailableFlightsForDestination(string destination)
+    public List<FlightModel> GetAvailableFlightsForDestination(string destination)
     {
-        List<Flight> availableFlightsForDestination = new List<Flight>();
+        List<FlightModel> availableFlightsForDestination = new List<FlightModel>();
 
         // For each available flight check if the destination is equel to the given argument
         // if so add the flight to the list
-        foreach (Flight flight in GetAvailableFlights())
+        foreach (FlightModel flight in GetAvailableFlights())
         {
             if (flight.Destination.ToLower() == destination.ToLower())
             {
@@ -48,9 +48,9 @@ public class FlightLogic
         return availableFlightsForDestination;
     }
 
-    public Flight GetById(int id)
+    public FlightModel GetById(int id)
     {
-        List<Flight> flights = GetAvailableFlights();
+        List<FlightModel> flights = GetAvailableFlights();
         return flights.Find(i => i.Id == id);
     }
 
@@ -66,4 +66,5 @@ public class FlightLogic
         }
         return false;
     }
+
 }

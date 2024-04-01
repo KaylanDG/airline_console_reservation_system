@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class Passenger
+public class PassengerModel
 {
     [JsonPropertyName("passenger_id")]
     public int PassengerID { get; set; }
@@ -11,7 +11,7 @@ public class Passenger
     [JsonPropertyName("seat_number")]
     public string SeatNumber { get; set; }
 
-    public Passenger(int passengerID, string fullName, string seatNumber)
+    public PassengerModel(int passengerID, string fullName, string seatNumber)
     {
         PassengerID = passengerID;
         FullName = fullName;

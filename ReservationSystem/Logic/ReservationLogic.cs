@@ -1,51 +1,13 @@
-using System.Collections.Generic;
-
 public class ReservationLogic
 {
-    private List<Reservation> _reservations;
-    private ReservationAccess _reservationAccess;
-    private FlightLogic _flightLogic;
+    private List<ReservationModel> _reservations;
 
     public ReservationLogic()
     {
         _reservations = ReservationAccess.LoadAll();
-        _reservationAccess = new ReservationAccess();
-        _flightLogic = new FlightLogic();
     }
 
-    public Reservation CreateReservation(int flightID, string passengerName)
-    {
-        DateTime now = DateTime.Now;
-        string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
-        int userID = AccountsLogic.CurrentAccount.Id;
-
-        // Has to be changed
-        List<Passenger> passengers = new List<Passenger>
-        {
-            new Passenger(1, passengerName, "")
-        };
-
-        Flight flight = _flightLogic.GetById(flightID);
-
-        // Still has to be implemented:
-        // Seats
-        // Total cost calculation
-
-        Reservation newReservation = new Reservation(
-            GenerateReservationId(),
-            GenerateRandomReservationCode(),
-            reservationDate,
-            flight,
-            userID,
-            0.0,
-            passengers
-        );
-
-        UpdateList(newReservation);
-        return newReservation;
-    }
-
-    public void UpdateList(Reservation reservation)
+    public void UpdateList(ReservationModel reservation)
     {
         int index = _reservations.FindIndex(r => r.Id == reservation.Id);
 
@@ -58,14 +20,11 @@ public class ReservationLogic
             _reservations.Add(reservation);
         }
 
-        _reservationAccess.WriteAll(_reservations);
+        ReservationAccess.WriteAll(_reservations);
     }
 
     private int GenerateReservationId()
     {
-        // Create an instance of ReservationAccess
-        var reservationAccess = new ReservationAccess();
-
         // Load existing reservations from the JSON file
         var reservations = ReservationAccess.LoadAll();
 
