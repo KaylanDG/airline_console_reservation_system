@@ -2,8 +2,6 @@ static class FlightOverview
 {
     static private FlightLogic _flightLogic = new FlightLogic();
     static private List<FlightModel> _availableFlights = _flightLogic.GetAvailableFlights();
-    static private AccountsLogic _accountsLogic = new AccountsLogic();
-    static private ReservationLogic _reservationLogic = new ReservationLogic();
 
     public static void Start()
     {

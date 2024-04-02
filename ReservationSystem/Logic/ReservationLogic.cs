@@ -23,6 +23,28 @@ public class ReservationLogic
         ReservationAccess.WriteAll(_reservations);
     }
 
+
+    public ReservationModel CreateReservation(FlightModel flight, List<PassengerModel> passengers, double totalCost)
+    {
+        DateTime now = DateTime.Now;
+        string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
+
+
+        ReservationModel newReservation = new ReservationModel(
+            GenerateReservationId(),
+            GenerateReservationCode(),
+            reservationDate,
+            flight,
+            AccountsLogic.CurrentAccount.Id,
+            totalCost,
+            passengers
+        );
+
+        UpdateList(newReservation);
+        return newReservation;
+    }
+
+
     private int GenerateReservationId()
     {
         // Load existing reservations from the JSON file
@@ -35,7 +57,7 @@ public class ReservationLogic
         return maxId + 1;
     }
 
-    private string GenerateRandomReservationCode()
+    private string GenerateReservationCode()
     {
         var random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

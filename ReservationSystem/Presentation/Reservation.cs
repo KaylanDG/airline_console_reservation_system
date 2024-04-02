@@ -1,7 +1,9 @@
 public static class Reservation
 {
     private static FlightLogic _flightLogic = new FlightLogic();
+    private static ReservationLogic _reservationLogic = new ReservationLogic();
     private static FlightModel _flight;
+    private static List<PassengerModel> _passengers;
 
     public static void SelectFlight()
     {
@@ -28,10 +30,10 @@ public static class Reservation
         }
     }
 
-
     public static void SeatOverview()
     {
         List<SeatModel> flightSeats = _flight.GetFlightSeats();
+
 
         int seatsPerRow = (_flight.Plane.Name == "Boeing 737") ? 6 : 9;
         int seatRows = flightSeats.Count / seatsPerRow;
@@ -96,7 +98,25 @@ public static class Reservation
         Console.ResetColor();
     }
 
-    public static void SeatSelection()
+    public static void SeatInfo()
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("Red");
+        Console.ResetColor();
+        Console.Write(": Seat is reserved.\n");
+
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("Yellow");
+        Console.ResetColor();
+        Console.Write(": Seat is First Class.\n");
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.Write("Green");
+        Console.ResetColor();
+        Console.Write(": Seat is Economy Class.\n");
+    }
+
+    public static string SeatSelection()
     {
         SeatOverview();
 
@@ -114,30 +134,52 @@ public static class Reservation
             Console.WriteLine("The seat number you entered is already reserved.");
             Menu.Start();
         }
-    }
 
-    public static void SeatInfo()
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write("Red");
-        Console.ResetColor();
-        Console.Write(": Seat is reserver.\n");
-
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("Yellow");
-        Console.ResetColor();
-        Console.Write(": Seat is First Class.\n");
-
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.Write("Green");
-        Console.ResetColor();
-        Console.Write(": Seat is Economy Class.\n");
+        return seatNumber;
     }
 
     // Method to start the reservation process
     public static void Start()
     {
-        SeatSelection();
+        Console.Clear();
+        Console.WriteLine("Enter the amount of passengers:");
+        int passengerAmount = 0;
+        double totalCost = 0;
+
+        try
+        {
+            passengerAmount = Convert.ToInt32(Console.ReadLine());
+            if (passengerAmount < 0)
+            {
+                Console.WriteLine("The amount of passengers has to be at least 1.");
+                Menu.Start();
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("The amount of passengers you entered is not valid.");
+            Menu.Start();
+        }
+
+
+
+        _passengers = new List<PassengerModel>();
+        for (int i = 0; i < passengerAmount; i++)
+        {
+            Console.Clear();
+            Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
+            string passengerName = Console.ReadLine();
+
+            Console.WriteLine($"\nSelect a seat for passenger {i + 1}:");
+            string passengerSeat = SeatSelection();
+
+            _passengers.Add(new PassengerModel(i + 1, passengerName, passengerSeat));
+            totalCost += _flight.GetSeatPrice(passengerSeat);
+        }
+
+        ReservationModel reservation = _reservationLogic.CreateReservation(_flight, _passengers, totalCost);
+        Console.WriteLine("Your reservation has been booked.");
+        Console.WriteLine($"Reservation code: {reservation.ReservationCode}");
     }
 
 }

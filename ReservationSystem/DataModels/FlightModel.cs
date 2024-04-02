@@ -17,7 +17,7 @@ public class FlightModel
     public string DepartureTime { get; set; }
 
     [JsonPropertyName("flight_duration")]
-    public string FlightDuration { get; set; }
+    public int FlightDuration { get; set; }
 
     [JsonPropertyName("arrival_time")]
     public string ArrivalTime { get; set; }
@@ -25,7 +25,7 @@ public class FlightModel
     [JsonPropertyName("plane")]
     public PlaneModel Plane { get; set; }
 
-    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, string flightDuration, string arrivalTime, PlaneModel plane)
+    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, int flightDuration, string arrivalTime, PlaneModel plane)
     {
         Id = id;
         FlightNumber = flightNumber;
@@ -74,5 +74,12 @@ public class FlightModel
     {
         List<SeatModel> flightSeats = GetFlightSeats();
         return flightSeats.Any(seat => seat.SeatNumber == seatNumber && seat.IsReserved);
+    }
+
+    public double GetSeatPrice(string seatNumber)
+    {
+        List<SeatModel> flightSeats = GetFlightSeats();
+        SeatModel seat = flightSeats.Find(i => i.SeatNumber == seatNumber)!;
+        return seat.PricePerMinute * FlightDuration;
     }
 }
