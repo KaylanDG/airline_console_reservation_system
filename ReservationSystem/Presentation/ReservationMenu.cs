@@ -61,7 +61,7 @@ static class ReservationMenu
             Flight flight = _flightLogic.GetById(flightID);
 
             Console.WriteLine($"\nYour total cost is: {ReservationLogic.TotalCost(flight) + _reservationLogic.ExtraLuggage(extraLuggageAmount)}");
-            Console.Writeline("Do you wish to continue? (Y/N) (Any other input will cancel this reservation)");
+            Console.WriteLine("Do you wish to continue? (Y/N) (Any other input will cancel this reservation)");
             string ReservationChoice = Console.ReadLine().ToLower();
             if (reservation != null && ReservationChoice == "y")
             {
