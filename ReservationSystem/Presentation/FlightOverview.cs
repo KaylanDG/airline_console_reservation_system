@@ -66,7 +66,7 @@ static class FlightOverview
         else if (choice == "r" && AccountsLogic.CurrentAccount != null)
         {
             // Start reservation menu
-            Reservation.SelectFlight();
+            Reservation.Start();
         }
         else
         {

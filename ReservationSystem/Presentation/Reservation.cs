@@ -3,7 +3,38 @@ public static class Reservation
     private static FlightLogic _flightLogic = new FlightLogic();
     private static ReservationLogic _reservationLogic = new ReservationLogic();
     private static FlightModel _flight;
-    private static List<PassengerModel> _passengers;
+    private static List<SeatModel> _flightSeats;
+
+    public static void Start()
+    {
+        SelectFlight();
+        int passengerAmount = EnterPassengerAmount();
+
+        List<PassengerModel> passengers = new List<PassengerModel>();
+        double totalCost = 0.0;
+
+        for (int i = 0; i < passengerAmount; i++)
+        {
+            Console.Clear();
+            Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
+            string passengerName = Console.ReadLine();
+
+            Console.WriteLine($"\nSelect a seat for passenger {i + 1}\n");
+            string passengerSeat = SeatSelection();
+
+            passengers.Add(new PassengerModel(i + 1, passengerName, passengerSeat));
+            _flightSeats = _flightLogic.UpdateFlightSeats(passengerSeat, _flightSeats);
+            totalCost += _flightLogic.GetSeatPrice(passengerSeat, _flightSeats, _flight);
+        }
+
+        Console.Clear();
+        ReservationModel reservation = _reservationLogic.CreateReservation(_flight, passengers, totalCost);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("\nYour reservation has been booked.\n");
+        Console.ResetColor();
+        Console.WriteLine($"Reservation code: {reservation.ReservationCode}\n");
+    }
+
 
     public static void SelectFlight()
     {
@@ -20,7 +51,7 @@ public static class Reservation
             else
             {
                 _flight = _flightLogic.GetById(flightID);
-                Start();
+                _flightSeats = _flightLogic.GetFlightSeats(_flight);
             }
         }
         catch (FormatException)
@@ -30,13 +61,85 @@ public static class Reservation
         }
     }
 
+    public static int EnterPassengerAmount()
+    {
+        int passengerAmount = 0;
+        bool validInput = false;
+
+        while (!validInput)
+        {
+            Console.WriteLine("\nEnter the amount of passengers:");
+            try
+            {
+                passengerAmount = Convert.ToInt32(Console.ReadLine());
+                if (passengerAmount < 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe amount of passengers has to be at least 1.\n");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    validInput = true;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe amount of passengers you entered is not valid.\n");
+                Console.ResetColor();
+            }
+        }
+
+        return passengerAmount;
+    }
+
+    public static string SeatSelection()
+    {
+        SeatOverview();
+        bool validSeat = false;
+        string seatNumber = "";
+
+        while (!validSeat)
+        {
+            Console.WriteLine("\nEnter seat number (example: A-01):");
+            seatNumber = Console.ReadLine().ToUpper();
+
+            if (!_flight.Plane.DoesSeatExist(seatNumber))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered does not exist.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatReserved(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already reserved.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatSelected(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already selected.\n");
+                Console.ResetColor();
+            }
+            else
+            {
+                validSeat = true;
+            }
+        }
+
+
+        return seatNumber;
+    }
+
+
     public static void SeatOverview()
     {
-        List<SeatModel> flightSeats = _flight.GetFlightSeats();
-
-
         int seatsPerRow = (_flight.Plane.Name == "Boeing 737") ? 6 : 9;
-        int seatRows = flightSeats.Count / seatsPerRow;
+        int seatRows = _flightSeats.Count / seatsPerRow;
         int seatIndex = 0;
 
         for (int i = 0; i < seatRows; i++)
@@ -58,7 +161,7 @@ public static class Reservation
                         }
                         else if (j == 1)
                         {
-                            SeatModel seat = flightSeats[seatIndex];
+                            SeatModel seat = _flightSeats[seatIndex];
 
                             Console.ForegroundColor = ConsoleColor.Gray;
                             Console.Write("║");
@@ -66,6 +169,10 @@ public static class Reservation
                             if (seat.IsReserved)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
+                            }
+                            else if (seat.IsSelected)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
                             }
                             else if (seat.SeatType == "First Class")
                             {
@@ -103,7 +210,12 @@ public static class Reservation
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Write("Red");
         Console.ResetColor();
-        Console.Write(": Seat is reserved.\n");
+        Console.Write(": Seat is already reserved.\n");
+
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("Blue");
+        Console.ResetColor();
+        Console.Write(": Seat is alredy selected.\n");
 
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("Yellow");
@@ -114,72 +226,7 @@ public static class Reservation
         Console.Write("Green");
         Console.ResetColor();
         Console.Write(": Seat is Economy Class.\n");
-    }
 
-    public static string SeatSelection()
-    {
-        SeatOverview();
-
-        Console.WriteLine("\nEnter seat number (example: A-01):");
-        string seatNumber = Console.ReadLine().ToUpper();
-
-        if (!_flight.Plane.DoesSeatExist(seatNumber))
-        {
-            Console.WriteLine("The seat number you entered does not exist.");
-            Menu.Start();
-        }
-
-        if (_flight.IsSeatReserved(seatNumber))
-        {
-            Console.WriteLine("The seat number you entered is already reserved.");
-            Menu.Start();
-        }
-
-        return seatNumber;
-    }
-
-    // Method to start the reservation process
-    public static void Start()
-    {
-        Console.Clear();
-        Console.WriteLine("Enter the amount of passengers:");
-        int passengerAmount = 0;
-        double totalCost = 0;
-
-        try
-        {
-            passengerAmount = Convert.ToInt32(Console.ReadLine());
-            if (passengerAmount < 0)
-            {
-                Console.WriteLine("The amount of passengers has to be at least 1.");
-                Menu.Start();
-            }
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("The amount of passengers you entered is not valid.");
-            Menu.Start();
-        }
-
-
-
-        _passengers = new List<PassengerModel>();
-        for (int i = 0; i < passengerAmount; i++)
-        {
-            Console.Clear();
-            Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
-            string passengerName = Console.ReadLine();
-
-            Console.WriteLine($"\nSelect a seat for passenger {i + 1}:");
-            string passengerSeat = SeatSelection();
-
-            _passengers.Add(new PassengerModel(i + 1, passengerName, passengerSeat));
-            totalCost += _flight.GetSeatPrice(passengerSeat);
-        }
-
-        ReservationModel reservation = _reservationLogic.CreateReservation(_flight, _passengers, totalCost);
-        Console.WriteLine("Your reservation has been booked.");
-        Console.WriteLine($"Reservation code: {reservation.ReservationCode}");
     }
 
 }

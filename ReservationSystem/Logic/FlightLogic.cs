@@ -67,4 +67,64 @@ public class FlightLogic
         return false;
     }
 
+    public List<ReservationModel> GetFlightReservations(FlightModel flight)
+    {
+        List<ReservationModel> flightReservations = new List<ReservationModel>();
+
+        foreach (var reservation in ReservationAccess.LoadAll())
+        {
+            if (reservation.FlightId == flight.Id)
+            {
+                flightReservations.Add(reservation);
+            }
+        }
+
+        return flightReservations;
+    }
+
+    public List<SeatModel> GetFlightSeats(FlightModel flight)
+    {
+        List<SeatModel> flightSeats = flight.Plane.GetPlaneSeats();
+        List<ReservationModel> flightReservations = GetFlightReservations(flight);
+
+        foreach (SeatModel seat in flightSeats)
+        {
+            bool reserved = flightReservations.Any(reservation => reservation.Passengers.Any(passenger => passenger.SeatNumber == seat.SeatNumber));
+
+            if (reserved)
+            {
+                seat.IsReserved = true;
+            }
+        }
+        return flightSeats;
+    }
+
+    public List<SeatModel> UpdateFlightSeats(string seatNumber, List<SeatModel> flightSeats)
+    {
+        foreach (SeatModel seat in flightSeats)
+        {
+            if (seat.SeatNumber == seatNumber)
+            {
+                seat.IsSelected = true;
+            }
+        }
+
+        return flightSeats;
+    }
+
+    public bool IsSeatReserved(string seatNumber, List<SeatModel> seats)
+    {
+        return seats.Any(seat => seat.SeatNumber == seatNumber && seat.IsReserved);
+    }
+
+    public bool IsSeatSelected(string seatNumber, List<SeatModel> seats)
+    {
+        return seats.Any(seat => seat.SeatNumber == seatNumber && seat.IsSelected);
+    }
+
+    public double GetSeatPrice(string seatNumber, List<SeatModel> seats, FlightModel flight)
+    {
+        SeatModel seat = seats.Find(i => i.SeatNumber == seatNumber)!;
+        return seat.PricePerMinute * flight.FlightDuration;
+    }
 }

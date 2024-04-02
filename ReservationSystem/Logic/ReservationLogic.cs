@@ -34,7 +34,7 @@ public class ReservationLogic
             GenerateReservationId(),
             GenerateReservationCode(),
             reservationDate,
-            flight,
+            flight.Id,
             AccountsLogic.CurrentAccount.Id,
             totalCost,
             passengers

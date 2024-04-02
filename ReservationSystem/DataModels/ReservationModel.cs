@@ -11,8 +11,8 @@ public class ReservationModel
     [JsonPropertyName("reservation_date")]
     public string ReservationDate { get; set; }
 
-    [JsonPropertyName("flight")]
-    public FlightModel Flight { get; set; }
+    [JsonPropertyName("flight_id")]
+    public int FlightId { get; set; }
 
     [JsonPropertyName("user_id")]
     public int UserId { get; set; }
@@ -23,12 +23,12 @@ public class ReservationModel
     [JsonPropertyName("passengers")]
     public List<PassengerModel> Passengers { get; set; }
 
-    public ReservationModel(int id, string reservationCode, string reservationDate, FlightModel flight, int userId, double totalCost, List<PassengerModel> passengers)
+    public ReservationModel(int id, string reservationCode, string reservationDate, int flightId, int userId, double totalCost, List<PassengerModel> passengers)
     {
         Id = id;
         ReservationCode = reservationCode;
         ReservationDate = reservationDate;
-        Flight = flight;
+        FlightId = flightId;
         UserId = userId;
         TotalCost = totalCost;
         Passengers = passengers;

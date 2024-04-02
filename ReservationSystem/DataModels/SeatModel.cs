@@ -2,8 +2,10 @@ public class SeatModel
 {
     public string SeatNumber;
     public string SeatType;
-    public bool IsReserved;
     public int PricePerMinute;
+    public bool IsReserved;
+    public bool IsSelected;
+
 
     public SeatModel(string seatNum, string seatType, int pricePerMin)
     {
