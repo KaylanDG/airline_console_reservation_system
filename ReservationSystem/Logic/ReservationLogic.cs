@@ -65,4 +65,14 @@ public class ReservationLogic
         return new string(Enumerable.Repeat(chars, 8)
         .Select(s => s[random.Next(s.Length)]).ToArray());
     }
+
+    public double ExtraLuggagePrice(int howmany)
+    {
+        double TotalPrice = 0.0;
+        for (int i = 1; i <= howmany; i++)
+        {
+            TotalPrice += i * 25;
+        }
+        return TotalPrice;
+    }
 }
