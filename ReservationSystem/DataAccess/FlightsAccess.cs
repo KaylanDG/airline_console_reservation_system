@@ -10,7 +10,7 @@ public static class FlightsAccess
         return JsonSerializer.Deserialize<List<FlightModel>>(json);
     }
 
-    public static void WriteAll(List<Flight> flights)
+    public static void WriteAll(List<FlightModel> flights)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(flights, options);
