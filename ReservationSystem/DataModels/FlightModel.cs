@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-public class Flight
+public class FlightModel
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -17,11 +17,23 @@ public class Flight
     public string DepartureTime { get; set; }
 
     [JsonPropertyName("flight_duration")]
-    public string FlightDuration { get; set; }
+    public int FlightDuration { get; set; }
 
     [JsonPropertyName("arrival_time")]
     public string ArrivalTime { get; set; }
 
     [JsonPropertyName("plane")]
-    public Plane Plane { get; set; }
+    public PlaneModel Plane { get; set; }
+
+    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, int flightDuration, string arrivalTime, PlaneModel plane)
+    {
+        Id = id;
+        FlightNumber = flightNumber;
+        From = from;
+        Destination = destination;
+        DepartureTime = departureTime;
+        FlightDuration = flightDuration;
+        ArrivalTime = arrivalTime;
+        Plane = plane;
+    }
 }

@@ -3,28 +3,34 @@
     "id": 1,
     "reservation_code": "WXYZ5678",
     "reservation_date": "14-04-2024 13:02 PM",
-    "flight": {
-      "id": 1,
-      "flight_numer": "AB1234",
-      "from": "Rotterdam",
-      "destination": "London",
-      "departure_time": "12-04-2024 12:35 PM",
-      "flight_duration": "00:55",
-      "arrival_time": "12-04-2024 13:30 PM",
-      "plane": {
-        "id": 1,
-        "airline": "Rotterdam Airlines",
-        "name": "Boeing 737",
-        "passengers": 210
-      }
-    },
+    "flight_id": 1,
     "user_id": 1,
     "total_cost": 255,
     "passengers": [
       {
         "passenger_id": 1,
         "full_name": "John Doe",
-        "seat_number": "A1"
+        "seat_number": "A-01"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "reservation_code": "0RKGSBP7",
+    "reservation_date": "03-04-2024 21:35 PM",
+    "flight_id": 1,
+    "user_id": 5,
+    "total_cost": 515,
+    "passengers": [
+      {
+        "passenger_id": 1,
+        "full_name": "Kaylan de Groot",
+        "seat_number": "A-28"
+      },
+      {
+        "passenger_id": 2,
+        "full_name": "Damian van Dams",
+        "seat_number": "B-28"
       }
     ]
   }

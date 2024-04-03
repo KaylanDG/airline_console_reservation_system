@@ -1,51 +1,13 @@
-using System.Collections.Generic;
-
-class ReservationLogic
+public class ReservationLogic
 {
-    private List<Reservation> _reservations;
-    private ReservationAccess _reservationAccess;
-    private FlightLogic _flightLogic;
+    private List<ReservationModel> _reservations;
 
     public ReservationLogic()
     {
         _reservations = ReservationAccess.LoadAll();
-        _reservationAccess = new ReservationAccess();
-        _flightLogic = new FlightLogic();
     }
 
-    public Reservation CreateReservation(int flightID, string passengerName, int ExtraLug)
-    {
-        DateTime now = DateTime.Now;
-        string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
-        int userID = AccountsLogic.CurrentAccount.Id;
-
-        // Has to be changed
-        List<Passenger> passengers = new List<Passenger>
-        {
-            new Passenger(1, passengerName, "")
-        };
-
-        Flight flight = _flightLogic.GetById(flightID);
-
-        // Still has to be implemented:
-        // Seats
-        // Total cost calculation
-        int TotalFullyCost = ReservationLogic.TotalCost(flight) + ExtraLug;
-        Reservation newReservation = new Reservation(
-            GenerateReservationId(),
-            GenerateRandomReservationCode(),
-            reservationDate,
-            flight,
-            userID,
-            TotalFullyCost,
-            passengers
-        );
-
-        UpdateList(newReservation);
-        return newReservation;
-    }
-
-    public void UpdateList(Reservation reservation)
+    public void UpdateList(ReservationModel reservation)
     {
         int index = _reservations.FindIndex(r => r.Id == reservation.Id);
 
@@ -58,14 +20,33 @@ class ReservationLogic
             _reservations.Add(reservation);
         }
 
-        _reservationAccess.WriteAll(_reservations);
+        ReservationAccess.WriteAll(_reservations);
     }
+
+
+    public ReservationModel CreateReservation(FlightModel flight, List<PassengerModel> passengers, double totalCost)
+    {
+        DateTime now = DateTime.Now;
+        string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
+
+
+        ReservationModel newReservation = new ReservationModel(
+            GenerateReservationId(),
+            GenerateReservationCode(),
+            reservationDate,
+            flight.Id,
+            AccountsLogic.CurrentAccount.Id,
+            totalCost,
+            passengers
+        );
+
+        UpdateList(newReservation);
+        return newReservation;
+    }
+
 
     private int GenerateReservationId()
     {
-        // Create an instance of ReservationAccess
-        var reservationAccess = new ReservationAccess();
-
         // Load existing reservations from the JSON file
         var reservations = ReservationAccess.LoadAll();
 
@@ -76,7 +57,7 @@ class ReservationLogic
         return maxId + 1;
     }
 
-    private string GenerateRandomReservationCode()
+    private string GenerateReservationCode()
     {
         var random = new Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -84,27 +65,14 @@ class ReservationLogic
         return new string(Enumerable.Repeat(chars, 8)
         .Select(s => s[random.Next(s.Length)]).ToArray());
     }
-    public Reservation CreateReservation(int flightID, string passengerName) => CreateReservation(flightID, passengerName, 0);
 
-
-    public int ExtraLuggage(int howmany)
+    public double ExtraLuggagePrice(int howmany)
     {
-        int TotalPrice = 0;
-        for (int i = 1; i < howmany + 1; i++)
+        double TotalPrice = 0.0;
+        for (int i = 1; i <= howmany; i++)
         {
-            int price = i * 25;
-            TotalPrice += price;
+            TotalPrice += i * 25;
         }
         return TotalPrice;
     }
-
-    public static int TotalCost(Flight flight)
-    {
-        string[] ListHM = flight.FlightDuration.Split(":");
-        int hours = Convert.ToInt32(ListHM[0]);
-        int minutes = Convert.ToInt32(ListHM[1]) + hours * 60;
-        return minutes * 5;
-    }
-
-
 }
