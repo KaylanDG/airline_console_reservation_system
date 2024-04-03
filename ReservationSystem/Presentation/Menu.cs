@@ -22,6 +22,11 @@ static class Menu
             }
             Console.WriteLine("F | Flight overview");
             Console.WriteLine("A | Airport info");
+            if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                Console.WriteLine("A | Add an flight to json");
+            }
+
             if (AccountsLogic.CurrentAccount != null)
             {
                 Console.WriteLine("L | Logout");

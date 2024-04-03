@@ -9,4 +9,11 @@ public static class FlightsAccess
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<FlightModel>>(json);
     }
+
+    public static void WriteAll(List<Flight> flights)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(flights, options);
+        File.WriteAllText(path, json);
+    }
 }
