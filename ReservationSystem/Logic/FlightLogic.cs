@@ -13,7 +13,6 @@ public class FlightLogic
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
         _flightsAccess = new FlightsAccess();
-        _flightLogic = new FlightLogic();
         _planeAccess = new PlaneAccess();
         _planes = PlaneAccess.LoadAllPlanes();
 

@@ -22,6 +22,12 @@ static class Menu
             }
             Console.WriteLine("F | Flight overview");
             Console.WriteLine("A | Airport info");
+            if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                Console.WriteLine("M | Make Flight");
+
+            }
+
             if (AccountsLogic.CurrentAccount != null)
             {
                 Console.WriteLine("L | Logout");
@@ -33,6 +39,10 @@ static class Menu
             if (input == "l" && AccountsLogic.CurrentAccount == null)
             {
                 UserLogin.Start();
+            }
+            if (input == "m" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                AddFlight.Start();
             }
             if (input == "l" && AccountsLogic.CurrentAccount != null)
             {

@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
+
 public class Flight
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("flight_number")]
+    [JsonPropertyName("flight_numer")] // Corrected property name
     public string FlightNumber { get; set; }
 
     [JsonPropertyName("from")]
@@ -25,17 +26,15 @@ public class Flight
     [JsonPropertyName("plane")]
     public Plane Plane { get; set; }
 
-
-
-    public Flight(int id, string flightnumber, string from, string destination, string departure_time, string flight_duration, string arrival_time, Plane plane)
+    public Flight(int id, string flightNumber, string from, string destination, string departureTime, string flightDuration, string arrivalTime, Plane plane)
     {
         Id = id;
-        FlightNumber = flightnumber;
+        FlightNumber = flightNumber;
         From = from;
         Destination = destination;
-        DepartureTime = departure_time;
-        FlightDuration = flight_duration;
-        ArrivalTime = arrival_time;
+        DepartureTime = departureTime;
+        FlightDuration = flightDuration;
+        ArrivalTime = arrivalTime;
         Plane = plane;
     }
 }
