@@ -75,4 +75,19 @@ public class ReservationLogic
         }
         return TotalPrice;
     }
+    public static List<Reservation> ListOfReservationMethod()
+    {
+        int AccountID = AccountsLogic.CurrentAccount.Id;
+        List<Reservation> _reservations = ReservationAccess.LoadAll();
+        List<Reservation> ReturnReservation = new List<Reservation>();
+        foreach (Reservation x in _reservations)
+        {
+            if (AccountID == x.UserId)
+            {
+                ReturnReservation.Add(x);
+            }
+        }
+        return ReturnReservation;
+    }
+
 }
