@@ -3,6 +3,8 @@ public class FlightLogic
     private List<Flight> _flights;
     private FlightsAccess _flightsAccess;
     private FlightLogic _flightLogic;
+    private PlaneAccess _planeAccess;
+    private List<Plane> _planes;
 
 
 
@@ -12,6 +14,8 @@ public class FlightLogic
         _flights = FlightsAccess.LoadAllFlights();
         _flightsAccess = new FlightsAccess();
         _flightLogic = new FlightLogic();
+        _planeAccess = new PlaneAccess();
+        _planes = PlaneAccess.LoadAllPlanes();
 
     }
 
@@ -61,13 +65,33 @@ public class FlightLogic
         return flights.Find(i => i.Id == id);
     }
 
-    public Flight CreateFlight()
+    public Plane GetPlaneByID(int id)
+    {
+
+        foreach (Plane plane in _planes)
+        {
+            if (id == plane.Id)
+            {
+                return plane;
+            }
+        }
+        return null;
+    }
+
+
+    public Flight CreateFlight(string flightnumber, string from, string destination, string departure_time, string flight_duration, string arrival_time, int id)
     {
         DateTime now = DateTime.Now;
 
         Flight newFlight = new Flight(
-            GenerateFlightId()
-
+            GenerateFlightId(),
+            flightnumber,
+            from,
+            destination,
+            departure_time,
+            flight_duration,
+            arrival_time,
+            GetPlaneByID(id)
         );
 
         UpdateList(newFlight);
