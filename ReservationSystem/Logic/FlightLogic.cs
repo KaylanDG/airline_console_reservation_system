@@ -2,6 +2,8 @@ public class FlightLogic
 {
     private List<Flight> _flights;
     private FlightsAccess _flightsAccess;
+    private FlightLogic _flightLogic;
+
 
 
     public FlightLogic()
@@ -9,6 +11,7 @@ public class FlightLogic
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
         _flightsAccess = new FlightsAccess();
+        _flightLogic = new FlightLogic();
 
     }
 
@@ -58,6 +61,18 @@ public class FlightLogic
         return flights.Find(i => i.Id == id);
     }
 
+    public Flight CreateFlight()
+    {
+        DateTime now = DateTime.Now;
+
+        Flight newFlight = new Flight(
+            GenerateFlightId()
+
+        );
+
+        UpdateList(newFlight);
+        return newFlight;
+    }
     public bool DoesFlightExist(int flightID)
     {
         // Check if given flight number is in the list of available flights
@@ -85,5 +100,20 @@ public class FlightLogic
         }
 
         _flightsAccess.WriteAll(_flights);
+    }
+
+    private int GenerateFlightId()
+    {
+        // Create an instance of ReservationAccess
+        var flightAccess = new FlightsAccess();
+
+        // Load existing reservations from the JSON file
+        var flights = FlightsAccess.LoadAllFlights();
+
+        // Find the highest existing ID
+        int maxId = flights.Max(r => r.Id);
+
+        // Increment the highest existing ID by one to generate a new ID
+        return maxId + 1;
     }
 }
