@@ -1,11 +1,15 @@
 public class FlightLogic
 {
     private List<Flight> _flights;
+    private FlightsAccess _flightsAccess;
+
 
     public FlightLogic()
     {
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
+        _flightsAccess = new FlightsAccess();
+
     }
 
     public List<Flight> GetAvailableFlights()
@@ -65,5 +69,21 @@ public class FlightLogic
             }
         }
         return false;
+    }
+
+    public void UpdateList(Flight flight)
+    {
+        int index = _flights.FindIndex(r => r.Id == flight.Id);
+
+        if (index != -1)
+        {
+            _flights[index] = flight;
+        }
+        else
+        {
+            _flights.Add(flight);
+        }
+
+        _flightsAccess.WriteAll(_flights);
     }
 }
