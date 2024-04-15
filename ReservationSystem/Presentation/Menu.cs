@@ -29,6 +29,7 @@ static class Menu
 
             if (AccountsLogic.CurrentAccount != null)
             {
+                Console.WriteLine("O | Overview of reservation(s)");
                 Console.WriteLine("L | Logout");
             }
             Console.WriteLine("Q | Quit program");
@@ -56,6 +57,10 @@ static class Menu
             {
                 FlightOverview.ShowOverview();
                 Reservation.Start();
+            }
+            else if (input == "o" && AccountsLogic.CurrentAccount != null)
+            {
+                ListOfReservations.Start();
             }
             else if (input == "f")
             {
