@@ -50,8 +50,7 @@ public class FlightLogic
 
     public FlightModel GetById(int id)
     {
-        List<FlightModel> flights = GetAvailableFlights();
-        return flights.Find(i => i.Id == id);
+        return _flights.Find(i => i.Id == id);
     }
 
     public bool DoesFlightExist(int flightID)

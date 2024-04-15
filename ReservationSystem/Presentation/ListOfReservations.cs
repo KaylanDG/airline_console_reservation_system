@@ -17,20 +17,20 @@ public static class ListOfReservations
             Console.WriteLine($"┌{top}┐");
 
             // Reservation code block
-            Console.WriteLine("│{0,-50}│", $"Reservation code: {x.ReservationDate}");
+            Console.WriteLine("│{0,-50}│", $"Reservation code: {x.ReservationCode}");
 
             // Reservation date block
             Console.WriteLine("│{0,-50}│", $"Reservation date: {x.ReservationDate}");
 
             // Total cost block
-            Console.WriteLine("│{0,-50}│", $"  Total cost: {x.TotalCost}");
+            Console.WriteLine("│{0,-50}│", $"Total cost: {x.TotalCost}");
 
             // Passenger(s) block
-            Console.WriteLine("│{0,-50}│", "  Passenger(s):");
+            Console.WriteLine("│{0,-50}│", "Passenger(s):");
             foreach (PassengerModel passenger in x.Passengers)
             {
-                Console.WriteLine("│{0,-50}│", $"     - {passenger.FullName} ");
-                Console.WriteLine("│{0,-50}│", $"       SeatNumber: {passenger.SeatNumber} ");
+                Console.WriteLine("│{0,-50}│", $"   - {passenger.FullName} ");
+                Console.WriteLine("│{0,-50}│", $"     SeatNumber: {passenger.SeatNumber} ");
             }
 
             // Flight number block
