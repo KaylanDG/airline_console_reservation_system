@@ -7,11 +7,12 @@ static class UserLogin
     {
         Console.Clear();
 
-        Console.WriteLine("\n██       ██████   ██████  ██ ███    ██ ");
-        Console.WriteLine("██      ██    ██ ██       ██ ████   ██");
-        Console.WriteLine("██      ██    ██ ██   ███ ██ ██ ██  ██");
-        Console.WriteLine("██      ██    ██ ██    ██ ██ ██  ██ ██");
-        Console.WriteLine("███████  ██████   ██████  ██ ██   ████\n");
+        Console.WriteLine("\n    __                _     ");
+        Console.WriteLine("   / /   ____  ____ _(_)___ ");
+        Console.WriteLine("  / /   / __ \\/ __ `/ / __ \\");
+        Console.WriteLine(" / /___/ /_/ / /_/ / / / / /");
+        Console.WriteLine("/_____/\\____/\\__, /_/_/ /_/ ");
+        Console.WriteLine("            /____/          ");
 
         Console.WriteLine("\nPlease enter your email address");
         string email = Console.ReadLine();

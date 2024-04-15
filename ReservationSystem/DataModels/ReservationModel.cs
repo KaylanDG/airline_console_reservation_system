@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class Reservation
+public class ReservationModel
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -11,8 +11,8 @@ public class Reservation
     [JsonPropertyName("reservation_date")]
     public string ReservationDate { get; set; }
 
-    [JsonPropertyName("flight")]
-    public Flight Flight { get; set; }
+    [JsonPropertyName("flight_id")]
+    public int FlightId { get; set; }
 
     [JsonPropertyName("user_id")]
     public int UserId { get; set; }
@@ -21,14 +21,14 @@ public class Reservation
     public double TotalCost { get; set; }
 
     [JsonPropertyName("passengers")]
-    public List<Passenger> Passengers { get; set; }
+    public List<PassengerModel> Passengers { get; set; }
 
-    public Reservation(int id, string reservationCode, string reservationDate, Flight flight, int userId, double totalCost, List<Passenger> passengers)
+    public ReservationModel(int id, string reservationCode, string reservationDate, int flightId, int userId, double totalCost, List<PassengerModel> passengers)
     {
         Id = id;
         ReservationCode = reservationCode;
         ReservationDate = reservationDate;
-        Flight = flight;
+        FlightId = flightId;
         UserId = userId;
         TotalCost = totalCost;
         Passengers = passengers;

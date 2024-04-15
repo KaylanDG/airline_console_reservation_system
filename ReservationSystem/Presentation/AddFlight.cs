@@ -4,10 +4,12 @@ using System.Globalization;
 public static class AddFlight
 {
     static ReservationLogic _reservationLogic = new ReservationLogic();
+    static PlaneLogic _planeLogic = new PlaneLogic();
     static FlightLogic _flightLogic = new FlightLogic();
 
     public static void Start()
     {
+        Console.Clear();
         Console.WriteLine("Enter a flight number:");
         string flightNumber = Console.ReadLine();
 
@@ -21,27 +23,33 @@ public static class AddFlight
         string departureTimeStr = Console.ReadLine();
         DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
 
-        Console.WriteLine("Enter flight duration (format: HH:mm):");
-        string flightDurationStr = Console.ReadLine().Trim(); // Trim whitespace
+        Console.WriteLine("Enter flight duration in minutes:");
+        string flightDurationStr = Console.ReadLine();
 
         // Attempt to parse the flight duration
-        if (!TimeSpan.TryParseExact(flightDurationStr, "hh\\:mm", CultureInfo.InvariantCulture, out TimeSpan flightDuration))
+        int flightDuration;
+        while (!int.TryParse(flightDurationStr, out flightDuration))
         {
-            Console.WriteLine("Invalid flight duration format. Please enter it as HH:mm (e.g., 01:30).");
+            Console.WriteLine("Invalid flight duration.");
             return; // Exit the method
         }
 
         // Check if flight duration is non-negative
-        if (flightDuration.TotalMinutes <= 0)
+        if (flightDuration <= 0)
         {
             Console.WriteLine("Flight duration should be a positive value.");
             return; // Exit the method
         }
 
         // Calculate arrival time
-        DateTime arrivalTime = departureTime.Add(flightDuration);
+        DateTime arrivalTime = departureTime.AddMinutes(flightDuration);
 
-        Console.WriteLine("Enter plane ID:");
+        Console.WriteLine("Choose a plane:");
+        foreach (PlaneModel plane in _planeLogic.GetPlanes())
+        {
+            Console.WriteLine($"{plane.Id}. {plane.Name}");
+        }
+
         int planeId;
         while (!int.TryParse(Console.ReadLine(), out planeId))
         {
@@ -49,12 +57,12 @@ public static class AddFlight
         }
 
         // Create the flight using FlightLogic
-        Flight newFlight = _flightLogic.CreateFlight(
+        FlightModel newFlight = _flightLogic.CreateFlight(
             flightNumber,
             from,
             destination,
             departureTime.ToString("dd-MM-yyyy HH:mm tt"),
-            flightDuration.ToString(),
+            flightDuration,
             arrivalTime.ToString("dd-MM-yyyy HH:mm tt"),
             planeId
         );
@@ -68,5 +76,7 @@ public static class AddFlight
         {
             Console.WriteLine("Failed to add flight.");
         }
+
+        Menu.Start();
     }
 }

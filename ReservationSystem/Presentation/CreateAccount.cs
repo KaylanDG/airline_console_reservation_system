@@ -8,11 +8,12 @@ public class CreateAccount
         while (!stop)
         {
             Console.Clear();
-            Console.WriteLine("\n██████  ███████  ██████  ██ ███████ ████████ ███████ █████");
-            Console.WriteLine("██   ██ ██      ██       ██ ██         ██    ██      ██   ██");
-            Console.WriteLine("██████  █████   ██   ███ ██ ███████    ██    █████   ██████");
-            Console.WriteLine("██   ██ ██      ██    ██ ██      ██    ██    ██      ██   ██");
-            Console.WriteLine("██   ██ ███████  ██████  ██ ███████    ██    ███████ ██   ██\n");
+            Console.WriteLine("\n    ____             _      __           ");
+            Console.WriteLine("   / __ \\___  ____ _(_)____/ /____  _____");
+            Console.WriteLine("  / /_/ / _ \\/ __ `/ / ___/ __/ _ \\/ ___/");
+            Console.WriteLine(" / _, _/  __/ /_/ / (__  ) /_/  __/ /    ");
+            Console.WriteLine("/_/ |_|\\___/\\__, /_/____/\\__/\\___/_/     ");
+            Console.WriteLine("           /____/                        \n");
 
 
             Console.WriteLine("\nPlease enter your Full Name");
