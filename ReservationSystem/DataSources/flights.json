@@ -1,83 +1,66 @@
 [
-    {
-        "id": 1,
-        "flight_numer": "AB1234",
-        "from": "Rotterdam",
-        "destination": "London",
-        "departure_time": "12-06-2024 12:35 PM",
-        "flight_duration": 55,
-        "arrival_time": "12-06-2024 13:30 PM",
-        "plane": {
-            "id": 1,
-            "airline": "Rotterdam Airlines",
-            "name": "Boeing 737",
-            "economy_seats": 192,
-            "first_class_seats": 0
-        }
-    },
-    {
-        "id": 2,
-        "flight_numer": "AB5678",
-        "from": "Rotterdam",
-        "destination": "Paris",
-        "departure_time": "15-06-2024 10:45 AM",
-        "flight_duration": 80,
-        "arrival_time": "15-06-2024 12:05 PM",
-        "plane": {
-            "id": 2,
-            "airline": "Rotterdam Airlines",
-            "name": "Boeing 787",
-            "economy_seats": 180,
-            "first_class_seats": 54
-        }
-    },
-    {
-        "id": 3,
-        "flight_numer": "AB9101",
-        "from": "Rotterdam",
-        "destination": "Berlin",
-        "departure_time": "20-06-2024 14:20 PM",
-        "flight_duration": 95,
-        "arrival_time": "20-06-2024 15:55 PM",
-        "plane": {
-            "id": 3,
-            "airline": "Rotterdam Airlines",
-            "name": "Airbus 330",
-            "economy_seats": 243,
-            "first_class_seats": 36
-        }
-    },
-    {
-        "id": 4,
-        "flight_numer": "AB1122",
-        "from": "Rotterdam",
-        "destination": "Madrid",
-        "departure_date": "",
-        "departure_time": "25-06-2024 17:10 PM",
-        "flight_duration": 130,
-        "arrival_time": "25-06-2024 19:20 PM",
-        "plane": {
-            "id": 1,
-            "airline": "Rotterdam Airlines",
-            "name": "Boeing 737",
-            "economy_seats": 192,
-            "first_class_seats": 0
-        }
-    },
-    {
-        "id": 5,
-        "flight_numer": "AB9238",
-        "from": "London",
-        "destination": "Rotterdam",
-        "departure_time": "15-06-2024 12:35 PM",
-        "flight_duration": 55,
-        "arrival_time": "15-06-2024 13:30 PM",
-        "plane": {
-            "id": 1,
-            "airline": "Rotterdam Airlines",
-            "name": "Boeing 737",
-            "economy_seats": 192,
-            "first_class_seats": 0
-        }
+  {
+    "id": 1,
+    "flight_numer": "AB1234",
+    "from": "Rotterdam",
+    "destination": "London",
+    "departure_time": "12-06-2024 12:35 PM",
+    "flight_duration": 55,
+    "arrival_time": "12-06-2024 13:30 PM",
+    "plane": {
+      "id": 1,
+      "airline": "Rotterdam Airlines",
+      "name": "Boeing 737",
+      "economy_seats": 192,
+      "first_class_seats": 0
     }
+  },
+  {
+    "id": 2,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "15-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "15-06-2024 12:05 PM",
+    "plane": {
+      "id": 2,
+      "airline": "Rotterdam Airlines",
+      "name": "Boeing 787",
+      "economy_seats": 180,
+      "first_class_seats": 54
+    }
+  },
+  {
+    "id": 3,
+    "flight_numer": "AB9101",
+    "from": "Rotterdam",
+    "destination": "Berlin",
+    "departure_time": "20-06-2024 14:20 PM",
+    "flight_duration": 95,
+    "arrival_time": "20-06-2024 15:55 PM",
+    "plane": {
+      "id": 3,
+      "airline": "Rotterdam Airlines",
+      "name": "Airbus 330",
+      "economy_seats": 243,
+      "first_class_seats": 36
+    }
+  },
+  {
+    "id": 4,
+    "flight_numer": "AB1321",
+    "from": "London",
+    "destination": "Rotterdam",
+    "departure_time": "18-05-2024 10:00 AM",
+    "flight_duration": 55,
+    "arrival_time": "18-05-2024 10:55 AM",
+    "plane": {
+      "id": 1,
+      "airline": "Rotterdam Airlines",
+      "name": "Boeing 737",
+      "economy_seats": 192,
+      "first_class_seats": 0
+    }
+  }
 ]

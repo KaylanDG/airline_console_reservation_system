@@ -24,11 +24,13 @@ static class Menu
             Console.WriteLine("A | Airport info");
             if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
             {
-                Console.WriteLine("A | Add an flight to json");
+                Console.WriteLine("M | Make Flight");
+
             }
 
             if (AccountsLogic.CurrentAccount != null)
             {
+                Console.WriteLine("O | Overview of reservation(s)");
                 Console.WriteLine("L | Logout");
             }
             Console.WriteLine("Q | Quit program");
@@ -38,6 +40,10 @@ static class Menu
             if (input == "l" && AccountsLogic.CurrentAccount == null)
             {
                 UserLogin.Start();
+            }
+            if (input == "m" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                AddFlight.Start();
             }
             if (input == "l" && AccountsLogic.CurrentAccount != null)
             {
@@ -56,6 +62,10 @@ static class Menu
             {
                 FlightOverview.ShowOverview();
                 Reservation.Start();
+            }
+            else if (input == "o" && AccountsLogic.CurrentAccount != null)
+            {
+                ListOfReservations.Start();
             }
             else if (input == "f")
             {

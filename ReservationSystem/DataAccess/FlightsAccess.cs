@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-public static class FlightsAccess
+public class FlightsAccess
 {
     static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/flights.json"));
 
