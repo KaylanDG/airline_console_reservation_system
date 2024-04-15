@@ -4,7 +4,7 @@ public class FlightModel
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("flight_numer")]
+    [JsonPropertyName("flight_numer")] // Corrected property name
     public string FlightNumber { get; set; }
 
     [JsonPropertyName("from")]

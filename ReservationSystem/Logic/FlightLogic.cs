@@ -1,11 +1,17 @@
 public class FlightLogic
 {
     private List<FlightModel> _flights;
+    private FlightLogic _flightLogic;
+    private List<PlaneModel> _planes;
+
+
 
     public FlightLogic()
     {
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
+        _planes = PlaneAccess.LoadAllPlanes();
+
     }
 
     public List<FlightModel> GetAvailableFlights()
@@ -53,6 +59,36 @@ public class FlightLogic
         return _flights.Find(i => i.Id == id);
     }
 
+    public PlaneModel GetPlaneByID(int id)
+    {
+
+        foreach (PlaneModel plane in _planes)
+        {
+            if (id == plane.Id)
+            {
+                return plane;
+            }
+        }
+        return null;
+    }
+
+
+    public FlightModel CreateFlight(string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int id)
+    {
+        FlightModel newFlight = new FlightModel(
+            GenerateFlightId(),
+            flightnumber,
+            from,
+            destination,
+            departure_time,
+            flight_duration,
+            arrival_time,
+            GetPlaneByID(id)
+        );
+
+        UpdateList(newFlight);
+        return newFlight;
+    }
     public bool DoesFlightExist(int flightID)
     {
         // Check if given flight number is in the list of available flights
@@ -66,6 +102,36 @@ public class FlightLogic
         return false;
     }
 
+    public void UpdateList(FlightModel flight)
+    {
+        int index = _flights.FindIndex(r => r.Id == flight.Id);
+
+        if (index != -1)
+        {
+            _flights[index] = flight;
+        }
+        else
+        {
+            _flights.Add(flight);
+        }
+
+        FlightsAccess.WriteAll(_flights);
+    }
+
+    private int GenerateFlightId()
+    {
+        // Create an instance of ReservationAccess
+        var flightAccess = new FlightsAccess();
+
+        // Load existing reservations from the JSON file
+        var flights = FlightsAccess.LoadAllFlights();
+
+        // Find the highest existing ID
+        int maxId = flights.Max(r => r.Id);
+
+        // Increment the highest existing ID by one to generate a new ID
+        return maxId + 1;
+    }
     public List<ReservationModel> GetFlightReservations(FlightModel flight)
     {
         List<ReservationModel> flightReservations = new List<ReservationModel>();

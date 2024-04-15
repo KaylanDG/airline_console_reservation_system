@@ -24,7 +24,8 @@ static class Menu
             Console.WriteLine("A | Airport info");
             if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
             {
-                Console.WriteLine("A | Add an flight to json");
+                Console.WriteLine("M | Make Flight");
+
             }
 
             if (AccountsLogic.CurrentAccount != null)
@@ -39,6 +40,10 @@ static class Menu
             if (input == "l" && AccountsLogic.CurrentAccount == null)
             {
                 UserLogin.Start();
+            }
+            if (input == "m" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                AddFlight.Start();
             }
             if (input == "l" && AccountsLogic.CurrentAccount != null)
             {
