@@ -23,15 +23,9 @@ public class ReservationModel
     [JsonPropertyName("passengers")]
     public List<PassengerModel> Passengers { get; set; }
 
-    public ReservationModel(int id, string reservationCode, string reservationDate, int flightId, int userId, double totalCost, List<PassengerModel> passengers)
+    public ReservationModel()
     {
-        Id = id;
-        ReservationCode = reservationCode;
-        ReservationDate = reservationDate;
-        FlightId = flightId;
-        UserId = userId;
-        TotalCost = totalCost;
-        Passengers = passengers;
+        Passengers = new List<PassengerModel>();
     }
 }
 

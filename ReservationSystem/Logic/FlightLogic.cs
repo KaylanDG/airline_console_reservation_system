@@ -187,9 +187,23 @@ public class FlightLogic
         return seats.Any(seat => seat.SeatNumber == seatNumber && seat.IsSelected);
     }
 
-    public double GetSeatPrice(string seatNumber, List<SeatModel> seats, FlightModel flight)
+    public double GetSeatPrice(string seatNumber, FlightModel flight)
     {
-        SeatModel seat = seats.Find(i => i.SeatNumber == seatNumber)!;
+        List<SeatModel> flightSeats = GetFlightSeats(flight);
+        SeatModel seat = flightSeats.Find(i => i.SeatNumber == seatNumber)!;
         return seat.PricePerMinute * flight.FlightDuration;
+    }
+
+    public List<FlightModel> GetReturnFlights(FlightModel flight)
+    {
+        List<FlightModel> returnFlights = new List<FlightModel>();
+        foreach (FlightModel f in GetAvailableFlights())
+        {
+            if (f.From == flight.Destination && f.Destination == "Rotterdam")
+            {
+                returnFlights.Add(f);
+            }
+        }
+        return returnFlights;
     }
 }

@@ -1,10 +1,12 @@
 public class ReservationLogic
 {
     private List<ReservationModel> _reservations;
+    public List<ReservationModel> SavedReservations;
 
     public ReservationLogic()
     {
         _reservations = ReservationAccess.LoadAll();
+        SavedReservations = new List<ReservationModel>();
     }
 
     public void UpdateList(ReservationModel reservation)
@@ -23,27 +25,25 @@ public class ReservationLogic
         ReservationAccess.WriteAll(_reservations);
     }
 
+    public void CompleteReservation()
+    {
+        foreach (ReservationModel reservation in SavedReservations)
+        {
+            reservation.Id = GenerateReservationId();
+            UpdateList(reservation);
+        }
+    }
 
-    public ReservationModel CreateReservation(FlightModel flight, List<PassengerModel> passengers, double totalCost)
+    public void SaveReservation(ReservationModel reservation)
     {
         DateTime now = DateTime.Now;
         string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
 
+        reservation.ReservationCode = GenerateReservationCode();
+        reservation.ReservationDate = reservationDate;
 
-        ReservationModel newReservation = new ReservationModel(
-            GenerateReservationId(),
-            GenerateReservationCode(),
-            reservationDate,
-            flight.Id,
-            AccountsLogic.CurrentAccount.Id,
-            totalCost,
-            passengers
-        );
-
-        UpdateList(newReservation);
-        return newReservation;
+        SavedReservations.Add(reservation);
     }
-
 
     private int GenerateReservationId()
     {
@@ -75,6 +75,17 @@ public class ReservationLogic
         }
         return TotalPrice;
     }
+
+    public double GetTotalCost()
+    {
+        double totalCost = 0;
+        foreach (ReservationModel reservation in SavedReservations)
+        {
+            totalCost += reservation.TotalCost;
+        }
+        return totalCost;
+    }
+
     public List<ReservationModel> ListOfReservationMethod()
     {
         int AccountID = AccountsLogic.CurrentAccount.Id;
