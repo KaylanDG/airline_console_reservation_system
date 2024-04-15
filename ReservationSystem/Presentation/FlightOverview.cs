@@ -8,8 +8,7 @@ static class FlightOverview
         ShowOverview();
         FlightOverviewMenu();
     }
-
-    public static void ShowOverview()
+    public static void ShowOverview(List<FlightModel> flights)
     {
         Console.Clear();
 
@@ -18,11 +17,11 @@ static class FlightOverview
         Console.WriteLine(new string('-', 120));
 
         // Show flights if there are any
-        if (_availableFlights.Count > 0)
+        if (flights.Count > 0)
         {
-            for (int i = 0; i < _availableFlights.Count; i++)
+            for (int i = 0; i < flights.Count; i++)
             {
-                FlightModel flight = _availableFlights[i];
+                FlightModel flight = flights[i];
                 Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
@@ -31,6 +30,11 @@ static class FlightOverview
         {
             Console.WriteLine("\nNo flights found!\n");
         }
+    }
+
+    public static void ShowOverview()
+    {
+        ShowOverview(_availableFlights);
     }
 
     public static void FlightOverviewMenu()

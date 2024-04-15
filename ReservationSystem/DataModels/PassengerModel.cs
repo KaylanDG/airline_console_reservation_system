@@ -11,10 +11,12 @@ public class PassengerModel
     [JsonPropertyName("seat_number")]
     public string SeatNumber { get; set; }
 
-    public PassengerModel(int passengerID, string fullName, string seatNumber)
+    [JsonPropertyName("additional_services")]
+    public List<ServiceModel> AdditionalServices { get; set; }
+
+    public PassengerModel(int passengerID)
     {
         PassengerID = passengerID;
-        FullName = fullName;
-        SeatNumber = seatNumber;
+        AdditionalServices = new List<ServiceModel>();
     }
 }
