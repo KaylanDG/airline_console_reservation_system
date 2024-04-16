@@ -101,4 +101,26 @@ public class ReservationLogic
         return ReturnReservation;
     }
 
+    // Load alle reservaties
+    // loop je door die reservaties
+    // x.ResvCode == para && x.UserID == AccountLogic.CurrentAccount.Id
+    // Lijst mer reservaties.remove(x) && break loop
+    // ReservationAccess.WriteAll(---);
+
+    public static bool RemoveReservation(string ReservationCode)
+    {
+        List<ReservationModel> _reservations = ReservationAccess.LoadAll();
+        bool removed = false;
+        foreach (ReservationModel x in _reservations)
+        {
+            if (x.ReservationCode == ReservationCode && x.UserId == AccountsLogic.CurrentAccount.Id)
+            {
+                _reservations.Remove(x);
+                removed = true;
+                break;
+            }
+        }
+        ReservationAccess.WriteAll(_reservations);
+        return removed;
+    }
 }
