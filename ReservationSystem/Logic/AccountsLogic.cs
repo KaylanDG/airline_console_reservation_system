@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 
 //This class is not static so later on we can use inheritance and interfaces
-class AccountsLogic
+public class AccountsLogic
 {
     private List<AccountModel> _accounts;
 
@@ -54,56 +55,6 @@ class AccountsLogic
         return CurrentAccount;
     }
 
-    public bool ValidEmail(string email)
-    {
-        if (email.Contains("@") && email.Contains(".") && email != null)
-        {
-            return true;
-        }
-        else
-        {
-            // 
-            return false;
-        }
-    }
-
-    public bool ValidPassword(string password)
-    {
-        if (password.Length > 7)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool ValidPhone(string phone)
-    {
-        if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-
-        }
-    }
-
-    public bool ValidInput(string input)
-    {
-        if (input != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public AccountModel CreateAccount(string email, string password, string FullName, string Phone, string DateOfBirth, bool Invalid, string role = "user")
     {
         int id_var = 0;
@@ -132,6 +83,55 @@ class AccountsLogic
     public static void Logout()
     {
         CurrentAccount = null;
+    }
+
+    public static bool ValidEmail(string email)
+    {
+        if (email.Contains("@") && email.Contains(".") && email != null && !email.Contains(" "))
+        {
+            return true;
+        }
+        else
+        {
+            // 
+            return false;
+        }
+    }
+
+    public static bool ValidPassword(string password)
+    {
+        if (password.Length > 7)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static bool ValidPhone(string phone)
+    {
+        if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+
+        }
+    }
+
+    public static bool ValidName(string name)
+    {
+        Regex nameRegex = new Regex(@"^[A-Za-z ]+$");
+
+        if (name.Length <= 50 && nameRegex.IsMatch(name))
+        {
+            return true;
+        }
+        return false;
     }
 }
 

@@ -22,7 +22,7 @@ public class CreateAccount
             Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
 
-            if (!accountsLogic.ValidEmail(email))
+            if (!AccountsLogic.ValidEmail(email))
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -34,7 +34,7 @@ public class CreateAccount
             Console.WriteLine("\nPlease enter your password");
             string password = Console.ReadLine();
 
-            if (!accountsLogic.ValidPassword(password))
+            if (!AccountsLogic.ValidPassword(password))
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -46,7 +46,7 @@ public class CreateAccount
             Console.WriteLine("\nPlease enter your phone number");
             string phone = Console.ReadLine();
 
-            if (!accountsLogic.ValidPhone(phone))
+            if (!AccountsLogic.ValidPhone(phone))
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.Black;
