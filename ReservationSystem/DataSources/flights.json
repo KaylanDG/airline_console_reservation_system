@@ -7,13 +7,7 @@
     "departure_time": "12-06-2024 12:35 PM",
     "flight_duration": 55,
     "arrival_time": "12-06-2024 13:30 PM",
-    "plane": {
-      "id": 1,
-      "airline": "Rotterdam Airlines",
-      "name": "Boeing 737",
-      "economy_seats": 192,
-      "first_class_seats": 0
-    }
+    "plane": 1
   },
   {
     "id": 2,
@@ -23,13 +17,7 @@
     "departure_time": "15-06-2024 10:45 AM",
     "flight_duration": 80,
     "arrival_time": "15-06-2024 12:05 PM",
-    "plane": {
-      "id": 2,
-      "airline": "Rotterdam Airlines",
-      "name": "Boeing 787",
-      "economy_seats": 180,
-      "first_class_seats": 54
-    }
+    "plane": 2
   },
   {
     "id": 3,
@@ -39,13 +27,7 @@
     "departure_time": "20-06-2024 14:20 PM",
     "flight_duration": 95,
     "arrival_time": "20-06-2024 15:55 PM",
-    "plane": {
-      "id": 3,
-      "airline": "Rotterdam Airlines",
-      "name": "Airbus 330",
-      "economy_seats": 243,
-      "first_class_seats": 36
-    }
+    "plane": 3
   },
   {
     "id": 4,
@@ -55,12 +37,206 @@
     "departure_time": "18-05-2024 10:00 AM",
     "flight_duration": 55,
     "arrival_time": "18-05-2024 10:55 AM",
-    "plane": {
-      "id": 1,
-      "airline": "Rotterdam Airlines",
-      "name": "Boeing 737",
-      "economy_seats": 192,
-      "first_class_seats": 0
-    }
+    "plane": 1
+  },
+  {
+    "id": 5,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "16-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "16-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 6,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "17-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "17-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 7,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "18-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "18-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 8,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "19-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "19-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 9,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "20-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "20-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 10,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "21-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "21-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 11,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "22-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "22-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 12,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "23-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "23-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 13,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "24-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "24-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 14,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "25-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "25-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 15,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "26-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "26-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 16,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "27-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "27-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 17,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "28-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "28-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 18,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "29-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "29-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 19,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "30-06-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "30-06-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 20,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "01-07-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "01-07-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 21,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "02-07-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "02-07-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 22,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "03-07-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "03-07-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 23,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "04-07-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "04-07-2024 12:05 PM",
+    "plane": 2
+  },
+  {
+    "id": 24,
+    "flight_numer": "AB5678",
+    "from": "Rotterdam",
+    "destination": "Paris",
+    "departure_time": "05-07-2024 10:45 AM",
+    "flight_duration": 80,
+    "arrival_time": "05-07-2024 12:05 PM",
+    "plane": 2
   }
 ]

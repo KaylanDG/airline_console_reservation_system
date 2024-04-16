@@ -22,7 +22,7 @@ static class FlightOverview
             for (int i = 0; i < flights.Count; i++)
             {
                 FlightModel flight = flights[i];
-                Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, flight.Plane.Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
+                Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, _flightLogic.GetPlaneByID(flight.Plane).Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
             }
         }

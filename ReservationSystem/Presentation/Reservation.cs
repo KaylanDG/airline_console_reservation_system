@@ -126,8 +126,7 @@ public static class Reservation
         {
             Console.WriteLine("\nEnter seat number (example: A-01):");
             seatNumber = Console.ReadLine().ToUpper();
-
-            if (!_flight.Plane.DoesSeatExist(seatNumber))
+            if (!_flightLogic.GetPlaneByID(_flight.Plane).DoesSeatExist(seatNumber))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nThe seat number you entered does not exist.\n");
@@ -160,7 +159,7 @@ public static class Reservation
 
     public static void SeatOverview()
     {
-        int seatsPerRow = (_flight.Plane.Name == "Boeing 737") ? 6 : 9;
+        int seatsPerRow = (_flightLogic.GetPlaneByID(_flight.Plane).Name == "Boeing 737") ? 6 : 9;
         int seatRows = _flightSeats.Count / seatsPerRow;
         int seatIndex = 0;
 
