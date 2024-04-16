@@ -97,7 +97,7 @@ public class FlightLogic
                 currentDepartureTime.ToString("dd-MM-yyyy HH:mm tt"),
                 flight_duration,
                 currentArrivalTime.ToString("dd-MM-yyyy HH:mm tt"),
-                GetPlaneByID(planeId)
+                planeId
             );
 
             createdFlights.Add(newFlight);
@@ -117,7 +117,7 @@ public class FlightLogic
             departure_time,
             flight_duration,
             arrival_time,
-            GetPlaneByID(id)
+            id
         );
 
         UpdateList(newFlight);
@@ -183,7 +183,8 @@ public class FlightLogic
 
     public List<SeatModel> GetFlightSeats(FlightModel flight)
     {
-        List<SeatModel> flightSeats = flight.Plane.GetPlaneSeats();
+        PlaneModel plane = GetPlaneByID(flight.Plane);
+        List<SeatModel> flightSeats = plane.GetPlaneSeats();
         List<ReservationModel> flightReservations = GetFlightReservations(flight);
 
         foreach (SeatModel seat in flightSeats)
