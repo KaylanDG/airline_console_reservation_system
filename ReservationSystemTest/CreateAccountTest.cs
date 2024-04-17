@@ -3,9 +3,20 @@ namespace ReservationSystemTest;
 [TestClass]
 public class CreateAccountTest
 {
+    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"../../../../ReservationSystem/DataSources/accounts.json"));
+
+    [TestInitialize]
+    public void SetPath()
+    {
+        AccountsAccess.path = path;
+    }
+
+
     [TestMethod]
     public void TestValidName()
     {
+        AccountsLogic logic = new AccountsLogic();
+
         List<string> names = new List<string>()
         {
             "Damian van Dams", // valid
@@ -29,7 +40,7 @@ public class CreateAccountTest
 
         for (int i = 0; i < names.Count; i++)
         {
-            bool isValid = AccountsLogic.ValidName(names[i]);
+            bool isValid = logic.ValidName(names[i]);
             Assert.AreEqual(isValid, outcomes[i]);
         }
 
@@ -38,6 +49,9 @@ public class CreateAccountTest
     [TestMethod]
     public void TestValidEmail()
     {
+
+        AccountsLogic logic = new AccountsLogic();
+
         List<string> emails = new List<string>()
         {
             "test@gmail.com", // valid
@@ -58,7 +72,7 @@ public class CreateAccountTest
 
         for (int i = 0; i < emails.Count; i++)
         {
-            bool isValid = AccountsLogic.ValidEmail(emails[i]);
+            bool isValid = logic.ValidEmail(emails[i]);
             Assert.AreEqual(isValid, outcomes[i]);
         }
     }
@@ -66,6 +80,8 @@ public class CreateAccountTest
     [TestMethod]
     public void TestValidPhone()
     {
+        AccountsLogic logic = new AccountsLogic();
+
         List<string> numbers = new List<string>()
         {
             "0612345678", // valid
@@ -90,7 +106,7 @@ public class CreateAccountTest
 
         for (int i = 0; i < numbers.Count; i++)
         {
-            bool isValid = AccountsLogic.ValidPhone(numbers[i]);
+            bool isValid = logic.ValidPhone(numbers[i]);
             Assert.AreEqual(isValid, outcomes[i]);
         }
     }
@@ -98,6 +114,8 @@ public class CreateAccountTest
     [TestMethod]
     public void TestValidPassword()
     {
+        AccountsLogic logic = new AccountsLogic();
+
         List<string> passwords = new List<string>()
         {
             "testtest123", // valid
@@ -116,7 +134,7 @@ public class CreateAccountTest
 
         for (int i = 0; i < passwords.Count; i++)
         {
-            bool isValid = AccountsLogic.ValidPassword(passwords[i]);
+            bool isValid = logic.ValidPassword(passwords[i]);
             Assert.AreEqual(isValid, outcomes[i]);
         }
     }
