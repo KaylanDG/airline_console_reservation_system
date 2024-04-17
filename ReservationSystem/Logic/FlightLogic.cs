@@ -154,9 +154,6 @@ public class FlightLogic
 
     private int GenerateFlightId()
     {
-        // Create an instance of ReservationAccess
-        var flightAccess = new FlightsAccess();
-
         // Load existing reservations from the JSON file
         var flights = FlightsAccess.LoadAllFlights();
 

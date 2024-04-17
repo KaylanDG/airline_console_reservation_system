@@ -1,8 +1,8 @@
 using System.Text.Json;
 
-public class PlaneAccess
+public static class PlaneAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/planes.json"));
+    public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/planes.json"));
 
     public static List<PlaneModel> LoadAllPlanes()
     {

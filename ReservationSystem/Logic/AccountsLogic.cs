@@ -85,7 +85,7 @@ public class AccountsLogic
         CurrentAccount = null;
     }
 
-    public static bool ValidEmail(string email)
+    public bool ValidEmail(string email)
     {
         if (email.Contains("@") && email.Contains(".") && email != null && !email.Contains(" "))
         {
@@ -98,7 +98,7 @@ public class AccountsLogic
         }
     }
 
-    public static bool ValidPassword(string password)
+    public bool ValidPassword(string password)
     {
         if (password.Length > 7)
         {
@@ -110,7 +110,7 @@ public class AccountsLogic
         }
     }
 
-    public static bool ValidPhone(string phone)
+    public bool ValidPhone(string phone)
     {
         if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
         {
@@ -123,7 +123,7 @@ public class AccountsLogic
         }
     }
 
-    public static bool ValidName(string name)
+    public bool ValidName(string name)
     {
         Regex nameRegex = new Regex(@"^[A-Za-z ]+$");
 
