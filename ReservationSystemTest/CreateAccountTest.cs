@@ -63,6 +63,7 @@ public class CreateAccountTest
         }
     }
 
+    [TestMethod]
     public void TestValidPhone()
     {
         List<string> numbers = new List<string>()
@@ -73,6 +74,50 @@ public class CreateAccountTest
             "+061234567", //invalid
             "06123456789", //invalid
             "0 612345678", //invalid
+            "061234567A", //invalid
         };
+
+        List<bool> outcomes = new List<bool>()
+        {
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        };
+
+        for (int i = 0; i < numbers.Count; i++)
+        {
+            bool isValid = AccountsLogic.ValidPhone(numbers[i]);
+            Assert.AreEqual(isValid, outcomes[i]);
+        }
+    }
+
+    [TestMethod]
+    public void TestValidPassword()
+    {
+        List<string> passwords = new List<string>()
+        {
+            "testtest123", // valid
+            "abc", //invalid
+            "abcdfeg", //invalid
+            "abcdfegh", //valid
+        };
+
+        List<bool> outcomes = new List<bool>()
+        {
+            true,
+            false,
+            false,
+            true,
+        };
+
+        for (int i = 0; i < passwords.Count; i++)
+        {
+            bool isValid = AccountsLogic.ValidPassword(passwords[i]);
+            Assert.AreEqual(isValid, outcomes[i]);
+        }
     }
 }
