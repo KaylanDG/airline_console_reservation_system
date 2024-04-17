@@ -1,3 +1,5 @@
+using System.Globalization;
+
 public class FlightLogic
 {
     private List<FlightModel> _flights;
@@ -72,7 +74,39 @@ public class FlightLogic
         return null;
     }
 
+    public List<FlightModel> CreateMultipleFlights(int howmany, string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int planeId)
+    {
+        List<FlightModel> createdFlights = new List<FlightModel>();
 
+        // Parse the initial departure time
+        DateTime initialDepartureTime = DateTime.ParseExact(departure_time, "dd-MM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+
+        // Iterate to create multiple flights
+        for (int i = 0; i < howmany; i++)
+        {
+            DateTime currentDepartureTime = initialDepartureTime.AddDays(i);
+
+            DateTime currentArrivalTime = currentDepartureTime.AddMinutes(flight_duration);
+
+            // Create the flight
+            FlightModel newFlight = new FlightModel(
+                GenerateFlightId(),
+                flightnumber,
+                from,
+                destination,
+                currentDepartureTime.ToString("dd-MM-yyyy HH:mm tt"),
+                flight_duration,
+                currentArrivalTime.ToString("dd-MM-yyyy HH:mm tt"),
+                planeId
+            );
+
+            createdFlights.Add(newFlight);
+
+            UpdateList(newFlight);
+        }
+
+        return createdFlights;
+    }
     public FlightModel CreateFlight(string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int id)
     {
         FlightModel newFlight = new FlightModel(
@@ -83,7 +117,7 @@ public class FlightLogic
             departure_time,
             flight_duration,
             arrival_time,
-            GetPlaneByID(id)
+            id
         );
 
         UpdateList(newFlight);
@@ -149,7 +183,8 @@ public class FlightLogic
 
     public List<SeatModel> GetFlightSeats(FlightModel flight)
     {
-        List<SeatModel> flightSeats = flight.Plane.GetPlaneSeats();
+        PlaneModel plane = GetPlaneByID(flight.Plane);
+        List<SeatModel> flightSeats = plane.GetPlaneSeats();
         List<ReservationModel> flightReservations = GetFlightReservations(flight);
 
         foreach (SeatModel seat in flightSeats)

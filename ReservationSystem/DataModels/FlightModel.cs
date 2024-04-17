@@ -23,9 +23,9 @@ public class FlightModel
     public string ArrivalTime { get; set; }
 
     [JsonPropertyName("plane")]
-    public PlaneModel Plane { get; set; }
+    public int Plane { get; set; }
 
-    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, int flightDuration, string arrivalTime, PlaneModel plane)
+    public FlightModel(int id, string flightNumber, string from, string destination, string departureTime, int flightDuration, string arrivalTime, int plane)
     {
         Id = id;
         FlightNumber = flightNumber;
