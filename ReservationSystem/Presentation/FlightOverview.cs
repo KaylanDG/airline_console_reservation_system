@@ -1,10 +1,11 @@
 static class FlightOverview
 {
     static private FlightLogic _flightLogic = new FlightLogic();
-    static private List<FlightModel> _availableFlights = _flightLogic.GetAvailableFlights();
+    static private List<FlightModel> _availableFlights;
 
     public static void Start()
     {
+        _availableFlights = _flightLogic.GetAvailableFlights();
         ShowOverview();
         FlightOverviewMenu();
     }
@@ -52,9 +53,6 @@ static class FlightOverview
 
         if (choice == "g")
         {
-            // If user goes back to main menu set the value of _availableFlights back to all available flights
-            // So that is doesnt show the search results if the user goes back to the flight overview
-            _availableFlights = _flightLogic.GetAvailableFlights();
             Menu.Start();
         }
         else if (choice == "s")
@@ -64,8 +62,8 @@ static class FlightOverview
 
             // Set _availableFlights value to the returned list of flights for destination
             _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
-            // Start the overview again so that it shows the search results
-            Start();
+            ShowOverview();
+            FlightOverviewMenu();
         }
         else if (choice == "r" && AccountsLogic.CurrentAccount != null)
         {
@@ -74,7 +72,6 @@ static class FlightOverview
         }
         else
         {
-            _availableFlights = _flightLogic.GetAvailableFlights();
             Console.WriteLine("\nInvalid choice. Please try again.\n");
         }
     }

@@ -37,7 +37,7 @@ public class ReservationLogic
     public void SaveReservation(ReservationModel reservation)
     {
         DateTime now = DateTime.Now;
-        string reservationDate = now.ToString("dd-MM-yyyy HH:mm tt");
+        string reservationDate = now.ToString("dd-MM-yyyy HH:mm");
 
         reservation.ReservationCode = GenerateReservationCode();
         reservation.ReservationDate = reservationDate;
