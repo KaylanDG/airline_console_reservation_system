@@ -313,8 +313,9 @@ public static class Reservation
         }
         else
         {
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("There are no return flights for this destination.");
+            Console.WriteLine("\nThere are no return flights for this destination.\n");
             Console.ResetColor();
         }
     }
@@ -325,7 +326,6 @@ public static class Reservation
 
         while (true)
         {
-            Console.Clear();
             if (_reservationLogic.SavedReservations.Count < 2)
             {
                 Console.WriteLine("R | Book return flight");

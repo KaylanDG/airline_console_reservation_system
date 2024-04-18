@@ -35,7 +35,7 @@ static class FlightOverview
 
     public static void ShowOverview()
     {
-        ShowOverview(_availableFlights);
+        ShowOverview(_flightLogic.GetAvailableFlights());
     }
 
     public static void FlightOverviewMenu()
