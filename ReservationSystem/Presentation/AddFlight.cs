@@ -60,6 +60,12 @@ public static class AddFlight
                 Console.WriteLine("Invalid input. Please enter a valid plane ID:");
             }
 
+            if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId))
+            {
+                return; // Exit the method
+            }
+
+
             // Create the flight using FlightLogic
             FlightModel newFlight = _flightLogic.CreateFlight(
                 flightNumber,
@@ -134,6 +140,11 @@ public static class AddFlight
             while (!int.TryParse(Console.ReadLine(), out planeId))
             {
                 Console.WriteLine("Invalid input. Please enter a valid plane ID:");
+            }
+
+            if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId, howmany))
+            {
+                return; // Exit the method
             }
 
             // Create multiple flights using FlightLogic

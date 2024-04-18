@@ -123,6 +123,17 @@ public class FlightLogic
         UpdateList(newFlight);
         return newFlight;
     }
+
+    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID, int flightAmount)
+    {
+        return true;
+    }
+
+    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID)
+    {
+        return IsPlaneAvailable(departure, arrival, planeID, 1);
+    }
+
     public bool DoesFlightExist(int flightID)
     {
         // Check if given flight number is in the list of available flights
