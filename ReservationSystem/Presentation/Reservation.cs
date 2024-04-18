@@ -100,6 +100,12 @@ public static class Reservation
                     Console.WriteLine("\nThe amount of passengers has to be at least 1.\n");
                     Console.ResetColor();
                 }
+                else if (passengerAmount > _flightLogic.GetPlaneByID(_flight.Id).EconomySeats + _flightLogic.GetPlaneByID(_flight.Id).FirstClassSeats)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe amount of passengers has exceeded the maximum amount.\n");
+                    Console.ResetColor();
+                }
                 else
                 {
                     validInput = true;
