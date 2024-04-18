@@ -23,9 +23,9 @@ public static class AddFlight
             Console.WriteLine("Enter a destination:");
             string destination = Console.ReadLine();
 
-            Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm tt):");
+            Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
             string departureTimeStr = Console.ReadLine();
-            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 
             Console.WriteLine("Enter flight duration in minutes:");
             string flightDurationStr = Console.ReadLine();
@@ -60,14 +60,21 @@ public static class AddFlight
                 Console.WriteLine("Invalid input. Please enter a valid plane ID:");
             }
 
+            if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId))
+            {
+                Console.WriteLine("This plane is not available.");
+                Menu.Start();
+            }
+
+
             // Create the flight using FlightLogic
             FlightModel newFlight = _flightLogic.CreateFlight(
                 flightNumber,
                 from,
                 destination,
-                departureTime.ToString("dd-MM-yyyy HH:mm tt"),
+                departureTime.ToString("dd-MM-yyyy HH:mm"),
                 flightDuration,
-                arrivalTime.ToString("dd-MM-yyyy HH:mm tt"),
+                arrivalTime.ToString("dd-MM-yyyy HH:mm"),
                 planeId
             );
 
@@ -99,9 +106,9 @@ public static class AddFlight
             Console.WriteLine("Enter a destination:");
             string destination = Console.ReadLine();
 
-            Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm tt):");
+            Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
             string departureTimeStr = Console.ReadLine();
-            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 
             Console.WriteLine("Enter flight duration in minutes:");
             string flightDurationStr = Console.ReadLine();
@@ -136,15 +143,21 @@ public static class AddFlight
                 Console.WriteLine("Invalid input. Please enter a valid plane ID:");
             }
 
+            if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId, howmany))
+            {
+                Console.WriteLine("This plane is not available.");
+                Menu.Start();
+            }
+
             // Create multiple flights using FlightLogic
             _flightLogic.CreateMultipleFlights(
                 howmany,
                 flightNumber,
                 from,
                 destination,
-                departureTime.ToString("dd-MM-yyyy HH:mm tt"),
+                departureTime.ToString("dd-MM-yyyy HH:mm"),
                 flightDuration,
-                arrivalTime.ToString("dd-MM-yyyy HH:mm tt"),
+                arrivalTime.ToString("dd-MM-yyyy HH:mm"),
                 planeId
             );
 
