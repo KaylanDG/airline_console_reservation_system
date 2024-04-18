@@ -93,6 +93,7 @@ public static class Reservation
             Console.WriteLine("\nEnter the amount of passengers:");
             try
             {
+                PlaneModel plane = _flightLogic.GetPlaneByID(_flight.Plane);
                 passengerAmount = Convert.ToInt32(Console.ReadLine());
                 if (passengerAmount < 0)
                 {
@@ -100,7 +101,7 @@ public static class Reservation
                     Console.WriteLine("\nThe amount of passengers has to be at least 1.\n");
                     Console.ResetColor();
                 }
-                else if (passengerAmount > _flightLogic.GetPlaneByID(_flight.Id).EconomySeats + _flightLogic.GetPlaneByID(_flight.Id).FirstClassSeats)
+                else if (passengerAmount > plane.EconomySeats + plane.FirstClassSeats)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nThe amount of passengers has exceeded the maximum amount.\n");
