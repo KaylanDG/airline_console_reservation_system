@@ -63,7 +63,7 @@ public static class AddFlight
             if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId))
             {
                 Console.WriteLine("This plane is not available.");
-                Menu.Start();
+                MainMenu.Start();
             }
 
 
@@ -146,7 +146,7 @@ public static class AddFlight
             if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId, howmany))
             {
                 Console.WriteLine("This plane is not available.");
-                Menu.Start();
+                MainMenu.Start();
             }
 
             // Create multiple flights using FlightLogic
@@ -168,6 +168,6 @@ public static class AddFlight
             Console.WriteLine("invalid input");
         }
 
-        Menu.Start();
+        MainMenu.Start();
     }
 }

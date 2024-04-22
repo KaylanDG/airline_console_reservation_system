@@ -1,19 +1,59 @@
 static class FlightOverview
 {
     static private FlightLogic _flightLogic = new FlightLogic();
-    static private List<FlightModel> _availableFlights;
+    static private int _selectedOption = 0;
+    static private List<string> _options;
+    static public List<FlightModel> _flights = _flightLogic.GetAvailableFlights();
 
     public static void Start()
     {
-        _availableFlights = _flightLogic.GetAvailableFlights();
-        ShowOverview();
-        FlightOverviewMenu();
+        _options = new List<string>() { "Go back", "Search for flights" };
+        if (AccountsLogic.CurrentAccount != null) _options.Add("Make reservation");
+
+        ConsoleKey pressedKey = default;
+        while (pressedKey != ConsoleKey.Enter)
+        {
+            Console.Clear();
+            ShowOverview();
+            DisplayMenu();
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            pressedKey = keyInfo.Key;
+
+            if (pressedKey == ConsoleKey.UpArrow)
+            {
+                _selectedOption--;
+                if (_selectedOption == -1) _selectedOption = _options.Count - 1;
+            }
+            else if (pressedKey == ConsoleKey.DownArrow)
+            {
+                _selectedOption++;
+                if (_selectedOption == _options.Count) _selectedOption = 0;
+            }
+        }
+
+        if (_selectedOption == 0)
+        {
+            _flights = _flightLogic.GetAvailableFlights();
+            MainMenu.Start();
+            return;
+        }
+        else if (_selectedOption == 1)
+        {
+            SearchForFlight();
+        }
+        else if (_selectedOption == 2)
+        {
+            Reservation.Start();
+        }
     }
-    public static void ShowOverview(List<FlightModel> flights)
+
+    public static void ShowOverview(List<FlightModel> flights = null, int selectedFlight = -1)
     {
-        Console.Clear();
+        if (flights == null) flights = _flights;
 
         // top part of overview
+        Console.WriteLine();
         Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
         Console.WriteLine(new string('-', 120));
 
@@ -23,8 +63,16 @@ static class FlightOverview
             for (int i = 0; i < flights.Count; i++)
             {
                 FlightModel flight = flights[i];
+
+                if (selectedFlight == i)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+
                 Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, _flightLogic.GetPlaneByID(flight.Plane).Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
 
+                Console.ResetColor();
             }
         }
         else
@@ -33,46 +81,60 @@ static class FlightOverview
         }
     }
 
-    public static void ShowOverview()
+    private static void DisplayMenu()
     {
-        ShowOverview(_flightLogic.GetAvailableFlights());
+        Console.WriteLine("\nChoose an option from the menu:\n");
+
+        for (int i = 0; i < _options.Count; i++)
+        {
+            string prefix = " ";
+            if (i == _selectedOption)
+            {
+                prefix = ">";
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+
+            Console.WriteLine($"{prefix} {_options[i]}");
+            Console.ResetColor();
+        }
     }
 
-    public static void FlightOverviewMenu()
+    private static void SearchForFlight()
     {
-        Console.WriteLine("\nChoose one of the menu options:");
-        Console.WriteLine(new string('-', 20));
-        Console.WriteLine("G | Go back");
-        Console.WriteLine("S | Search for flights");
-        if (AccountsLogic.CurrentAccount != null)
+        Console.Clear();
+        Console.WriteLine("\nEnter a destination (e.g. London):");
+        string destination = Console.ReadLine();
+        _flights = _flightLogic.GetAvailableFlightsForDestination(destination);
+        Start();
+        return;
+    }
+
+    public static int SelectFlight()
+    {
+        ConsoleKey pressedKey = default;
+        int selectedFlight = 0;
+        while (pressedKey != ConsoleKey.Enter)
         {
-            Console.WriteLine("R | Make reservation");
+            Console.Clear();
+            ShowOverview(null, selectedFlight);
+            Console.WriteLine("\nSelect a flight.\nUse the arrow keys to navigate, press enter to select a flight.");
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            pressedKey = keyInfo.Key;
+
+            if (pressedKey == ConsoleKey.UpArrow)
+            {
+                selectedFlight--;
+                if (selectedFlight == -1) selectedFlight = _flights.Count - 1;
+            }
+            else if (pressedKey == ConsoleKey.DownArrow)
+            {
+                selectedFlight++;
+                if (selectedFlight == _flights.Count) selectedFlight = 0;
+            }
         }
 
-        string choice = Console.ReadLine().ToLower();
-
-        if (choice == "g")
-        {
-            Menu.Start();
-        }
-        else if (choice == "s")
-        {
-            Console.Write("Enter destination: ");
-            string destination = Console.ReadLine();
-
-            // Set _availableFlights value to the returned list of flights for destination
-            _availableFlights = _flightLogic.GetAvailableFlightsForDestination(destination);
-            ShowOverview();
-            FlightOverviewMenu();
-        }
-        else if (choice == "r" && AccountsLogic.CurrentAccount != null)
-        {
-            // Start reservation menu
-            Reservation.Start();
-        }
-        else
-        {
-            Console.WriteLine("\nInvalid choice. Please try again.\n");
-        }
+        return _flights[selectedFlight].Id;
     }
 }

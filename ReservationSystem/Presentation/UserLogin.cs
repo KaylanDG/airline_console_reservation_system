@@ -41,6 +41,6 @@ static class UserLogin
             Console.ResetColor();
         }
 
-        Menu.Start();
+        MainMenu.Start();
     }
 }

@@ -10,35 +10,14 @@ public static class Reservation
     {
         _flightLogic = new FlightLogic();
         _reservationLogic = new ReservationLogic();
-        SelectFlight();
+
+        int flightID = FlightOverview.SelectFlight();
+        _flight = _flightLogic.GetById(flightID);
+        _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
         ReservationProcess();
         ReservationMenu();
-        Menu.Start();
-    }
-
-    public static void SelectFlight()
-    {
-        try
-        {
-            Console.Write("\nEnter the index number of the flight you wish to book: ");
-            int flightID = Convert.ToInt32(Console.ReadLine());
-
-            if (!_flightLogic.DoesFlightExist(flightID))
-            {
-                Console.WriteLine("\nThis flight does not exist!\n");
-                Menu.Start();
-            }
-            else
-            {
-                _flight = _flightLogic.GetById(flightID);
-                _flightSeats = _flightLogic.GetFlightSeats(_flight);
-            }
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("\nInvalid input!\n");
-            Menu.Start();
-        }
+        MainMenu.Start();
     }
 
     public static void ReservationProcess()
@@ -300,7 +279,7 @@ public static class Reservation
             Console.ResetColor();
         }
 
-        Menu.Start();
+        MainMenu.Start();
     }
 
     public static void ReturnFlight()
@@ -309,7 +288,7 @@ public static class Reservation
         if (returnFlights.Count > 0)
         {
             FlightOverview.ShowOverview(returnFlights);
-            SelectFlight();
+
             ReservationProcess();
         }
         else
