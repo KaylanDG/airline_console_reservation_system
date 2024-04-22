@@ -51,9 +51,47 @@ public static class ListOfReservations
             // End of block
             Console.WriteLine($"└{top}┘");
         }
-        if (ListReserv == null)
+
+        if (ListReserv.Count == 0)
         {
             Console.WriteLine("You have no reservations.");
+        }
+        else
+        {
+            Console.WriteLine("C | Cancel reservation");
+            Console.WriteLine("B | Back to menu");
+            string choice = Console.ReadLine().ToLower();
+
+            while (choice != "c" && choice != "b")
+            {
+                Console.WriteLine("C | Cancel reservation");
+                Console.WriteLine("B | Back to menu");
+                choice = Console.ReadLine().ToLower();
+            }
+
+            if (choice == "c")
+            {
+                Console.WriteLine("Which reservation number to you want to cancel: ");
+                string ResCancel = Console.ReadLine();
+                bool CancBool = ReservationLogic.RemoveReservation(ResCancel);
+                if (CancBool == false)
+                {
+                    // No reservation code gevonden.
+                    // Loop door totdat een code is gevonden met die reservatie code
+                    // (Geen cancel knop in deze functie)
+
+                    while (CancBool == false)
+                    {
+                        Console.WriteLine("\nThat's no reservation code.");
+                        Console.WriteLine("Can you give a valid reservation code");
+                        Console.WriteLine("Reservation code: ");
+                        ResCancel = Console.ReadLine();
+                        CancBool = ReservationLogic.RemoveReservation(ResCancel);
+                    }
+                }
+                Console.WriteLine($"Reservation with reservation code {ResCancel}");
+                Console.WriteLine("Succesfully cancelled.");
+            }
         }
     }
 }

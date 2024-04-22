@@ -93,11 +93,18 @@ public static class Reservation
             Console.WriteLine("\nEnter the amount of passengers:");
             try
             {
+                PlaneModel plane = _flightLogic.GetPlaneByID(_flight.Plane);
                 passengerAmount = Convert.ToInt32(Console.ReadLine());
                 if (passengerAmount < 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nThe amount of passengers has to be at least 1.\n");
+                    Console.ResetColor();
+                }
+                else if (passengerAmount > plane.EconomySeats + plane.FirstClassSeats)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe amount of passengers has exceeded the maximum amount.\n");
                     Console.ResetColor();
                 }
                 else
@@ -126,8 +133,7 @@ public static class Reservation
         {
             Console.WriteLine("\nEnter seat number (example: A-01):");
             seatNumber = Console.ReadLine().ToUpper();
-
-            if (!_flight.Plane.DoesSeatExist(seatNumber))
+            if (!_flightLogic.GetPlaneByID(_flight.Plane).DoesSeatExist(seatNumber))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nThe seat number you entered does not exist.\n");
@@ -160,7 +166,7 @@ public static class Reservation
 
     public static void SeatOverview()
     {
-        int seatsPerRow = (_flight.Plane.Name == "Boeing 737") ? 6 : 9;
+        int seatsPerRow = (_flightLogic.GetPlaneByID(_flight.Plane).Name == "Boeing 737") ? 6 : 9;
         int seatRows = _flightSeats.Count / seatsPerRow;
         int seatIndex = 0;
 
@@ -308,8 +314,9 @@ public static class Reservation
         }
         else
         {
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("There are no return flights for this destination.");
+            Console.WriteLine("\nThere are no return flights for this destination.\n");
             Console.ResetColor();
         }
     }
@@ -320,7 +327,6 @@ public static class Reservation
 
         while (true)
         {
-            Console.Clear();
             if (_reservationLogic.SavedReservations.Count < 2)
             {
                 Console.WriteLine("R | Book return flight");

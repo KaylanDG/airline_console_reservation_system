@@ -1,8 +1,8 @@
 using System.Text.Json;
 
-static class AccountsAccess
+public static class AccountsAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/accounts.json"));
+    public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/accounts.json"));
 
 
     public static List<AccountModel> LoadAll()

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 public class FlightLogic
 {
     private List<FlightModel> _flights;
@@ -20,10 +22,10 @@ public class FlightLogic
 
         // For each flight check if the departure date hasn't passed.
         // if not add the flight to availableFlights.
-        foreach (FlightModel flight in _flights)
+        foreach (FlightModel flight in FlightsAccess.LoadAllFlights())
         {
             string departureDateTimeString = flight.DepartureTime;
-            string format = "dd-MM-yyyy HH:mm tt";
+            string format = "dd-MM-yyyy HH:mm";
 
             DateTime departureDateTime = DateTime.ParseExact(departureDateTimeString, format, System.Globalization.CultureInfo.InvariantCulture);
             DateTime today = DateTime.Now;
@@ -72,7 +74,39 @@ public class FlightLogic
         return null;
     }
 
+    public List<FlightModel> CreateMultipleFlights(int howmany, string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int planeId)
+    {
+        List<FlightModel> createdFlights = new List<FlightModel>();
 
+        // Parse the initial departure time
+        DateTime initialDepartureTime = DateTime.ParseExact(departure_time, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+
+        // Iterate to create multiple flights
+        for (int i = 0; i < howmany; i++)
+        {
+            DateTime currentDepartureTime = initialDepartureTime.AddDays(i);
+
+            DateTime currentArrivalTime = currentDepartureTime.AddMinutes(flight_duration);
+
+            // Create the flight
+            FlightModel newFlight = new FlightModel(
+                GenerateFlightId(),
+                flightnumber,
+                from,
+                destination,
+                currentDepartureTime.ToString("dd-MM-yyyy HH:mm"),
+                flight_duration,
+                currentArrivalTime.ToString("dd-MM-yyyy HH:mm"),
+                planeId
+            );
+
+            createdFlights.Add(newFlight);
+
+            UpdateList(newFlight);
+        }
+
+        return createdFlights;
+    }
     public FlightModel CreateFlight(string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int id)
     {
         FlightModel newFlight = new FlightModel(
@@ -83,12 +117,50 @@ public class FlightLogic
             departure_time,
             flight_duration,
             arrival_time,
-            GetPlaneByID(id)
+            id
         );
 
         UpdateList(newFlight);
         return newFlight;
     }
+
+    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID, int flightAmount)
+    {
+        bool available = true;
+
+        for (int i = 1; i <= flightAmount; i++)
+        {
+            foreach (FlightModel flight in _flights)
+            {
+                if (flight.Plane == planeID)
+                {
+                    string format = "dd-MM-yyyy HH:mm";
+                    DateTime flightDeparture = DateTime.ParseExact(flight.DepartureTime, format, System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime flightArrival = DateTime.ParseExact(flight.ArrivalTime, format, System.Globalization.CultureInfo.InvariantCulture);
+
+                    if (departure >= flightDeparture && departure <= flightArrival)
+                    {
+                        available = false;
+                    }
+
+                    if (arrival >= flightDeparture && arrival <= flightArrival)
+                    {
+                        available = false;
+                    }
+                }
+            }
+
+            departure.AddDays(1);
+            arrival.AddDays(1);
+        }
+        return available;
+    }
+
+    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID)
+    {
+        return IsPlaneAvailable(departure, arrival, planeID, 1);
+    }
+
     public bool DoesFlightExist(int flightID)
     {
         // Check if given flight number is in the list of available flights
@@ -120,9 +192,6 @@ public class FlightLogic
 
     private int GenerateFlightId()
     {
-        // Create an instance of ReservationAccess
-        var flightAccess = new FlightsAccess();
-
         // Load existing reservations from the JSON file
         var flights = FlightsAccess.LoadAllFlights();
 
@@ -149,7 +218,8 @@ public class FlightLogic
 
     public List<SeatModel> GetFlightSeats(FlightModel flight)
     {
-        List<SeatModel> flightSeats = flight.Plane.GetPlaneSeats();
+        PlaneModel plane = GetPlaneByID(flight.Plane);
+        List<SeatModel> flightSeats = plane.GetPlaneSeats();
         List<ReservationModel> flightReservations = GetFlightReservations(flight);
 
         foreach (SeatModel seat in flightSeats)

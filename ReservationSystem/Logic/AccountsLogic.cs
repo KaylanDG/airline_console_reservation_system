@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 
 //This class is not static so later on we can use inheritance and interfaces
-class AccountsLogic
+public class AccountsLogic
 {
     private List<AccountModel> _accounts;
 
@@ -54,9 +55,39 @@ class AccountsLogic
         return CurrentAccount;
     }
 
+    public AccountModel CreateAccount(string email, string password, string FullName, string Phone, string DateOfBirth, bool Invalid, string role = "user")
+    {
+        int id_var = 0;
+        foreach (AccountModel s in _accounts)
+        {
+            if (s.EmailAddress == email)
+            {
+                // 
+                return null;
+            }
+            if (s.Id > id_var)
+            {
+                id_var = s.Id;
+            }
+        }
+
+
+        id_var++;
+        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role);
+        UpdateList(acc);
+        CurrentAccount = acc;
+        return acc;
+
+    }
+
+    public static void Logout()
+    {
+        CurrentAccount = null;
+    }
+
     public bool ValidEmail(string email)
     {
-        if (email.Contains("@") && email.Contains(".") && email != null)
+        if (email.Contains("@") && email.Contains(".") && email != null && !email.Contains(" "))
         {
             return true;
         }
@@ -92,46 +123,15 @@ class AccountsLogic
         }
     }
 
-    public bool ValidInput(string input)
+    public bool ValidName(string name)
     {
-        if (input != null)
+        Regex nameRegex = new Regex(@"^[A-Za-z ]+$");
+
+        if (name.Length <= 50 && nameRegex.IsMatch(name))
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
-    }
-
-    public AccountModel CreateAccount(string email, string password, string FullName, string Phone, string DateOfBirth, bool Invalid, string role = "user")
-    {
-        int id_var = 0;
-        foreach (AccountModel s in _accounts)
-        {
-            if (s.EmailAddress == email)
-            {
-                // 
-                return null;
-            }
-            if (s.Id > id_var)
-            {
-                id_var = s.Id;
-            }
-        }
-
-
-        id_var++;
-        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role);
-        UpdateList(acc);
-        CurrentAccount = acc;
-        return acc;
-
-    }
-
-    public static void Logout()
-    {
-        CurrentAccount = null;
+        return false;
     }
 }
 
