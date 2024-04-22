@@ -276,4 +276,30 @@ public class FlightLogic
         }
         return returnFlights;
     }
+
+    public bool IsValidDate(string date)
+    {
+        DateTime parsedDateTime;
+        return DateTime.TryParseExact(date, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, out parsedDateTime);
+    }
+
+    public bool IsValidInt(string y)
+    {
+        //Check if possible to pass to int
+        //If not return false
+        if (!int.TryParse(y, out int num))
+        {
+            return false;
+        }
+
+        //Convert to int
+        int x = Convert.ToInt32(y);
+        if (x <= 0)
+        {
+            return false;
+        }
+
+        //else return true
+        return true;
+    }
 }
