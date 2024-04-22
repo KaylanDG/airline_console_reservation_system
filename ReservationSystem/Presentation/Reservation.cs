@@ -395,7 +395,7 @@ public static class Reservation
 
             while (ans != "c" && ans != "p")
             {
-                Console.WriteLine("That's not an valid answer.")
+                Console.WriteLine("That's not an valid answer.");
                 Console.WriteLine("P | Proceed");
                 Console.WriteLine("C | Change luggage amount");
                 ans = Console.ReadLine().ToLower();
