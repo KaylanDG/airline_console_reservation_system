@@ -30,6 +30,7 @@ static class Menu
 
             if (AccountsLogic.CurrentAccount != null)
             {
+                Console.WriteLine("N | Modify your info");
                 Console.WriteLine("O | Overview of reservation(s)");
                 Console.WriteLine("L | Logout");
             }
@@ -66,6 +67,10 @@ static class Menu
             else if (input == "o" && AccountsLogic.CurrentAccount != null)
             {
                 ListOfReservations.Start();
+            }
+            else if (input == "n" && AccountsLogic.CurrentAccount != null)
+            {
+                PersonalInfoModify.Start();
             }
             else if (input == "f")
             {
