@@ -133,6 +133,13 @@ public class AccountsLogic
         }
         return false;
     }
+
+    public bool ValidDateOfBirth(string date)
+    {
+        DateTime result;
+        bool conversionSuccessful = DateTime.TryParse(date, out result);
+        return conversionSuccessful;
+    }
 }
 
 
