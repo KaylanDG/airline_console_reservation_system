@@ -388,6 +388,38 @@ public static class Reservation
             }
 
             double price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
+            Console.WriteLine($"The price for your total luggage = {price}\n");
+            Console.WriteLine("P | Proceed");
+            Console.WriteLine("C | Change luggage amount");
+            string ans = Console.ReadLine().ToLower();
+
+            while (ans != "c" && ans != "p")
+            {
+                Console.WriteLine("That's not an valid answer.");
+                Console.WriteLine("P | Proceed");
+                Console.WriteLine("C | Change luggage amount");
+                ans = Console.ReadLine().ToLower();
+            }
+
+            if (ans == "c")
+            {
+                LoopBool = true;
+                while (LoopBool)
+                {
+                    try
+                    {
+                        Console.WriteLine("How much extra Luggage do you want: ");
+                        extraLuggageAmount = Convert.ToInt32(Console.ReadLine());
+                        LoopBool = false;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("That's not a number!");
+                    }
+                }
+                price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
+                Console.WriteLine($"The price for your total luggage = {price}\n");
+            }
 
             _reservation.TotalCost += price;
             return new ServiceModel("Extra Luggage", extraLuggageAmount, price);
