@@ -59,6 +59,12 @@ public class CreateAccount
 
             Console.WriteLine("\nPlease enter your date of birth");
             string dateOfBirth = Console.ReadLine();
+            while (!accountsLogic.ValidDateOfBirth(dateOfBirth))
+            {
+                Console.WriteLine("\nThat's not a valid date of birth.");
+                Console.WriteLine("Please enter your date of birth");
+                dateOfBirth = Console.ReadLine();
+            }
 
 
             bool invalid = false;
