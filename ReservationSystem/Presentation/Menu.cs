@@ -38,7 +38,6 @@ public class Menu
 
         while (pressedKey != ConsoleKey.Enter)
         {
-            Console.Clear();
             DisplayMenu();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -54,6 +53,7 @@ public class Menu
                 _selectedIndex++;
                 if (_selectedIndex == _options.Count) _selectedIndex = 0;
             }
+            Console.Clear();
         }
 
         return _selectedIndex;

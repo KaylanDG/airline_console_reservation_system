@@ -68,6 +68,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
             {
                 case 0:
                     AccountsLogic.Logout();
+                    Start();
                     break;
                 case 1:
                     ListOfReservations.Start();
@@ -96,6 +97,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
             {
                 case 0:
                     AccountsLogic.Logout();
+                    Start();
                     break;
                 case 1:
                     ListOfReservations.Start();

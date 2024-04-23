@@ -48,21 +48,19 @@ static class FlightOverview
         }
     }
 
-    public static void ShowOverview(List<FlightModel> flights = null, int selectedFlight = -1)
+    public static void ShowOverview(int selectedFlight = -1)
     {
-        if (flights == null) flights = _flights;
-
         // top part of overview
         Console.WriteLine();
         Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
         Console.WriteLine(new string('-', 120));
 
         // Show flights if there are any
-        if (flights.Count > 0)
+        if (_flights.Count > 0)
         {
-            for (int i = 0; i < flights.Count; i++)
+            for (int i = 0; i < _flights.Count; i++)
             {
-                FlightModel flight = flights[i];
+                FlightModel flight = _flights[i];
 
                 if (selectedFlight == i)
                 {
@@ -117,7 +115,7 @@ static class FlightOverview
         while (pressedKey != ConsoleKey.Enter)
         {
             Console.Clear();
-            ShowOverview(null, selectedFlight);
+            ShowOverview(selectedFlight);
             Console.WriteLine("\nSelect a flight.\nUse the arrow keys to navigate, press enter to select a flight.");
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
