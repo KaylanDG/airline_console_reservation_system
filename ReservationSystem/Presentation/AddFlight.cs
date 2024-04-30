@@ -25,25 +25,28 @@ public static class AddFlight
 
             Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
             string departureTimeStr = Console.ReadLine();
-            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+            while (!_flightLogic.IsValidDate(departureTimeStr))
+            {
+                Console.WriteLine("Invalid flight Departure Time.");
+                Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
+                departureTimeStr = Console.ReadLine();
+            }
 
+            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
             Console.WriteLine("Enter flight duration in minutes:");
             string flightDurationStr = Console.ReadLine();
 
             // Attempt to parse the flight duration
-            int flightDuration;
-            while (!int.TryParse(flightDurationStr, out flightDuration))
+            // Check if flight duration is non-negative
+            while (!_flightLogic.IsValidInt(flightDurationStr))
             {
                 Console.WriteLine("Invalid flight duration.");
-                return; // Exit the method
+                Console.WriteLine("Enter flight duration in minutes:");
+                flightDurationStr = Console.ReadLine();
             }
+            int flightDuration = Convert.ToInt32(flightDurationStr);
 
             // Check if flight duration is non-negative
-            if (flightDuration <= 0)
-            {
-                Console.WriteLine("Flight duration should be a positive value.");
-                return; // Exit the method
-            }
 
             // Calculate arrival time
             DateTime arrivalTime = departureTime.AddMinutes(flightDuration);
