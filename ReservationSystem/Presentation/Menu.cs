@@ -1,99 +1,71 @@
-static class Menu
+public class Menu
 {
+    private int _selectedIndex;
+    private List<string> _options;
+    private string _prompt;
+    private Action _method;
 
-    //This shows the menu. You can call back to this method to show the menu again
-    //after another presentation method is completed.
-    //You could edit this to show different menus depending on the user's role
-    static public void Start()
+    public Menu(List<string> options, string prompt)
     {
-        string input = "";
-        while (input != "q")
+        _selectedIndex = 0;
+        _options = options;
+        _prompt = prompt;
+    }
+
+    public Menu(List<string> options, string prompt, Action method)
+    {
+        _selectedIndex = 0;
+        _options = options;
+        _prompt = prompt;
+        _method = method;
+    }
+
+    private void DisplayMenu()
+    {
+        _method?.Invoke();
+        Console.WriteLine(_prompt);
+
+        for (int i = 0; i < _options.Count; i++)
         {
-            Console.WriteLine("\nChoose one of the menu options:");
-            Console.WriteLine(new string('-', 20));
-            if (AccountsLogic.CurrentAccount == null)
-            {
-                Console.WriteLine("L | Login");
-                Console.WriteLine("R | Register");
-            }
-            else
-            {
-                Console.WriteLine("R | Make an reservation");
-            }
-            Console.WriteLine("F | Flight overview");
-            Console.WriteLine("A | Airport info");
-            if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
-            {
-                Console.WriteLine("M | Make Flight");
 
-            }
-
-            if (AccountsLogic.CurrentAccount != null)
+            string prefix = " ";
+            if (i == _selectedIndex)
             {
-                Console.WriteLine("N | Modify your info");
-                Console.WriteLine("O | Overview of reservation(s)");
-                Console.WriteLine("L | Logout");
-            }
-            Console.WriteLine("Q | Quit program");
-
-            input = Console.ReadLine().ToLower();
-
-            if (input == "l" && AccountsLogic.CurrentAccount == null)
-            {
-                UserLogin.Start();
-            }
-            if (input == "m" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
-            {
-                AddFlight.Start();
-            }
-            if (input == "l" && AccountsLogic.CurrentAccount != null)
-            {
-                AccountsLogic.Logout();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("successfully logged out!");
-                Console.ResetColor();
-                Start();
-            }
-            else if (input == "r" && AccountsLogic.CurrentAccount == null)
-            {
-                CreateAccount.Start();
-            }
-            else if (input == "r" && AccountsLogic.CurrentAccount != null)
-            {
-                FlightOverview.ShowOverview();
-                Reservation.Start();
-            }
-            else if (input == "o" && AccountsLogic.CurrentAccount != null)
-            {
-                ListOfReservations.Start();
-            }
-            else if (input == "n" && AccountsLogic.CurrentAccount != null)
-            {
-                PersonalInfoModify.Start();
-            }
-            else if (input == "f")
-            {
-                FlightOverview.Start();
-            }
-            else if (input == "q")
-            {
-                Environment.Exit(1);
-            }
-            else if (input == "a")
-            {
-                AirportInfo.Start();
-            }
-            else
-            {
-                Console.Clear();
-                Console.BackgroundColor = ConsoleColor.Red;
+                prefix = ">";
+                Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("\nInvalid input\n");
-                Console.ResetColor();
-                Start();
+            }
+
+            Console.WriteLine($"{prefix} {_options[i]}");
+            Console.ResetColor();
+        }
+    }
+
+    public int Run()
+    {
+
+        ConsoleKey pressedKey = default;
+
+        while (pressedKey != ConsoleKey.Enter)
+        {
+            Console.Clear();
+            DisplayMenu();
+
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            pressedKey = keyInfo.Key;
+
+            if (pressedKey == ConsoleKey.UpArrow)
+            {
+                _selectedIndex--;
+                if (_selectedIndex == -1) _selectedIndex = _options.Count - 1;
+            }
+            else if (pressedKey == ConsoleKey.DownArrow)
+            {
+                _selectedIndex++;
+                if (_selectedIndex == _options.Count) _selectedIndex = 0;
             }
         }
 
+        return _selectedIndex;
     }
 }
