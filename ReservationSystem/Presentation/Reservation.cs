@@ -354,7 +354,7 @@ public static class Reservation
 
             while (pressedKey != ConsoleKey.Enter)
             {
-                Console.WriteLine("\nAmount of extra luggage (1 = 20kg)\n");
+                Console.WriteLine("\nAmount of extra luggage (1 = 20kg):");
                 Console.WriteLine($"<{extraLuggageAmount}>");
                 Console.WriteLine($"Total price: €{_reservationLogic.ExtraLuggagePrice(extraLuggageAmount)}");
                 Console.WriteLine("\nUse the up/down arrow to add or remove, press enter to confirm\n");

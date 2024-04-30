@@ -35,6 +35,7 @@ static class FlightOverview
         if (_selectedOption == 0)
         {
             _flights = _flightLogic.GetAvailableFlights();
+            Console.Clear();
             MainMenu.Start();
             return;
         }

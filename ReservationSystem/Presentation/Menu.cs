@@ -3,6 +3,7 @@ public class Menu
     private int _selectedIndex;
     private List<string> _options;
     private string _prompt;
+    private Action _method;
 
     public Menu(List<string> options, string prompt)
     {
@@ -11,8 +12,17 @@ public class Menu
         _prompt = prompt;
     }
 
+    public Menu(List<string> options, string prompt, Action method)
+    {
+        _selectedIndex = 0;
+        _options = options;
+        _prompt = prompt;
+        _method = method;
+    }
+
     private void DisplayMenu()
     {
+        _method?.Invoke();
         Console.WriteLine(_prompt);
 
         for (int i = 0; i < _options.Count; i++)
@@ -38,6 +48,7 @@ public class Menu
 
         while (pressedKey != ConsoleKey.Enter)
         {
+            Console.Clear();
             DisplayMenu();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -53,7 +64,6 @@ public class Menu
                 _selectedIndex++;
                 if (_selectedIndex == _options.Count) _selectedIndex = 0;
             }
-            Console.Clear();
         }
 
         return _selectedIndex;
