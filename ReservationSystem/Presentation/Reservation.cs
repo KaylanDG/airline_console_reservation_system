@@ -11,6 +11,7 @@ public static class Reservation
     {
         _flightLogic = new FlightLogic();
         _reservationLogic = new ReservationLogic();
+        _planeLogic = new PlaneLogic();
 
         int flightID = FlightOverview.SelectFlight();
 

@@ -279,12 +279,6 @@ public class FlightLogic
         return returnFlights;
     }
 
-    public bool IsValidDate(string date)
-    {
-        DateTime parsedDateTime;
-        return DateTime.TryParseExact(date, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, out parsedDateTime);
-    }
-
     public bool IsValidInt(string y)
     {
         //Check if possible to pass to int

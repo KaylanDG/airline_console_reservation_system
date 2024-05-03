@@ -20,5 +20,27 @@
         ]
       }
     ]
+  },
+  {
+    "id": 2,
+    "reservation_code": "IKX41XVN",
+    "reservation_date": "03-05-2024 14:25",
+    "flight_id": 1,
+    "user_id": 5,
+    "total_cost": 295,
+    "passengers": [
+      {
+        "passenger_id": 1,
+        "full_name": "test",
+        "seat_number": "A-22",
+        "additional_services": [
+          {
+            "service_type": "Extra Luggage",
+            "quantity": 2,
+            "cost": 75
+          }
+        ]
+      }
+    ]
   }
 ]

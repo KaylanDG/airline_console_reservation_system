@@ -25,12 +25,6 @@ public static class AddFlight
 
             Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
             string departureTimeStr = Console.ReadLine();
-            while (!_flightLogic.IsValidDate(departureTimeStr))
-            {
-                Console.WriteLine("Invalid flight Departure Time.");
-                Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
-                departureTimeStr = Console.ReadLine();
-            }
 
             DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
             Console.WriteLine("Enter flight duration in minutes:");
