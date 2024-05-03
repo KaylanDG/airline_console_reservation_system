@@ -76,21 +76,23 @@ public class FlightLogic
         return null;
     }
 
-    public List<FlightModel> CreateMultipleFlights(int howmany, string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int planeId)
+    public List<FlightModel> CreateMultipleFlights(int howmany, string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int planeId, string timezone)
     {
         List<FlightModel> createdFlights = new List<FlightModel>();
 
-        // Parse the initial departure time
         DateTime initialDepartureTime = DateTime.ParseExact(departure_time, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 
-        // Iterate to create multiple flights
+        TimeZoneInfo destTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+        initialDepartureTime = TimeZoneInfo.ConvertTime(initialDepartureTime, destTimeZone, TimeZoneInfo.Utc);
+
         for (int i = 0; i < howmany; i++)
         {
-            DateTime currentDepartureTime = initialDepartureTime.AddDays(i);
+            DateTime currentDepartureTime = initialDepartureTime.AddMinutes(i * flight_duration);
 
             DateTime currentArrivalTime = currentDepartureTime.AddMinutes(flight_duration);
 
-            // Create the flight
+            currentArrivalTime = TimeZoneInfo.ConvertTime(currentArrivalTime, TimeZoneInfo.Utc, destTimeZone);
+
             FlightModel newFlight = new FlightModel(
                 GenerateFlightId(),
                 flightnumber,
@@ -109,6 +111,7 @@ public class FlightLogic
 
         return createdFlights;
     }
+
     public FlightModel CreateFlight(string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int id)
     {
         FlightModel newFlight = new FlightModel(
