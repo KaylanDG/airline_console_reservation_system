@@ -27,25 +27,22 @@ public static class AddFlight
 
             Console.WriteLine("Enter departure time (format: dd-MM-yyyy HH:mm):");
             string departureTimeStr = Console.ReadLine();
-            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
 
+            DateTime departureTime = DateTime.ParseExact(departureTimeStr, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
             Console.WriteLine("Enter flight duration in minutes:");
             string flightDurationStr = Console.ReadLine();
 
             // Attempt to parse the flight duration
-            int flightDuration;
-            while (!int.TryParse(flightDurationStr, out flightDuration))
+            // Check if flight duration is non-negative
+            while (!_flightLogic.IsValidInt(flightDurationStr))
             {
                 Console.WriteLine("Invalid flight duration.");
-                return; // Exit the method
+                Console.WriteLine("Enter flight duration in minutes:");
+                flightDurationStr = Console.ReadLine();
             }
+            int flightDuration = Convert.ToInt32(flightDurationStr);
 
             // Check if flight duration is non-negative
-            if (flightDuration <= 0)
-            {
-                Console.WriteLine("Flight duration should be a positive value.");
-                return; // Exit the method
-            }
 
             // Prompt for the timezone
             Console.WriteLine("Enter the timezone for the destination:");
@@ -111,7 +108,7 @@ public static class AddFlight
             Console.WriteLine("Invalid input");
         }
 
-        Menu.Start();
+        MainMenu.Start();
     }
 
     private static void CreateFlight(string flightNumber, string from, string destination, DateTime departureTime, int flightDuration, string timezone)
@@ -139,7 +136,7 @@ public static class AddFlight
         if (!_flightLogic.IsPlaneAvailable(departureTime, arrivalTime, planeId))
         {
             Console.WriteLine("This plane is not available.");
-            Menu.Start();
+            MainMenu.Start();
         }
 
         // Create the flight using FlightLogic

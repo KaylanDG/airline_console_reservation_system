@@ -6,6 +6,7 @@ public class FlightLogic
     private FlightLogic _flightLogic;
     private List<PlaneModel> _planes;
 
+    private PlaneLogic _planeLogic;
 
 
     public FlightLogic()
@@ -13,6 +14,7 @@ public class FlightLogic
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
         _planes = PlaneAccess.LoadAllPlanes();
+        _planeLogic = new PlaneLogic();
 
     }
 
@@ -222,7 +224,7 @@ public class FlightLogic
     public List<SeatModel> GetFlightSeats(FlightModel flight)
     {
         PlaneModel plane = GetPlaneByID(flight.Plane);
-        List<SeatModel> flightSeats = plane.GetPlaneSeats();
+        List<SeatModel> flightSeats = _planeLogic.GetPlaneSeats(flight.Plane);
         List<ReservationModel> flightReservations = GetFlightReservations(flight);
 
         foreach (SeatModel seat in flightSeats)
@@ -278,5 +280,25 @@ public class FlightLogic
             }
         }
         return returnFlights;
+    }
+
+    public bool IsValidInt(string y)
+    {
+        //Check if possible to pass to int
+        //If not return false
+        if (!int.TryParse(y, out int num))
+        {
+            return false;
+        }
+
+        //Convert to int
+        int x = Convert.ToInt32(y);
+        if (x <= 0)
+        {
+            return false;
+        }
+
+        //else return true
+        return true;
     }
 }
