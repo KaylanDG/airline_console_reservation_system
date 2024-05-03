@@ -2,6 +2,7 @@ public static class Reservation
 {
     private static FlightLogic _flightLogic;
     private static ReservationLogic _reservationLogic;
+    private static PlaneLogic _planeLogic;
     private static ReservationModel _reservation;
     private static FlightModel _flight;
     private static List<SeatModel> _flightSeats;
@@ -10,6 +11,7 @@ public static class Reservation
     {
         _flightLogic = new FlightLogic();
         _reservationLogic = new ReservationLogic();
+        _planeLogic = new PlaneLogic();
 
         int flightID = FlightOverview.SelectFlight();
 
@@ -116,7 +118,7 @@ public static class Reservation
         {
             Console.WriteLine("\nEnter seat number (example: A-01):");
             seatNumber = Console.ReadLine().ToUpper();
-            if (!_flightLogic.GetPlaneByID(_flight.Plane).DoesSeatExist(seatNumber))
+            if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nThe seat number you entered does not exist.\n");

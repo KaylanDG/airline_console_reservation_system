@@ -6,6 +6,7 @@ public class FlightLogic
     private FlightLogic _flightLogic;
     private List<PlaneModel> _planes;
 
+    private PlaneLogic _planeLogic;
 
 
     public FlightLogic()
@@ -13,6 +14,7 @@ public class FlightLogic
         // Load in all flights
         _flights = FlightsAccess.LoadAllFlights();
         _planes = PlaneAccess.LoadAllPlanes();
+        _planeLogic = new PlaneLogic();
 
     }
 
@@ -219,7 +221,7 @@ public class FlightLogic
     public List<SeatModel> GetFlightSeats(FlightModel flight)
     {
         PlaneModel plane = GetPlaneByID(flight.Plane);
-        List<SeatModel> flightSeats = plane.GetPlaneSeats();
+        List<SeatModel> flightSeats = _planeLogic.GetPlaneSeats(flight.Plane);
         List<ReservationModel> flightReservations = GetFlightReservations(flight);
 
         foreach (SeatModel seat in flightSeats)
@@ -275,12 +277,6 @@ public class FlightLogic
             }
         }
         return returnFlights;
-    }
-
-    public bool IsValidDate(string date)
-    {
-        DateTime parsedDateTime;
-        return DateTime.TryParseExact(date, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, out parsedDateTime);
     }
 
     public bool IsValidInt(string y)
