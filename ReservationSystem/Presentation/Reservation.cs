@@ -11,35 +11,17 @@ public static class Reservation
     {
         _flightLogic = new FlightLogic();
         _reservationLogic = new ReservationLogic();
-        _planeLogic = new PlaneLogic();
-        SelectFlight();
-        ReservationProcess();
-        ReservationMenu();
-        Menu.Start();
-    }
 
-    public static void SelectFlight()
-    {
-        try
-        {
-            Console.Write("\nEnter the index number of the flight you wish to book: ");
-            int flightID = Convert.ToInt32(Console.ReadLine());
+        int flightID = FlightOverview.SelectFlight();
 
-            if (!_flightLogic.DoesFlightExist(flightID))
-            {
-                Console.WriteLine("\nThis flight does not exist!\n");
-                Menu.Start();
-            }
-            else
-            {
-                _flight = _flightLogic.GetById(flightID);
-                _flightSeats = _flightLogic.GetFlightSeats(_flight);
-            }
-        }
-        catch (FormatException)
+        if (flightID > 0)
         {
-            Console.WriteLine("\nInvalid input!\n");
-            Menu.Start();
+            _flight = _flightLogic.GetById(flightID);
+            _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+            ReservationProcess();
+            ReservationMenu();
+            MainMenu.Start();
         }
     }
 
@@ -302,7 +284,7 @@ public static class Reservation
             Console.ResetColor();
         }
 
-        Menu.Start();
+        MainMenu.Start();
     }
 
     public static void ReturnFlight()
@@ -310,9 +292,17 @@ public static class Reservation
         List<FlightModel> returnFlights = _flightLogic.GetReturnFlights(_flight);
         if (returnFlights.Count > 0)
         {
-            FlightOverview.ShowOverview(returnFlights);
-            SelectFlight();
-            ReservationProcess();
+            FlightOverview._flights = returnFlights;
+            int flightID = FlightOverview.SelectFlight();
+
+            if (flightID > 0)
+            {
+                _flight = _flightLogic.GetById(flightID);
+                _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+                ReservationProcess();
+                ReservationMenu();
+            }
         }
         else
         {
@@ -326,37 +316,23 @@ public static class Reservation
     public static void ReservationMenu()
     {
 
+        List<string> options = new List<string>() { "Add return flight", "Book reservation", "Cancel reservation" };
+        string prompt = "\nSelect an option from the menu\n";
 
-        while (true)
+        Menu menu = new Menu(options, prompt);
+        int selectedOption = menu.Run();
+
+        switch (selectedOption)
         {
-            if (_reservationLogic.SavedReservations.Count < 2)
-            {
-                Console.WriteLine("R | Book return flight");
-            }
-            Console.WriteLine($"B | Book {((_reservationLogic.SavedReservations.Count > 1) ? "reservations" : "reservation")}");
-            Console.WriteLine("C | Cancel");
-            string menuOption = Console.ReadLine().ToLower();
-            while (menuOption != "r" && menuOption != "c" && menuOption != "b")
-            {
-                menuOption = Console.ReadLine();
-            }
-
-            if (menuOption == "r" && _reservationLogic.SavedReservations.Count < 2)
-            {
+            case 0:
                 ReturnFlight();
-            }
-            else if (menuOption == "b")
-            {
+                break;
+            case 1:
                 CompleteReservation();
                 break;
-            }
-            else if (menuOption == "c")
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nYour reservation has been Canceled.\n");
-                Console.ResetColor();
+            case 2:
+                MainMenu.Start();
                 break;
-            }
         }
     }
 
@@ -373,56 +349,32 @@ public static class Reservation
         }
         if (extraLuggage == "y")
         {
+            Console.Clear();
             int extraLuggageAmount = 0;
-            bool LoopBool = true;
-            while (LoopBool)
+            ConsoleKey pressedKey = default;
+
+            while (pressedKey != ConsoleKey.Enter)
             {
-                try
+                Console.WriteLine("\nAmount of extra luggage (1 = 20kg):");
+                Console.WriteLine($"<{extraLuggageAmount}>");
+                Console.WriteLine($"Total price: €{_reservationLogic.ExtraLuggagePrice(extraLuggageAmount)}");
+                Console.WriteLine("\nUse the up/down arrow to add or remove, press enter to confirm\n");
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                pressedKey = keyInfo.Key;
+
+                if (pressedKey == ConsoleKey.UpArrow)
                 {
-                    Console.WriteLine("How much extra Luggage do you want: ");
-                    extraLuggageAmount = Convert.ToInt32(Console.ReadLine());
-                    LoopBool = false;
+                    extraLuggageAmount++;
                 }
-                catch (FormatException)
+                else if (pressedKey == ConsoleKey.DownArrow)
                 {
-                    Console.WriteLine("That's not a number!");
+                    extraLuggageAmount--;
+                    if (extraLuggageAmount < 0) extraLuggageAmount = 0;
                 }
+                Console.Clear();
             }
 
             double price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
-            Console.WriteLine($"The price for your total luggage = {price}\n");
-            Console.WriteLine("P | Proceed");
-            Console.WriteLine("C | Change luggage amount");
-            string ans = Console.ReadLine().ToLower();
-
-            while (ans != "c" && ans != "p")
-            {
-                Console.WriteLine("That's not an valid answer.");
-                Console.WriteLine("P | Proceed");
-                Console.WriteLine("C | Change luggage amount");
-                ans = Console.ReadLine().ToLower();
-            }
-
-            if (ans == "c")
-            {
-                LoopBool = true;
-                while (LoopBool)
-                {
-                    try
-                    {
-                        Console.WriteLine("How much extra Luggage do you want: ");
-                        extraLuggageAmount = Convert.ToInt32(Console.ReadLine());
-                        LoopBool = false;
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("That's not a number!");
-                    }
-                }
-                price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
-                Console.WriteLine($"The price for your total luggage = {price}\n");
-            }
-
             _reservation.TotalCost += price;
             return new ServiceModel("Extra Luggage", extraLuggageAmount, price);
 

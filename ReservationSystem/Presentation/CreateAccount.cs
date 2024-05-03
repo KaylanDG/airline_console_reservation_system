@@ -93,6 +93,6 @@ public class CreateAccount
         }
 
 
-        Menu.Start();
+        MainMenu.Start();
     }
 }
