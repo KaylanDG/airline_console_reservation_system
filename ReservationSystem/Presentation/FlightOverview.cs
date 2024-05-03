@@ -44,6 +44,7 @@ static class FlightOverview
         Console.WriteLine(new string('-', 20));
         Console.WriteLine("G | Go back");
         Console.WriteLine("S | Search for flights");
+        Console.WriteLine("T | Tomorrow's flight(s)");
         if (AccountsLogic.CurrentAccount != null)
         {
             Console.WriteLine("R | Make reservation");
@@ -65,6 +66,8 @@ static class FlightOverview
             ShowOverview();
             FlightOverviewMenu();
         }
+
+
         else if (choice == "r" && AccountsLogic.CurrentAccount != null)
         {
             // Start reservation menu
