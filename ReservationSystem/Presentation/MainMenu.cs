@@ -24,6 +24,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
         else
         {
             options.Add("Logout");
+            options.Add("Edit personal info");
             options.Add("My reservations");
             options.Add("Make reservation");
             if (AccountsLogic.CurrentAccount.Role == "admin")
@@ -71,21 +72,24 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     Start();
                     break;
                 case 1:
-                    ListOfReservations.Start();
+                    PersonalInfoModify.Start();
                     break;
                 case 2:
-                    Reservation.Start();
+                    ListOfReservations.Start();
                     break;
                 case 3:
-                    AddFlight.Start();
+                    Reservation.Start();
                     break;
                 case 4:
-                    FlightOverview.Start();
+                    AddFlight.Start();
                     break;
                 case 5:
-                    AirportInfo.Start();
+                    FlightOverview.Start();
                     break;
                 case 6:
+                    AirportInfo.Start();
+                    break;
+                case 7:
                     Environment.Exit(1);
                     break;
             }
@@ -103,15 +107,18 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     ListOfReservations.Start();
                     break;
                 case 2:
-                    Reservation.Start();
+                    ListOfReservations.Start();
                     break;
                 case 3:
-                    FlightOverview.Start();
+                    Reservation.Start();
                     break;
                 case 4:
-                    AirportInfo.Start();
+                    FlightOverview.Start();
                     break;
                 case 5:
+                    AirportInfo.Start();
+                    break;
+                case 6:
                     Environment.Exit(1);
                     break;
             }

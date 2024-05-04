@@ -2,60 +2,58 @@ public static class PersonalInfoModify
 {
     public static void Start()
     {
-        Console.Clear();
-        //Option on what to modify.
-        Console.WriteLine("E | Change E-Mail");
-        Console.WriteLine("P | Change Password");
-        Console.WriteLine("T | Change Telephone Number");
-        Console.WriteLine("F | Change your Full name");
-        Console.WriteLine("D | Change Date of birth");
-        Console.WriteLine("L | Change your disability");
-
-        string ans = Console.ReadLine().ToLower();
-
-        // Check if the string is an valid option.
-        // Otherwise loop
-
-        while (ans != "e" && ans != "p" && ans != "t" && ans != "d" && ans != "f" && ans != "l")
+        List<string> options = new List<string>()
         {
-            Console.WriteLine("That's not a valid option on the menu");
-            Console.WriteLine("Choose an valid option.");
-        }
+            "Change E-Mail",
+            "Change Password",
+            "Change Telephone Number",
+            "Change your Full name",
+            "Change Date of birth",
+            "Change your disability",
+            "Go back to main menu",
+        };
 
-        if (ans == "e")
+        string prompt = "Choose what you want to edit:";
+        Menu menu = new Menu(options, prompt);
+        int selectedOption = menu.Run();
+        Console.Clear();
+
+
+        if (selectedOption == 0)
         {
             PersonalInfoModify.EmailModify();
         }
 
-        else if (ans == "p")
+        else if (selectedOption == 1)
         {
             PersonalInfoModify.PasswordModify();
         }
-        else if (ans == "t")
+        else if (selectedOption == 2)
         {
             PersonalInfoModify.PhoneModify();
         }
 
-        else if (ans == "f")
+        else if (selectedOption == 3)
         {
             PersonalInfoModify.FullNameModify();
         }
-        else if (ans == "d")
+        else if (selectedOption == 4)
         {
             PersonalInfoModify.DateOfBirthModify();
         }
-        else if (ans == "l")
+        else if (selectedOption == 5)
         {
             PersonalInfoModify.ChangeDisabilityModify();
         }
 
+        MainMenu.Start();
     }
 
     public static void EmailModify()
     {
         AccountsLogic x = new AccountsLogic();
 
-        Console.WriteLine($"Old Email: {AccountsLogic.CurrentAccount}");
+        Console.WriteLine($"Old Email: {AccountsLogic.CurrentAccount.EmailAddress}");
         Console.WriteLine("What do you want your new Email to be?");
         string NewEmail = Console.ReadLine();
 
