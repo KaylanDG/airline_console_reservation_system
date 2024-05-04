@@ -53,8 +53,8 @@ static class FlightOverview
     {
         // top part of overview
         Console.WriteLine();
-        Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL");
-        Console.WriteLine(new string('-', 120));
+        Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20} | {7,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL", "RETURN FLIGHTS");
+        Console.WriteLine(new string('-', 141));
 
         // Show flights if there are any
         if (_flights.Count > 0)
@@ -62,6 +62,7 @@ static class FlightOverview
             for (int i = 0; i < _flights.Count; i++)
             {
                 FlightModel flight = _flights[i];
+                int amountOfReturnFLights = _flightLogic.GetReturnFlights(flight).Count;
 
                 if (selectedFlight == i)
                 {
@@ -69,7 +70,7 @@ static class FlightOverview
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
 
-                Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20}", flight.Id, _flightLogic.GetPlaneByID(flight.Plane).Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime);
+                Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20} | {7,-20}", flight.Id, _flightLogic.GetPlaneByID(flight.Plane).Airline, flight.FlightNumber, flight.From, flight.DepartureTime, flight.Destination, flight.ArrivalTime, amountOfReturnFLights);
 
                 Console.ResetColor();
             }

@@ -29,7 +29,11 @@ public static class Reservation
     public static void ReservationProcess()
     {
         int passengerAmount = PassengerAmount();
-        _reservation = new ReservationModel();
+        _reservation = new ReservationModel
+        {
+            FlightId = _flight.Id,
+            UserId = AccountsLogic.CurrentAccount!.Id
+        };
 
         for (int i = 0; i < passengerAmount; i++)
         {
@@ -62,9 +66,6 @@ public static class Reservation
             _flightSeats = _flightLogic.UpdateFlightSeats(passenger.SeatNumber, _flightSeats);
         }
 
-        _reservation.FlightId = _flight.Id;
-        _reservation.UserId = AccountsLogic.CurrentAccount!.Id;
-        _reservationLogic.SaveReservation(_reservation);
     }
 
 
@@ -242,26 +243,31 @@ public static class Reservation
 
     }
 
-    public static void CompleteReservation()
+    public static void CompleteReservation(bool isReturnFlight = false)
     {
-        Console.WriteLine($"\nYour {((_reservationLogic.SavedReservations.Count > 1) ? "reservations" : "reservation")}:");
-        foreach (ReservationModel reservation in _reservationLogic.SavedReservations)
+        Console.WriteLine($"\nYour reservation\n");
+        Console.WriteLine($"From:\t\t{_flight.From}");
+        Console.WriteLine($"Destination:\t{_flight.Destination}");
+        Console.WriteLine($"Departure:\t{_flight.DepartureTime}");
+        Console.WriteLine("\nPassengers:\n");
+        for (int i = 1; i <= _reservation.Passengers.Count; i++)
         {
-            FlightModel flight = _flightLogic.GetById(reservation.FlightId);
-            Console.WriteLine($"From:\t\t{flight.From}");
-            Console.WriteLine($"Destination:\t{flight.Destination}");
-            Console.WriteLine($"Departure:\t{flight.DepartureTime}");
-            for (int i = 1; i <= reservation.Passengers.Count; i++)
+            PassengerModel passenger = _reservation.Passengers[i - 1];
+            Console.WriteLine($" Passenger {i}:\t{passenger.FullName}");
+            Console.WriteLine($" Seat:\t\t{passenger.SeatNumber} - Price: €{_flightLogic.GetSeatPrice(passenger.SeatNumber, _flight)}");
+            if (passenger.AdditionalServices.Count > 0)
             {
-                Console.WriteLine($"Passenger {i}:\t{reservation.Passengers[i - 1].FullName} - Seat {reservation.Passengers[i - 1].SeatNumber}");
+                Console.WriteLine(" Additional Services");
+                foreach (ServiceModel service in passenger.AdditionalServices)
+                {
+                    Console.WriteLine($" - {service.ServiceType} / Amount: {service.Quantity} / Price: €{service.Cost}");
+                }
             }
-            Console.WriteLine($"Reservation price: €{reservation.TotalCost}");
             Console.WriteLine();
         }
-
         Console.WriteLine(new string('-', 30));
-        Console.WriteLine($"Total price: €{_reservationLogic.GetTotalCost()}");
-        Console.WriteLine($"Book {((_reservationLogic.SavedReservations.Count > 1) ? "reservations" : "reservation")}: (Y/N)");
+        Console.WriteLine($"Total price: €{_reservation.TotalCost}");
+        Console.WriteLine($"Book reservation: (Y/N)");
 
         string bookResrevation = Console.ReadLine().ToLower();
         while (bookResrevation != "y" && bookResrevation != "n")
@@ -273,19 +279,46 @@ public static class Reservation
 
         if (bookResrevation == "y")
         {
-            _reservationLogic.CompleteReservation();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nYour reservation has been booked.\n");
-            Console.ResetColor();
+            string reservationCode = _reservationLogic.CompleteReservation(_reservation);
+
+            if (!isReturnFlight)
+            {
+                List<string> options = new List<string>() { "Book return flight", "Return to main menu" };
+                string prompt = $"\nYour reservation has been booked.\nReservation Code: {reservationCode}\n";
+
+                Menu menu = new Menu(options, prompt);
+                int selectedOption = menu.Run();
+
+                switch (selectedOption)
+                {
+                    case 0:
+                        ReturnFlight();
+                        break;
+                    case 1:
+                        MainMenu.Start();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\nYour reservation has been booked.\nReservation Code: {reservationCode}\n");
+                Console.WriteLine("\nPress any key to return..");
+                Console.ReadKey(true);
+                MainMenu.Start();
+            }
+
         }
         else
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nYour reservation has been Canceled.\n");
             Console.ResetColor();
+
+            Console.WriteLine("\nPress any key to return..");
+            Console.ReadKey(true);
+            MainMenu.Start();
         }
 
-        MainMenu.Start();
     }
 
     public static void ReturnFlight()
@@ -302,7 +335,7 @@ public static class Reservation
                 _flightSeats = _flightLogic.GetFlightSeats(_flight);
 
                 ReservationProcess();
-                ReservationMenu();
+                ReservationMenu(true);
             }
         }
         else
@@ -311,13 +344,17 @@ public static class Reservation
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nThere are no return flights for this destination.\n");
             Console.ResetColor();
+
+            Console.WriteLine("\nPress any key to return..");
+            Console.ReadKey(true);
+            MainMenu.Start();
         }
     }
 
-    public static void ReservationMenu()
+    public static void ReservationMenu(bool isReturnFlight = false)
     {
 
-        List<string> options = new List<string>() { "Add return flight", "Book reservation", "Cancel reservation" };
+        List<string> options = new List<string>() { "Book reservation", "Cancel reservation" };
         string prompt = "\nSelect an option from the menu\n";
 
         Menu menu = new Menu(options, prompt);
@@ -326,12 +363,15 @@ public static class Reservation
         switch (selectedOption)
         {
             case 0:
-                ReturnFlight();
+                CompleteReservation(isReturnFlight);
                 break;
             case 1:
-                CompleteReservation();
-                break;
-            case 2:
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nYour reservation has been Canceled.\n");
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress any key to return..");
+                Console.ReadKey(true);
                 MainMenu.Start();
                 break;
         }
