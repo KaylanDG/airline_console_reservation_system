@@ -1,7 +1,8 @@
+using System.Globalization;
+
 public class PlaneLogic
 {
     private List<PlaneModel> _planes;
-
     public PlaneLogic()
     {
         _planes = PlaneAccess.LoadAllPlanes();
@@ -58,5 +59,43 @@ public class PlaneLogic
     {
         List<SeatModel> planeSeats = GetPlaneSeats(planeid);
         return planeSeats.Any(seat => seat.SeatNumber == seatNumber);
+    }
+
+    public bool doesPlaneExist(int planeId)
+    {
+        return _planes.Any(plane => plane.Id == planeId);
+    }
+
+    public bool IsPlaneAvailable(int planeId, string date, int duration, int flightAmount = 1)
+    {
+        DateTime departure = DateTime.ParseExact(date, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        DateTime arrival = departure.AddMinutes(duration);
+        FlightLogic _flightLogic = new FlightLogic();
+
+        for (int i = 1; i <= flightAmount; i++)
+        {
+            foreach (FlightModel flight in _flightLogic.GetAvailableFlights())
+            {
+                if (flight.Plane == planeId)
+                {
+                    string format = "dd-MM-yyyy HH:mm";
+                    DateTime flightDeparture = DateTime.ParseExact(flight.DepartureTime, format, System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime flightArrival = DateTime.ParseExact(flight.ArrivalTime, format, System.Globalization.CultureInfo.InvariantCulture);
+                    if (departure >= flightDeparture && departure <= flightArrival)
+                    {
+                        return false;
+                    }
+
+                    if (arrival >= flightDeparture && arrival <= flightArrival)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            departure = departure.AddDays(1);
+            arrival = arrival.AddDays(1);
+        }
+        return true;
     }
 }

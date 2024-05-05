@@ -3,9 +3,7 @@ using System.Globalization;
 public class FlightLogic
 {
     private List<FlightModel> _flights;
-    private FlightLogic _flightLogic;
     private List<PlaneModel> _planes;
-
     private PlaneLogic _planeLogic;
 
 
@@ -76,94 +74,38 @@ public class FlightLogic
         return null;
     }
 
-    public List<FlightModel> CreateMultipleFlights(int howmany, string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int planeId, string timezone)
+    public bool CreateFlights(string flightNumber, int planeID, string from, string destination, string timezone, int duration, string startDate, int flightAmount)
     {
-        List<FlightModel> createdFlights = new List<FlightModel>();
+        DateTime departure = DateTime.ParseExact(startDate, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        DateTime arrival = departure.AddMinutes(duration);
 
-        DateTime initialDepartureTime = DateTime.ParseExact(departure_time, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-
+        //Convert arrival time to timezone of destination
         TimeZoneInfo destTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timezone);
-        initialDepartureTime = TimeZoneInfo.ConvertTime(initialDepartureTime, destTimeZone, TimeZoneInfo.Utc);
+        arrival = TimeZoneInfo.ConvertTime(arrival, TimeZoneInfo.Utc, destTimeZone);
 
-        for (int i = 0; i < howmany; i++)
+
+        for (int i = 0; i < flightAmount; i++)
         {
-            DateTime currentDepartureTime = initialDepartureTime.AddMinutes(i * flight_duration);
-
-            DateTime currentArrivalTime = currentDepartureTime.AddMinutes(flight_duration);
-
-            currentArrivalTime = TimeZoneInfo.ConvertTime(currentArrivalTime, TimeZoneInfo.Utc, destTimeZone);
-
-            FlightModel newFlight = new FlightModel(
+            FlightModel flight = new FlightModel(
                 GenerateFlightId(),
-                flightnumber,
+                flightNumber,
                 from,
                 destination,
-                currentDepartureTime.ToString("dd-MM-yyyy HH:mm"),
-                flight_duration,
-                currentArrivalTime.ToString("dd-MM-yyyy HH:mm"),
-                planeId
+                departure.ToString("dd-MM-yyyy HH:mm"),
+                duration,
+                arrival.ToString("dd-MM-yyyy HH:mm"),
+                planeID
             );
 
-            createdFlights.Add(newFlight);
+            UpdateList(flight);
 
-            UpdateList(newFlight);
+            departure = departure.AddDays(1);
+            arrival = arrival.AddDays(1);
         }
 
-        return createdFlights;
-    }
-
-    public FlightModel CreateFlight(string flightnumber, string from, string destination, string departure_time, int flight_duration, string arrival_time, int id)
-    {
-        FlightModel newFlight = new FlightModel(
-            GenerateFlightId(),
-            flightnumber,
-            from,
-            destination,
-            departure_time,
-            flight_duration,
-            arrival_time,
-            id
-        );
-
-        UpdateList(newFlight);
-        return newFlight;
-    }
-
-    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID, int flightAmount)
-    {
-        bool available = true;
-
-        for (int i = 1; i <= flightAmount; i++)
-        {
-            foreach (FlightModel flight in _flights)
-            {
-                if (flight.Plane == planeID)
-                {
-                    string format = "dd-MM-yyyy HH:mm";
-                    DateTime flightDeparture = DateTime.ParseExact(flight.DepartureTime, format, System.Globalization.CultureInfo.InvariantCulture);
-                    DateTime flightArrival = DateTime.ParseExact(flight.ArrivalTime, format, System.Globalization.CultureInfo.InvariantCulture);
-
-                    if (departure >= flightDeparture && departure <= flightArrival)
-                    {
-                        available = false;
-                    }
-
-                    if (arrival >= flightDeparture && arrival <= flightArrival)
-                    {
-                        available = false;
-                    }
-                }
-            }
-
-            departure.AddDays(1);
-            arrival.AddDays(1);
-        }
-        return available;
-    }
-
-    public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID)
-    {
-        return IsPlaneAvailable(departure, arrival, planeID, 1);
+        //Update the flight overview with new flights
+        FlightOverview._flights = GetAvailableFlights();
+        return true;
     }
 
     public bool DoesFlightExist(int flightID)
@@ -300,5 +242,37 @@ public class FlightLogic
 
         //else return true
         return true;
+    }
+
+    public bool IsValidDateFormat(string input)
+    {
+        // Check if date has correct format
+        string format = "dd-MM-yyyy HH:mm";
+        DateTime parsedDate;
+        //return true or false
+        return DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out parsedDate);
+    }
+
+    public bool IsValidDate(string input)
+    {
+        //check if date is not in the past
+        DateTime now = DateTime.Now;
+        DateTime date = DateTime.ParseExact(input, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+
+        if (date < now) return false;
+        return true;
+    }
+
+    public bool IsValidTimeZone(string timezone)
+    {
+        try
+        {
+            TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            return true;
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            return false;
+        }
     }
 }
