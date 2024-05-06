@@ -30,6 +30,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
             if (AccountsLogic.CurrentAccount.Role == "admin")
             {
                 options.Add("Create new flight(s)");
+                options.Add("Delete flight(s)");
                 options.Add("Reservations overview");
             }
         }
@@ -85,15 +86,18 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     AddFlight.Start();
                     break;
                 case 5:
-                    AdminReservationOverview.Start();
+                    RemoveFlight.Start();
                     break;
                 case 6:
-                    FlightOverview.Start();
+                    AdminReservationOverview.Start();
                     break;
                 case 7:
-                    AirportInfo.Start();
+                    FlightOverview.Start();
                     break;
                 case 8:
+                    AirportInfo.Start();
+                    break;
+                case 9:
                     Environment.Exit(1);
                     break;
             }
