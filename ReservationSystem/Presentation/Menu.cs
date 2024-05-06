@@ -25,7 +25,7 @@ static class Menu
             if (AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
             {
                 Console.WriteLine("M | Make Flight");
-
+                Console.WriteLine("D | Delete Flight");
             }
 
             if (AccountsLogic.CurrentAccount != null)
@@ -45,6 +45,10 @@ static class Menu
             if (input == "m" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
             {
                 AddFlight.Start();
+            }
+            else if (input == "d" && AccountsLogic.CurrentAccount != null && AccountsLogic.CurrentAccount.Role == "admin")
+            {
+                RemoveFlight.Start();
             }
             if (input == "l" && AccountsLogic.CurrentAccount != null)
             {

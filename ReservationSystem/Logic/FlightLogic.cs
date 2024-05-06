@@ -124,6 +124,23 @@ public class FlightLogic
         return newFlight;
     }
 
+    public static bool RemoveFlight(int flightid)
+    {
+        List<FlightModel> _flights = FlightsAccess.LoadAllFlights();
+        bool removed = false;
+        foreach (FlightModel x in _flights)
+        {
+            if (x.Id == flightid)
+            {
+                _flights.Remove(x);
+                removed = true;
+                break;
+            }
+        }
+        FlightsAccess.WriteAll(_flights);
+        return removed;
+    }
+
     public bool IsPlaneAvailable(DateTime departure, DateTime arrival, int planeID, int flightAmount)
     {
         bool available = true;
