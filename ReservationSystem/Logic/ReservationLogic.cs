@@ -96,7 +96,7 @@ public class ReservationLogic
         return ReturnReservation;
     }
 
-    public static bool RemoveReservation(string ReservationCode)
+    public bool RemoveReservation(string ReservationCode)
     {
         // load in all reservations
         List<ReservationModel> _reservations = ReservationAccess.LoadAll();
@@ -116,5 +116,17 @@ public class ReservationLogic
         // after removing reservation update json
         ReservationAccess.WriteAll(_reservations);
         return removed;
+    }
+
+    public List<ReservationModel> GetReservationsForPage(int page, int pageSize)
+    {
+        //Load in all reservations
+        List<ReservationModel> reservations = ReservationAccess.LoadAll();
+        //Get the starting index
+        int startIndex = (page - 1) * pageSize;
+        //Get the size of the sublist
+        int count = Math.Min(pageSize, reservations.Count - startIndex);
+        // return sublist
+        return reservations.GetRange(startIndex, count);
     }
 }
