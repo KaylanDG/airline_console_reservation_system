@@ -91,7 +91,7 @@ public static class ListOfReservations
     {
         Console.WriteLine("\nWhich reservation number to you want to cancel: ");
         string ResCancel = Console.ReadLine();
-        bool CancBool = ReservationLogic.RemoveReservation(ResCancel);
+        bool CancBool = _reservationLogic.RemoveReservation(ResCancel);
         if (CancBool == false)
         {
             // No reservation code gevonden.
@@ -104,7 +104,7 @@ public static class ListOfReservations
                 Console.WriteLine("Can you give a valid reservation code");
                 Console.WriteLine("Reservation code: ");
                 ResCancel = Console.ReadLine();
-                CancBool = ReservationLogic.RemoveReservation(ResCancel);
+                CancBool = _reservationLogic.RemoveReservation(ResCancel);
             }
         }
         Console.WriteLine($"Reservation with reservation code {ResCancel}");
