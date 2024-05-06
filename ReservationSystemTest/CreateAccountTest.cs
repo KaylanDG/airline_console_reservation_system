@@ -122,6 +122,7 @@ public class CreateAccountTest
             "abc", //invalid
             "abcdfeg", //invalid
             "abcdfegh", //valid
+            "abc dfegh", //invalid
         };
 
         List<bool> outcomes = new List<bool>()
@@ -130,6 +131,7 @@ public class CreateAccountTest
             false,
             false,
             true,
+            false,
         };
 
         for (int i = 0; i < passwords.Count; i++)
