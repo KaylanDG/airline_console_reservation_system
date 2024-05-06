@@ -7,13 +7,19 @@ static class AirportInfo
         Console.WriteLine("╔═══════════════════════════════════╗");
         Console.WriteLine("║         Contact Information       ║");
         Console.WriteLine("╠═══════════════════════════════════╣");
-        Console.WriteLine("║  Airport Name: Rotterdam Airlines ║");
-        Console.WriteLine("║   Address: Driemanssteeweg 107,   ║");
+        Console.WriteLine("║ Airport Name: Rotterdam Airlines  ║");
+        Console.WriteLine("║ Address: Driemanssteeweg 107,     ║");
         Console.WriteLine("║          3011 WN Rotterdam,       ║");
         Console.WriteLine("║          Netherlands              ║");
-        Console.WriteLine("║     Phone: +31 10 446 3444        ║");
+        Console.WriteLine("║ Phone: +31 10 446 3444            ║");
         Console.WriteLine("║ Email: rotterdamairlines@gmail.com║");
         Console.WriteLine("╚═══════════════════════════════════╝");
+
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
+
+        Console.Clear();
+        MainMenu.Start();
     }
 
 }

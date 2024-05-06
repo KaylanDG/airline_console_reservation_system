@@ -8,7 +8,12 @@ public static class RemoveFlight
     {
         Console.Clear();
         Console.WriteLine("Do you want to delete one flight or multiple flights? (one/multiple)");
-        string answer = Console.ReadLine();
+        string answer = Console.ReadLine().ToLower();
+        while (answer != "one" && answer != "multiple")
+        {
+            Console.WriteLine("Invalid input");
+            answer = Console.ReadLine().ToLower();
+        }
 
         if (answer.ToLower() == "one")
         {
@@ -17,10 +22,6 @@ public static class RemoveFlight
         else if (answer.ToLower() == "multiple")
         {
             DeleteMultipleFlights();
-        }
-        else
-        {
-            Console.WriteLine("Invalid input");
         }
     }
 
@@ -59,6 +60,10 @@ public static class RemoveFlight
         {
             Console.WriteLine($"Invalid input: {flightIdString}");
         }
+
+        Console.WriteLine("\nPress any key to return to main menu..");
+        Console.ReadKey(true);
+        MainMenu.Start();
     }
 
     private static void DeleteMultipleFlights()
@@ -85,5 +90,10 @@ public static class RemoveFlight
                 Console.WriteLine($"Invalid input: {id}");
             }
         }
+
+        Console.WriteLine("\nPress any key to return to main menu..");
+        Console.ReadKey(true);
+        MainMenu.Start();
     }
+
 }

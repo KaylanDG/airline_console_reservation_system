@@ -14,9 +14,4 @@ public class SeatModel
         PricePerMinute = pricePerMin;
     }
 
-    public override string ToString()
-    {
-        string seat = $"╔════╗\n║{SeatNumber}║\n╚════╝";
-        return seat;
-    }
 }

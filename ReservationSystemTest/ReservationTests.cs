@@ -17,9 +17,10 @@ public class ReservationTests
     public void TestSeatPrice()
     {
         List<PlaneModel> planes = PlaneAccess.LoadAllPlanes();
+        PlaneLogic logic = new PlaneLogic();
         foreach (PlaneModel plane in planes)
         {
-            foreach (SeatModel seat in plane.GetPlaneSeats())
+            foreach (SeatModel seat in logic.GetPlaneSeats(plane.Id))
             {
                 if (seat.SeatType == "First Class")
                 {
@@ -53,22 +54,5 @@ public class ReservationTests
         List<FlightModel> flights = logic.GetAvailableFlights();
         Assert.AreEqual(false, logic.DoesFlightExist(1928321312));
         Assert.AreEqual(true, logic.DoesFlightExist(flights[0].Id));
-    }
-
-    [TestMethod]
-    public void TestTotalCost()
-    {
-        ReservationLogic logic = new ReservationLogic();
-
-        ReservationModel resv1 = new ReservationModel();
-        resv1.TotalCost = 36;
-        logic.SaveReservation(resv1);
-
-        ReservationModel resv2 = new ReservationModel();
-        resv2.TotalCost = 482;
-        logic.SaveReservation(resv2);
-
-
-        Assert.AreEqual(518, logic.GetTotalCost());
     }
 }

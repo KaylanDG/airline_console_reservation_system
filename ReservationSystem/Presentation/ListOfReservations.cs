@@ -1,16 +1,50 @@
 public static class ListOfReservations
 {
+    private static FlightLogic _flightlogic = new FlightLogic();
+    private static ReservationLogic _reservationLogic = new ReservationLogic();
+    private static List<ReservationModel> _listReserv;
+
     public static void Start()
     {
+        _listReserv = _reservationLogic.ListOfReservationMethod();
+
         Console.Clear();
-        FlightLogic flightlogic = new FlightLogic();
-        ReservationLogic Reserv = new ReservationLogic();
-        List<ReservationModel> ListReserv = Reserv.ListOfReservationMethod();
-        foreach (ReservationModel x in ListReserv)
+        if (_listReserv.Count == 0)
+        {
+            Console.WriteLine("You have no reservations.");
+            Console.WriteLine("\nPress any key to return..");
+            Console.ReadKey(true);
+            MainMenu.Start();
+        }
+        else
+        {
+            List<string> options = new List<string>() { "Cancel reservation", "Back to menu" };
+            string prompt = "\nSelect an option from the menu\n";
+
+            Menu menu = new Menu(options, prompt, ReservationOverview);
+            int selectedOption = menu.Run();
+
+            switch (selectedOption)
+            {
+                case 0:
+                    CancelReservation();
+                    break;
+                case 1:
+                    Console.Clear();
+                    MainMenu.Start();
+                    break;
+            }
+
+        }
+    }
+
+    private static void ReservationOverview()
+    {
+        foreach (ReservationModel x in _listReserv)
         {
             string space = "";
             space = new string(' ', 30 - x.ReservationCode.Length);
-            FlightModel flight = flightlogic.GetById(x.FlightId);
+            FlightModel flight = _flightlogic.GetById(x.FlightId);
 
             // Start of block
             string top = new string('─', 50);
@@ -51,47 +85,33 @@ public static class ListOfReservations
             // End of block
             Console.WriteLine($"└{top}┘");
         }
+    }
 
-        if (ListReserv.Count == 0)
+    private static void CancelReservation()
+    {
+        Console.WriteLine("\nWhich reservation number to you want to cancel: ");
+        string ResCancel = Console.ReadLine();
+        bool CancBool = _reservationLogic.RemoveReservation(ResCancel);
+        if (CancBool == false)
         {
-            Console.WriteLine("You have no reservations.");
-        }
-        else
-        {
-            Console.WriteLine("C | Cancel reservation");
-            Console.WriteLine("B | Back to menu");
-            string choice = Console.ReadLine().ToLower();
+            // No reservation code gevonden.
+            // Loop door totdat een code is gevonden met die reservatie code
+            // (Geen cancel knop in deze functie)
 
-            while (choice != "c" && choice != "b")
+            while (CancBool == false)
             {
-                Console.WriteLine("C | Cancel reservation");
-                Console.WriteLine("B | Back to menu");
-                choice = Console.ReadLine().ToLower();
-            }
-
-            if (choice == "c")
-            {
-                Console.WriteLine("Which reservation number to you want to cancel: ");
-                string ResCancel = Console.ReadLine();
-                bool CancBool = ReservationLogic.RemoveReservation(ResCancel);
-                if (CancBool == false)
-                {
-                    // No reservation code gevonden.
-                    // Loop door totdat een code is gevonden met die reservatie code
-                    // (Geen cancel knop in deze functie)
-
-                    while (CancBool == false)
-                    {
-                        Console.WriteLine("\nThat's no reservation code.");
-                        Console.WriteLine("Can you give a valid reservation code");
-                        Console.WriteLine("Reservation code: ");
-                        ResCancel = Console.ReadLine();
-                        CancBool = ReservationLogic.RemoveReservation(ResCancel);
-                    }
-                }
-                Console.WriteLine($"Reservation with reservation code {ResCancel}");
-                Console.WriteLine("Succesfully cancelled.");
+                Console.WriteLine("\nThat's no reservation code.");
+                Console.WriteLine("Can you give a valid reservation code");
+                Console.WriteLine("Reservation code: ");
+                ResCancel = Console.ReadLine();
+                CancBool = _reservationLogic.RemoveReservation(ResCancel);
             }
         }
+        Console.WriteLine($"Reservation with reservation code {ResCancel}");
+        Console.WriteLine("Succesfully cancelled.");
+        Console.WriteLine("\nPress any key to return..");
+
+        Console.ReadKey(true);
+        MainMenu.Start();
     }
 }
