@@ -112,7 +112,7 @@ public class AccountsLogic
 
     public bool ValidPhone(string phone)
     {
-        if (phone[0] == '0' && phone.Length == 10 && phone.All(char.IsDigit))
+        if (phone.Length == 10 && phone.All(char.IsDigit))
         {
             return true;
         }
