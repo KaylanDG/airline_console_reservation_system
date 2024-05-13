@@ -13,16 +13,27 @@ public static class Reservation
         _reservationLogic = new ReservationLogic();
         _planeLogic = new PlaneLogic();
 
-        int flightID = FlightOverview.SelectFlight();
-
-        if (flightID > 0)
+        if (_flightLogic.GetAvailableFlights().Count <= 0)
         {
-            _flight = _flightLogic.GetById(flightID);
-            _flightSeats = _flightLogic.GetFlightSeats(_flight);
-
-            ReservationProcess();
-            ReservationMenu();
+            Console.Clear();
+            Console.WriteLine("\nThere are currently no flights available.");
+            Console.WriteLine("\nPress any key to return to main menu..");
+            Console.ReadKey(true);
             MainMenu.Start();
+        }
+        else
+        {
+            int flightID = FlightOverview.SelectFlight();
+
+            if (flightID > 0)
+            {
+                _flight = _flightLogic.GetById(flightID);
+                _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+                ReservationProcess();
+                ReservationMenu();
+                MainMenu.Start();
+            }
         }
     }
 
