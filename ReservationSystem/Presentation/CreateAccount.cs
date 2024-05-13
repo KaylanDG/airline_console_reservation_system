@@ -18,6 +18,14 @@ public class CreateAccount
 
             Console.WriteLine("\nPlease enter your Full Name");
             string fullName = Console.ReadLine();
+            if (!accountsLogic.ValidName(fullName))
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nIncorrect Full name format.\n");
+                Console.ResetColor();
+                break;
+            }
 
             Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
