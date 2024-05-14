@@ -31,6 +31,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
             {
                 options.Add("Create new flight(s)");
                 options.Add("Delete flight(s)");
+                options.Add("edit flight(s)");
                 options.Add("Reservations overview");
             }
         }
@@ -89,15 +90,18 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     RemoveFlight.Start();
                     break;
                 case 6:
-                    AdminReservationOverview.Start();
+                    EditFlight.Start();
                     break;
                 case 7:
-                    FlightOverview.Start();
+                    AdminReservationOverview.Start();
                     break;
                 case 8:
-                    AirportInfo.Start();
+                    FlightOverview.Start();
                     break;
                 case 9:
+                    AirportInfo.Start();
+                    break;
+                case 10:
                     Environment.Exit(1);
                     break;
             }
