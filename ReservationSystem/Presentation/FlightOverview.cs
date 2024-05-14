@@ -13,9 +13,10 @@ static class FlightOverview
         _options = new List<string>() { "Go back", "Search for flights", };
         if (AccountsLogic.CurrentAccount != null) _options.Add("Make reservation");
         _page = 1;
-        _pageAmount = (int)Math.Ceiling((double)_flights.Count / 10);
+
 
         _flights = _flightLogic.GetFlightsForPage(_page, 10);
+        _pageAmount = (int)Math.Ceiling((double)_flights.Count / 10);
         ConsoleKey pressedKey = default;
         while (pressedKey != ConsoleKey.Enter)
         {
@@ -138,8 +139,11 @@ static class FlightOverview
     {
         ConsoleKey pressedKey = default;
         int selectedFlight = 0;
+        _page = 1;
+        _pageAmount = (int)Math.Ceiling((double)_flights.Count / 10);
         while (pressedKey != ConsoleKey.Enter)
         {
+            _flights = _flightLogic.GetFlightsForPage(_page, 10);
             Console.Clear();
             ShowOverview(selectedFlight);
             Console.WriteLine("\nSelect a flight.\nUse the arrow keys to navigate, press enter to select a flight.");
@@ -156,6 +160,22 @@ static class FlightOverview
             {
                 selectedFlight++;
                 if (selectedFlight == _flights.Count) selectedFlight = 0;
+            }
+            else if (pressedKey == ConsoleKey.RightArrow)
+            {
+                if (_page < _pageAmount)
+                {
+                    _page++;
+                }
+                _flights = _flightLogic.GetFlightsForPage(_page, 10);
+            }
+            else if (pressedKey == ConsoleKey.LeftArrow)
+            {
+                if (_page > 1)
+                {
+                    _page--;
+                }
+                _flights = _flightLogic.GetFlightsForPage(_page, 10);
             }
         }
 
