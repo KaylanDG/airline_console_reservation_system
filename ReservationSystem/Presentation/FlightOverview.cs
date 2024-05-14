@@ -4,12 +4,18 @@ static class FlightOverview
     static private int _selectedOption = 0;
     static private List<string> _options;
     static public List<FlightModel> _flights = _flightLogic.GetAvailableFlights();
+    private static List<ReservationModel> _reservations;
+    private static int _page;
 
+    private static int _pageAmount;
     public static void Start()
     {
-        _options = new List<string>() { "Go back", "Search for flights" };
+        _options = new List<string>() { "Go back", "Search for flights", };
         if (AccountsLogic.CurrentAccount != null) _options.Add("Make reservation");
+        _page = 1;
+        _pageAmount = (int)Math.Ceiling((double)_flights.Count / 10);
 
+        _flights = _flightLogic.GetFlightsForPage(_page, 10);
         ConsoleKey pressedKey = default;
         while (pressedKey != ConsoleKey.Enter)
         {
@@ -30,6 +36,22 @@ static class FlightOverview
                 _selectedOption++;
                 if (_selectedOption == _options.Count) _selectedOption = 0;
             }
+            else if (pressedKey == ConsoleKey.RightArrow)
+            {
+                if (_page < _pageAmount)
+                {
+                    _page++;
+                }
+                _flights = _flightLogic.GetFlightsForPage(_page, 10);
+            }
+            else if (pressedKey == ConsoleKey.LeftArrow)
+            {
+                if (_page > 1)
+                {
+                    _page--;
+                }
+                _flights = _flightLogic.GetFlightsForPage(_page, 10);
+            }
         }
 
         if (_selectedOption == 0)
@@ -43,6 +65,7 @@ static class FlightOverview
         {
             SearchForFlight();
         }
+
         else if (_selectedOption == 2)
         {
             Reservation.Start();
@@ -74,6 +97,7 @@ static class FlightOverview
 
                 Console.ResetColor();
             }
+            Console.WriteLine($"{_page}/{_pageAmount}");
         }
         else
         {
@@ -137,4 +161,5 @@ static class FlightOverview
 
         return _flights[selectedFlight].Id;
     }
+
 }
