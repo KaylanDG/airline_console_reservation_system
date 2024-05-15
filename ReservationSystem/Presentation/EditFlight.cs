@@ -7,10 +7,20 @@ public static class EditFlight
     private static FlightModel flight;
     public static void Start()
     {
-        FlightOverview.ShowOverview();
-        Console.WriteLine("which flight do you want to change (Enter the ID)?");
-        int flightid = Convert.ToInt32(Console.ReadLine());
-        flight = _flightLogic.GetById(flightid);
+        Console.Clear();
+        while (flight == default)
+        {
+            FlightOverview.ShowOverview();
+            Console.WriteLine("which flight do you want to change (Enter the ID)?");
+            int flightid = Convert.ToInt32(Console.ReadLine());
+            flight = _flightLogic.GetById(flightid);
+            if (flight == default)
+            {
+                Console.WriteLine("There isn't an flight associated with the flight number you entered please try again.");
+            }
+        }
+        Console.Clear();
+
         List<string> options = new List<string>()
         {
             "Change Flight Number",
@@ -124,7 +134,11 @@ public static class EditFlight
             NewDepartureTime = Console.ReadLine();
         }
 
+
         flight.DepartureTime = NewDepartureTime;
+        DateTime departure = DateTime.ParseExact(NewDepartureTime, "dd-MM-yyyy HH:mm", null);
+        DateTime arrival = departure.AddMinutes(flight.FlightDuration);
+        flight.ArrivalTime = arrival.ToString("dd-MM-yyyy HH:mm");
         _flightLogic.UpdateList(flight);
         Console.WriteLine("Succesfully changed the departure time");
     }
@@ -141,6 +155,9 @@ public static class EditFlight
         }
 
         flight.FlightDuration = NewFlightDuration;
+        DateTime departure = DateTime.ParseExact(flight.DepartureTime, "dd-MM-yyyy HH:mm", null);
+        DateTime arrival = departure.AddMinutes(NewFlightDuration);
+        flight.ArrivalTime = arrival.ToString("dd-MM-yyyy HH:mm");
         _flightLogic.UpdateList(flight);
         Console.WriteLine("Succesfully changed the flight duration");
     }
