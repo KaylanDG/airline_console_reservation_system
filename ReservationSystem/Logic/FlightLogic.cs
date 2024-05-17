@@ -293,16 +293,13 @@ public class FlightLogic
         }
     }
 
-    public List<FlightModel> GetFlightsForPage(int page, int pageSize)
+    public List<FlightModel> GetFlightsForPage(int page, int pageSize, List<FlightModel> flights)
     {
-        //Load in all Flights
-        List<FlightModel> _flights2 = new List<FlightModel>();
-        _flights2 = GetAvailableFlights();
         //Get the starting index
         int startIndex = (page - 1) * pageSize;
         //Get the size of the sublist
-        int count = Math.Min(pageSize, _flights2.Count - startIndex);
+        int count = Math.Min(pageSize, flights.Count - startIndex);
         // return sublist
-        return _flights2.GetRange(startIndex, count);
+        return flights.GetRange(startIndex, count);
     }
 }
