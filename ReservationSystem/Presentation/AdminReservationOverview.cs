@@ -11,25 +11,53 @@ public static class AdminReservationOverview
         _selectedReservation = 0;
         _reservationLogic = new ReservationLogic();
         _flightLogic = new FlightLogic();
-        _reservations = _reservationLogic.GetReservationsForPage(_page, _pageSize);
+        _reservations = _reservationLogic.GetReservationsForPage(ReservationAccess.LoadAll(), _page, _pageSize);
+        ReservationOverview();
+    }
 
+    private static void ReservationOverview()
+    {
         // Get the total page amount
         int pageAmount = (int)Math.Ceiling((double)ReservationAccess.LoadAll().Count / _pageSize);
 
         ConsoleKey pressedKey = default;
-        while (pressedKey != ConsoleKey.C && pressedKey != ConsoleKey.Backspace)
+        bool stopMenu = false;
+        while (!stopMenu)
         {
             Console.Clear();
             Console.WriteLine("\nReservation overview");
             Console.WriteLine("Press the upp/down arrow to navigate the overview");
             Console.WriteLine("Press the left/right arrow to switch pages");
             Console.WriteLine("Press the C key to cancel a reservation");
+            Console.WriteLine("Press the S key to search reservations");
+            Console.WriteLine("Press the A key to show all reservations");
             Console.WriteLine("Press backspace to return to the menu\n");
 
+            if (_reservations.Count > 0)
+            {
+                Console.WriteLine($"Page: {_page}/{pageAmount}\n");
 
-            Console.WriteLine($"Page: {_page}/{pageAmount}\n");
-            ReservationOverview();
-            ReservationDetails();
+                Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} | {4,-20} |", "ID", "Reservation Code", "User ID", "Passengers", "Reservation Date");
+                Console.WriteLine(new string('-', 89));
+
+                for (int i = 0; i < _reservations.Count; i++)
+                {
+                    ReservationModel reservation = _reservations[i];
+                    if (i == _selectedReservation)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
+                    }
+                    Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} | {4,-20} |", reservation.Id, reservation.ReservationCode, reservation.UserId, reservation.Passengers.Count, reservation.ReservationDate);
+                    Console.ResetColor();
+                }
+                Console.WriteLine(new string('-', 89));
+                ReservationDetails();
+            }
+            else
+            {
+                Console.WriteLine("\nNo reservations found.\n");
+            }
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             pressedKey = keyInfo.Key;
@@ -48,46 +76,38 @@ public static class AdminReservationOverview
             {
                 _page--;
                 if (_page < 1) _page = 1;
-                _reservations = _reservationLogic.GetReservationsForPage(_page, _pageSize);
+                _reservations = _reservationLogic.GetReservationsForPage(_reservations, _page, _pageSize);
                 _selectedReservation = 0;
             }
             else if (pressedKey == ConsoleKey.RightArrow)
             {
                 _page++;
                 if (_page > pageAmount) _page = pageAmount;
-                _reservations = _reservationLogic.GetReservationsForPage(_page, _pageSize);
+                _reservations = _reservationLogic.GetReservationsForPage(_reservations, _page, _pageSize);
                 _selectedReservation = 0;
             }
-        }
 
-        if (pressedKey == ConsoleKey.Backspace)
-        {
-            MainMenu.Start();
-        }
-        else
-        {
-            CancelReservation();
-        }
-    }
-
-
-    private static void ReservationOverview()
-    {
-        Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} | {4,-20} |", "ID", "Reservation Code", "User ID", "Passengers", "Reservation Date");
-        Console.WriteLine(new string('-', 89));
-
-        for (int i = 0; i < _reservations.Count; i++)
-        {
-            ReservationModel reservation = _reservations[i];
-            if (i == _selectedReservation)
+            else if (pressedKey == ConsoleKey.Backspace)
             {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.White;
+                stopMenu = true;
+                MainMenu.Start();
             }
-            Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} | {4,-20} |", reservation.Id, reservation.ReservationCode, reservation.UserId, reservation.Passengers.Count, reservation.ReservationDate);
-            Console.ResetColor();
+            else if (pressedKey == ConsoleKey.C && _reservations.Count > 0)
+            {
+                stopMenu = true;
+                CancelReservation();
+            }
+            else if (pressedKey == ConsoleKey.S)
+            {
+                stopMenu = true;
+                SearchReservations();
+            }
+            else if (pressedKey == ConsoleKey.A)
+            {
+                stopMenu = true;
+                Start();
+            }
         }
-        Console.WriteLine(new string('-', 89));
     }
 
     private static void ReservationDetails()
@@ -156,4 +176,51 @@ public static class AdminReservationOverview
         MainMenu.Start();
     }
 
+    private static void SearchReservations()
+    {
+        List<string> options = new List<string>() {
+            "Reservation Code",
+            "Reservation Date",
+            "User ID"
+        };
+
+        string prompt = "Choose what you want to search.";
+        Menu menu = new Menu(options, prompt);
+        int selectedOption = menu.Run();
+
+        Console.Clear();
+        if (selectedOption == 0)
+        {
+            Console.WriteLine("Enter a Reservation code:");
+            string resvCode = Console.ReadLine();
+            _reservations = _reservationLogic.SearchReservations<string>("reservationCode", resvCode);
+        }
+        else if (selectedOption == 1)
+        {
+            Console.WriteLine("Enter a Reservation date (dd-MM-yyyy):");
+            string resvDate = Console.ReadLine();
+            while (!_reservationLogic.IsValidDateFormat(resvDate))
+            {
+                Console.WriteLine("Invalid date. Please enter a date with the correct format (dd-MM-yyyy):");
+                resvDate = Console.ReadLine();
+            }
+
+            _reservations = _reservationLogic.SearchReservations<string>("reservationDate", resvDate);
+
+        }
+        else if (selectedOption == 2)
+        {
+            Console.WriteLine("Enter a User ID:");
+            int userId;
+            while (!int.TryParse(Console.ReadLine(), out userId))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid user ID:");
+            }
+
+            _reservations = _reservationLogic.SearchReservations<int>("userId", userId);
+        }
+
+        _selectedReservation = 0;
+        ReservationOverview();
+    }
 }
