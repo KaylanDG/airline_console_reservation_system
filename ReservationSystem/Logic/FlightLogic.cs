@@ -292,4 +292,14 @@ public class FlightLogic
             return false;
         }
     }
+
+    public List<FlightModel> GetFlightsForPage(int page, int pageSize, List<FlightModel> flights)
+    {
+        //Get the starting index
+        int startIndex = (page - 1) * pageSize;
+        //Get the size of the sublist
+        int count = Math.Min(pageSize, flights.Count - startIndex);
+        // return sublist
+        return flights.GetRange(startIndex, count);
+    }
 }
