@@ -6,6 +6,7 @@ public static class Reservation
     private static ReservationModel _reservation;
     private static FlightModel _flight;
     private static List<SeatModel> _flightSeats;
+    private static List<PassengerModel> _passengers;
 
     public static void Start()
     {
@@ -39,31 +40,39 @@ public static class Reservation
 
     public static void ReservationProcess()
     {
-        int passengerAmount = PassengerAmount();
+        if (_passengers == null)
+        {
+            int passengerAmount = PassengerAmount();
+            _passengers = new List<PassengerModel>();
+
+            for (int i = 0; i < passengerAmount; i++)
+            {
+                PassengerModel passenger = new PassengerModel(i + 1);
+                Console.Clear();
+                Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
+                string passengerName = Console.ReadLine();
+                while (passengerName == "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nPlease enter your name.\n");
+                    Console.ResetColor();
+                    passengerName = Console.ReadLine();
+                }
+                passenger.FullName = passengerName!;
+                _passengers.Add(passenger);
+            }
+        }
+
         _reservation = new ReservationModel
         {
             FlightId = _flight.Id,
             UserId = AccountsLogic.CurrentAccount!.Id
         };
 
-        for (int i = 0; i < passengerAmount; i++)
+        foreach (PassengerModel passenger in _passengers)
         {
-            PassengerModel passenger = new PassengerModel(i + 1);
 
-            Console.Clear();
-            Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
-            string passengerName = Console.ReadLine();
-            while (passengerName == "")
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nPlease enter your name.\n");
-                Console.ResetColor();
-                passengerName = Console.ReadLine();
-            }
-            passenger.FullName = passengerName!;
-
-
-            Console.WriteLine($"\nSelect a seat for passenger {i + 1}\n");
+            Console.WriteLine($"\nSelect a seat for {passenger.FullName}\n");
             passenger.SeatNumber = SeatSelection();
 
             ServiceModel extraLuggage = ExtraLuggage();
@@ -72,11 +81,11 @@ public static class Reservation
                 passenger.AdditionalServices.Add(extraLuggage);
             }
 
-            _reservation.Passengers.Add(passenger);
             _reservation.TotalCost += _flightLogic.GetSeatPrice(passenger.SeatNumber, _flight);
             _flightSeats = _flightLogic.UpdateFlightSeats(passenger.SeatNumber, _flightSeats);
         }
 
+        _reservation.Passengers = _passengers;
     }
 
 
@@ -344,6 +353,61 @@ public static class Reservation
             {
                 _flight = _flightLogic.GetById(flightID);
                 _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+                bool Continue = false;
+                while (!Continue)
+                {
+                    string passengerInfo = "Passengers:\n";
+
+                    for (int i = 1; i <= _passengers.Count; i++)
+                    {
+                        PassengerModel passenger = _passengers[i - 1];
+                        passengerInfo += $"Passenger {i}: {passenger.FullName}\n";
+                    }
+
+                    Menu menu = new Menu(new List<string> { "Add passenger", "Remove passenger", "Continue" }, passengerInfo);
+                    int menuOption = menu.Run();
+
+                    if (menuOption == 0)
+                    {
+                        PassengerModel passenger = new PassengerModel(_passengers.Count - 1);
+                        Console.WriteLine("\nEnter the fullname of the new passenger:");
+                        string fullName = Console.ReadLine();
+                        while (fullName == "")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nPlease enter your name.\n");
+                            Console.ResetColor();
+                            fullName = Console.ReadLine();
+                        }
+                        passenger.FullName = fullName;
+                        _passengers.Add(passenger);
+
+                    }
+                    else if (menuOption == 1)
+                    {
+                        if (_passengers.Count == 1)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\nYou cant delete all Passengers.");
+                            Console.WriteLine("\nPress any key to return..");
+                            Console.ReadKey(true);
+                        }
+                        else
+                        {
+                            List<string> names = new List<string>();
+                            foreach (PassengerModel p in _passengers) names.Add($" {p.FullName}");
+
+                            Menu removePassenger = new Menu(names, "Choose which passenger you want to remove.");
+                            int passengerIndex = removePassenger.Run();
+                            _passengers.RemoveAt(passengerIndex);
+                        }
+                    }
+                    else if (menuOption == 2)
+                    {
+                        Continue = true;
+                    }
+                }
 
                 ReservationProcess();
                 ReservationMenu(true);
