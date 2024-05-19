@@ -17,5 +17,7 @@ public class PlaneModel
     [JsonPropertyName("first_class_seats")]
     public int FirstClassSeats { get; set; }
 
+    [JsonPropertyName("luggage_amount")]
+    public int LuggageAmount { get; set; }
 
 }
