@@ -302,4 +302,26 @@ public class FlightLogic
         // return sublist
         return flights.GetRange(startIndex, count);
     }
+
+    public int MaxLuggageAmount(int flightID)
+    {
+        FlightModel flight = GetById(flightID);
+        List<ReservationModel> flightResevations = GetFlightReservations(flight);
+        PlaneModel plane = GetPlaneByID(flight.Plane);
+        int maxLuggageAmount = plane.LuggageAmount;
+
+        foreach (ReservationModel reservation in flightResevations)
+        {
+            foreach (PassengerModel passenger in reservation.Passengers)
+            {
+                if (passenger.AdditionalServices.Count > 0)
+                {
+                    maxLuggageAmount -= passenger.AdditionalServices.Sum(x => x.Quantity);
+                }
+            }
+        }
+
+
+        return maxLuggageAmount;
+    }
 }

@@ -4,20 +4,23 @@
         "airline": "Rotterdam Airlines",
         "name": "Boeing 737",
         "economy_seats": 192,
-        "first_class_seats": 0
+        "first_class_seats": 0,
+        "luggage_amount": 132
     },
     {
         "id": 2,
         "airline": "Rotterdam Airlines",
         "name": "Boeing 787",
         "economy_seats": 180,
-        "first_class_seats": 54
+        "first_class_seats": 54,
+        "luggage_amount": 400
     },
     {
         "id": 3,
         "airline": "Rotterdam Airlines",
         "name": "Airbus 330",
         "economy_seats": 243,
-        "first_class_seats": 36
+        "first_class_seats": 36,
+        "luggage_amount": 400
     }
 ]

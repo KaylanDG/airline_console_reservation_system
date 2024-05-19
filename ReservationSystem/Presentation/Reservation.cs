@@ -466,6 +466,7 @@ public static class Reservation
         if (extraLuggage == "y")
         {
             Console.Clear();
+            int maxLuggageAmount = _flightLogic.MaxLuggageAmount(_flight.Id);
             int extraLuggageAmount = 0;
             ConsoleKey pressedKey = default;
 
@@ -481,6 +482,7 @@ public static class Reservation
                 if (pressedKey == ConsoleKey.UpArrow)
                 {
                     extraLuggageAmount++;
+                    if (extraLuggageAmount > maxLuggageAmount) extraLuggageAmount = maxLuggageAmount;
                 }
                 else if (pressedKey == ConsoleKey.DownArrow)
                 {
