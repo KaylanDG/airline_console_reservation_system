@@ -10,14 +10,9 @@ public static class EditFlight
         Console.Clear();
         while (flight == default)
         {
-            FlightOverview.ShowOverview();
             Console.WriteLine("which flight do you want to change (Enter the ID)?");
-            int flightid = Convert.ToInt32(Console.ReadLine());
-            flight = _flightLogic.GetById(flightid);
-            if (flight == default)
-            {
-                Console.WriteLine("There isn't an flight associated with the flight number you entered please try again.");
-            }
+            int flightID = FlightOverview.SelectFlight();
+            flight = _flightLogic.GetById(flightID);
         }
         Console.Clear();
 
@@ -65,6 +60,8 @@ public static class EditFlight
             EditFlight.ChangePlaneModify();
         }
 
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
         MainMenu.Start();
     }
 
@@ -118,7 +115,7 @@ public static class EditFlight
 
     public static void DepartureTimeModify()
     {
-        Console.WriteLine("What do you want the new departure time to be?");
+        Console.WriteLine("What do you want the new departure time to be (dd-MM-yyyy HH:mm)?");
         string NewDepartureTime = Console.ReadLine();
 
 
@@ -180,7 +177,3 @@ public static class EditFlight
     }
 
 }
-
-
-
-//   flight number, from, destination, departure_time, flight duration, plane 
