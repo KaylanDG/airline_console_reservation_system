@@ -138,6 +138,8 @@ static class FlightOverview
 
     public static int SelectFlight()
     {
+        if (_flights == null) _flights = _flightLogic.GetAvailableFlights();
+
         ConsoleKey pressedKey = default;
         int selectedFlight = 0;
         _page = 1;
