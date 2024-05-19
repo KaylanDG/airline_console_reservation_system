@@ -27,6 +27,7 @@ public static class RemoveFlight
 
     private static void DeleteOneFlight()
     {
+        FlightOverview.ShowOverview();
         Console.WriteLine("Enter the ID of the flight you want to delete:");
         string flightIdString = Console.ReadLine();
 
@@ -68,6 +69,7 @@ public static class RemoveFlight
 
     private static void DeleteMultipleFlights()
     {
+        FlightOverview.ShowOverview();
         Console.WriteLine("Enter the ID(s) of the flight(s) you want to delete (comma-separated):");
         string[] flightIds = Console.ReadLine().Split(',');
 
