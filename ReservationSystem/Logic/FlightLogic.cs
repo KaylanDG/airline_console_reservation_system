@@ -351,4 +351,35 @@ public class FlightLogic
                 return "Invalid time zone";
         }
     }
+    public List<FlightModel> GetFlightsForPage(int page, int pageSize, List<FlightModel> flights)
+    {
+        //Get the starting index
+        int startIndex = (page - 1) * pageSize;
+        //Get the size of the sublist
+        int count = Math.Min(pageSize, flights.Count - startIndex);
+        // return sublist
+        return flights.GetRange(startIndex, count);
+    }
+
+    public int MaxLuggageAmount(int flightID)
+    {
+        FlightModel flight = GetById(flightID);
+        List<ReservationModel> flightResevations = GetFlightReservations(flight);
+        PlaneModel plane = GetPlaneByID(flight.Plane);
+        int maxLuggageAmount = plane.LuggageAmount;
+
+        foreach (ReservationModel reservation in flightResevations)
+        {
+            foreach (PassengerModel passenger in reservation.Passengers)
+            {
+                if (passenger.AdditionalServices.Count > 0)
+                {
+                    maxLuggageAmount -= passenger.AdditionalServices.Sum(x => x.Quantity);
+                }
+            }
+        }
+
+
+        return maxLuggageAmount;
+    }
 }

@@ -1,4 +1,4 @@
-public static class AdminReservationOverview
+public static class UserReservationOverview
 {
     private static int _page = 1;
     private static int _pageSize = 10;
@@ -11,14 +11,14 @@ public static class AdminReservationOverview
         _selectedReservation = 0;
         _reservationLogic = new ReservationLogic();
         _flightLogic = new FlightLogic();
-        _reservations = _reservationLogic.GetReservationsForPage(ReservationAccess.LoadAll(), _page, _pageSize);
+        _reservations = _reservationLogic.GetReservationsForPage(_reservationLogic.ListOfReservationMethod(), _page, _pageSize);
         ReservationOverview();
     }
 
     private static void ReservationOverview()
     {
         // Get the total page amount
-        int pageAmount = (int)Math.Ceiling((double)ReservationAccess.LoadAll().Count / _pageSize);
+        int pageAmount = (int)Math.Ceiling((double)_reservationLogic.ListOfReservationMethod().Count / _pageSize);
 
         ConsoleKey pressedKey = default;
         bool stopMenu = false;
@@ -37,7 +37,7 @@ public static class AdminReservationOverview
             {
                 Console.WriteLine($"Page: {_page}/{pageAmount}\n");
 
-                Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} | {4,-20} |", "ID", "Reservation Code", "User ID", "Passengers", "Reservation Date");
+                Console.WriteLine("{0,-5} | {1,-20} | {2,-15} | {3,-15} |", "ID", "Reservation Code", "Passengers", "Reservation Date");
                 Console.WriteLine(new string('-', 89));
 
                 for (int i = 0; i < _reservations.Count; i++)
@@ -148,10 +148,18 @@ public static class AdminReservationOverview
     private static void CancelReservation()
     {
         ReservationModel reservation = _reservations[_selectedReservation];
-        Menu cancelReservationMenu = new Menu(new List<string> { "yes", "no" }, $"Cancel reservation {reservation.ReservationCode}? (yes/no)");
-        int cancel = cancelReservationMenu.Run();
+        Console.Clear();
+        Console.WriteLine($"Cancel reservation {reservation.ReservationCode}? (yes/no)");
+        string cancel = Console.ReadLine().ToLower();
+        while (cancel != "yes" && cancel != "no")
+        {
+            Console.Clear();
+            Console.WriteLine("Invalid input, please enter yes or no:");
+            cancel = Console.ReadLine();
+        }
 
-        if (cancel == 0)
+        Console.Clear();
+        if (cancel == "yes")
         {
             if (_reservationLogic.RemoveReservation(reservation.ReservationCode))
             {
@@ -173,7 +181,6 @@ public static class AdminReservationOverview
         List<string> options = new List<string>() {
             "Reservation Code",
             "Reservation Date",
-            "User ID"
         };
 
         string prompt = "Choose what you want to search.";
@@ -199,17 +206,6 @@ public static class AdminReservationOverview
 
             _reservations = _reservationLogic.SearchReservations<string>("reservationDate", resvDate);
 
-        }
-        else if (selectedOption == 2)
-        {
-            Console.WriteLine("Enter a User ID:");
-            int userId;
-            while (!int.TryParse(Console.ReadLine(), out userId))
-            {
-                Console.WriteLine("Invalid input. Please enter a valid user ID:");
-            }
-
-            _reservations = _reservationLogic.SearchReservations<int>("userId", userId);
         }
 
         _selectedReservation = 0;
