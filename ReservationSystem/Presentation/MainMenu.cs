@@ -78,7 +78,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     PersonalInfoModify.Start();
                     break;
                 case 2:
-                    ListOfReservations.Start();
+                    UserReservationOverview.Start();
                     break;
                 case 3:
                     Reservation.Start();
@@ -116,10 +116,10 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     Start();
                     break;
                 case 1:
-                    ListOfReservations.Start();
+                    UserReservationOverview.Start();
                     break;
                 case 2:
-                    ListOfReservations.Start();
+                    UserReservationOverview.Start();
                     break;
                 case 3:
                     Reservation.Start();
