@@ -42,6 +42,12 @@ public static class AddFlight
         Console.WriteLine("\nEnter a destination:");
         string destination = Console.ReadLine();
 
+        Console.WriteLine("\nAvailable timezones:");
+        List<string> timezones = GetAvailableTimezones();
+        foreach (string timezon in timezones)
+        {
+            Console.WriteLine(timezon);
+        }
         Console.WriteLine("\nEnter the timezone of the destination:");
         string timezone = Console.ReadLine();
         while (!_flightLogic.IsValidTimeZone(timezone))
@@ -120,6 +126,16 @@ public static class AddFlight
         Console.WriteLine("\nPress any key to return..");
         Console.ReadKey(true);
         MainMenu.Start();
+    }
+
+    private static List<string> GetAvailableTimezones()
+    {
+        List<string> timezones = new List<string>();
+        foreach (TimeZoneInfo timeZone in TimeZoneInfo.GetSystemTimeZones())
+        {
+            timezones.Add(timeZone.Id);
+        }
+        return timezones;
     }
 
 
