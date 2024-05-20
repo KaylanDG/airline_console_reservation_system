@@ -46,6 +46,8 @@ public class ReservationLogic
         // Load existing reservations from the JSON file
         var reservations = ReservationAccess.LoadAll();
 
+        if (reservations == null || reservations.Count < 1) return 1;
+
         // Find the highest existing ID
         int maxId = reservations.Max(r => r.Id);
 
