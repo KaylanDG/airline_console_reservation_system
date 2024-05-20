@@ -42,13 +42,39 @@ public static class AddFlight
         Console.WriteLine("\nEnter a destination:");
         string destination = Console.ReadLine();
 
-        Console.WriteLine("\nEnter the timezone of the destination:");
-        string timezone = Console.ReadLine();
-        while (!_flightLogic.IsValidTimeZone(timezone))
+        List<string> timeZones = new List<string>
         {
-            Console.WriteLine("Invalid input. Please enter a valid timezone:");
-            timezone = Console.ReadLine();
-        }
+            "UTC-12:00",
+            "UTC-11:00",
+            "UTC-10:00",
+            "UTC-09:00",
+            "UTC-08:00",
+            "UTC-07:00",
+            "UTC-06:00",
+            "UTC-05:00",
+            "UTC-04:00",
+            "UTC-03:00",
+            "UTC-02:00",
+            "UTC-01:00",
+            "UTC±00:00",
+            "UTC+01:00",
+            "UTC+02:00",
+            "UTC+03:00",
+            "UTC+04:00",
+            "UTC+05:00",
+            "UTC+06:00",
+            "UTC+07:00",
+            "UTC+08:00",
+            "UTC+09:00",
+            "UTC+10:00",
+            "UTC+11:00",
+            "UTC+12:00"
+        };
+
+        Menu timezoneMenu = new Menu(timeZones, "Choose a timezone of the destination:");
+        int chosenTimezone = timezoneMenu.Run();
+
+        string timezone = _flightLogic.GetTimeZoneID(timeZones[chosenTimezone]);
 
         Console.WriteLine("\nEnter the flight duration in minutes:");
         int duration;
@@ -121,6 +147,4 @@ public static class AddFlight
         Console.ReadKey(true);
         MainMenu.Start();
     }
-
-
 }

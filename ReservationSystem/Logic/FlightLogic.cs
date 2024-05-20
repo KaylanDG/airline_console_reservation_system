@@ -293,6 +293,64 @@ public class FlightLogic
         }
     }
 
+    public string GetTimeZoneID(string timezone)
+    {
+        switch (timezone)
+        {
+            case "UTC-12:00":
+                return "Dateline Standard Time";
+            case "UTC-11:00":
+                return "UTC-11";
+            case "UTC-10:00":
+                return "Hawaiian Standard Time";
+            case "UTC-09:00":
+                return "Alaskan Standard Time";
+            case "UTC-08:00":
+                return "Pacific Standard Time";
+            case "UTC-07:00":
+                return "Mountain Standard Time";
+            case "UTC-06:00":
+                return "Central Standard Time";
+            case "UTC-05:00":
+                return "Eastern Standard Time";
+            case "UTC-04:00":
+                return "Atlantic Standard Time";
+            case "UTC-03:00":
+                return "Argentina Standard Time";
+            case "UTC-02:00":
+                return "UTC-02";
+            case "UTC-01:00":
+                return "Azores Standard Time";
+            case "UTC±00:00":
+                return "UTC";
+            case "UTC+01:00":
+                return "Central European Standard Time";
+            case "UTC+02:00":
+                return "E. Europe Standard Time";
+            case "UTC+03:00":
+                return "Russian Standard Time";
+            case "UTC+04:00":
+                return "Arabian Standard Time";
+            case "UTC+05:00":
+                return "Pakistan Standard Time";
+            case "UTC+06:00":
+                return "Central Asia Standard Time";
+            case "UTC+07:00":
+                return "SE Asia Standard Time";
+            case "UTC+08:00":
+                return "China Standard Time";
+            case "UTC+09:00":
+                return "Tokyo Standard Time";
+            case "UTC+10:00":
+                return "AUS Eastern Standard Time";
+            case "UTC+11:00":
+                return "Central Pacific Standard Time";
+            case "UTC+12:00":
+                return "UTC+12";
+            default:
+                return "Invalid time zone";
+        }
+    }
     public List<FlightModel> GetFlightsForPage(int page, int pageSize, List<FlightModel> flights)
     {
         //Get the starting index
