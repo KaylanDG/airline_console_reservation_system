@@ -148,18 +148,10 @@ public static class AdminReservationOverview
     private static void CancelReservation()
     {
         ReservationModel reservation = _reservations[_selectedReservation];
-        Console.Clear();
-        Console.WriteLine($"Cancel reservation {reservation.ReservationCode}? (yes/no)");
-        string cancel = Console.ReadLine().ToLower();
-        while (cancel != "yes" && cancel != "no")
-        {
-            Console.Clear();
-            Console.WriteLine("Invalid input, please enter yes or no:");
-            cancel = Console.ReadLine();
-        }
+        Menu cancelReservationMenu = new Menu(new List<string> { "yes", "no" }, $"Cancel reservation {reservation.ReservationCode}? (yes/no)");
+        int cancel = cancelReservationMenu.Run();
 
-        Console.Clear();
-        if (cancel == "yes")
+        if (cancel == 0)
         {
             if (_reservationLogic.RemoveReservation(reservation.ReservationCode))
             {

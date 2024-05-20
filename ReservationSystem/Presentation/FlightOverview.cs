@@ -3,10 +3,10 @@ static class FlightOverview
     static private FlightLogic _flightLogic = new FlightLogic();
     static private int _selectedOption = 0;
     static private List<string> _options;
-    static public List<FlightModel> _flights;
+    static public List<FlightModel> _flights = _flightLogic.GetAvailableFlights();
     static public List<FlightModel> _flightsPerPage;
-    private static int _page;
-    private static int _pageAmount;
+    private static int _page = 1;
+    private static int _pageAmount = (int)Math.Ceiling((double)_flights.Count / 10);
     public static void Start()
     {
         _flights = _flightLogic.GetAvailableFlights();
@@ -74,6 +74,7 @@ static class FlightOverview
 
     public static void Flights(int selectedFlight = -1)
     {
+        if (_flights == null) _flights = _flightLogic.GetAvailableFlights();
         _flightsPerPage = _flightLogic.GetFlightsForPage(_page, 10, _flights);
 
         // top part of overview
