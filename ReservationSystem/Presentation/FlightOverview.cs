@@ -151,7 +151,7 @@ static class FlightOverview
             Console.Clear();
             Flights(selectedFlight);
             Console.WriteLine("\nSelect a flight.\nUse the arrow keys to navigate, press enter to select a flight.");
-
+            Console.WriteLine("Press backspace to return to the menu\n");
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             pressedKey = keyInfo.Key;
 
@@ -182,6 +182,10 @@ static class FlightOverview
                 }
                 selectedFlight = 0;
                 _flightsPerPage = _flightLogic.GetFlightsForPage(_page, 10, _flights);
+            }
+            else if (pressedKey == ConsoleKey.Backspace)
+            {
+                MainMenu.Start();
             }
         }
 
