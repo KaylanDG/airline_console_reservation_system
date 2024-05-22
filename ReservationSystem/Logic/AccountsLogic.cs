@@ -100,7 +100,7 @@ public class AccountsLogic
 
     public bool ValidPassword(string password)
     {
-        if (password.Length > 7)
+        if (password.Length > 7 && !password.Contains(" "))
         {
             return true;
         }
@@ -112,7 +112,7 @@ public class AccountsLogic
 
     public bool ValidPhone(string phone)
     {
-        if (phone.Length == 10 && phone.All(char.IsDigit))
+        if (phone.Length == 10 && phone.All(char.IsDigit) && phone[0] == '0')
         {
             return true;
         }
