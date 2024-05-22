@@ -3,14 +3,6 @@ namespace ReservationSystemTest;
 [TestClass]
 public class CreateAccountTest
 {
-    private string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"../../../../ReservationSystem/DataSources/accounts.json"));
-
-    [TestInitialize]
-    public void SetPath()
-    {
-        AccountsAccess.path = path;
-    }
-
 
     [TestMethod]
     public void TestValidName()

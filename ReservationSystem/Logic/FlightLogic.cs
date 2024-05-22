@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 public class FlightLogic
 {
@@ -381,5 +382,14 @@ public class FlightLogic
 
 
         return maxLuggageAmount;
+    }
+
+    public bool IsValidFlightNumber(string flightNumber)
+    {
+        Regex flightnumberRegex = new Regex(@"^[A-Za-z]{2}\d{4}$");
+
+        if (flightnumberRegex.IsMatch(flightNumber)) return true;
+
+        return false;
     }
 }
