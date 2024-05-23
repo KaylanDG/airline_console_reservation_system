@@ -131,7 +131,9 @@ public static class UserReservationOverview
                 string seat = Reservation.SeatSelection(FlightToSearch.Id);
 
                 _reservations[_selectedReservation].Passengers[passengerIndex].SeatNumber = seat;
+                _reservations[_selectedReservation].TotalCost += 25;
                 _reservationLogic.UpdateList(_reservations[_selectedReservation]);
+
                 Console.WriteLine("Seat succesfully changed.");
                 Console.WriteLine("Press any key to return.");
 

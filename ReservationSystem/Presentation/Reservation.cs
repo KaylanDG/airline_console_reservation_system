@@ -177,9 +177,15 @@ public static class Reservation
 
         while (!validSeat)
         {
-            Console.WriteLine("\nEnter seat number (example: A-01):");
+            Console.WriteLine("It will cost an aditional 25 euros to change your seat.");
+            Console.WriteLine("\nEnter seat number (example: A-01)");
+            Console.WriteLine("Or press enter if you wanna remain in your current seat: ");
             seatNumber = Console.ReadLine().ToUpper();
-            if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
+            if (seatNumber == "")
+            {
+                UserReservationOverview.Start();
+            }
+            else if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nThe seat number you entered does not exist.\n");
