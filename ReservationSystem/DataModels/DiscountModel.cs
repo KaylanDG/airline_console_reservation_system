@@ -10,7 +10,7 @@ public class DiscountModel
     public string DiscountCode { get; set; }
 
     [JsonPropertyName("discountpercentage")]
-    public string DiscountPercentage { get; set; }
+    public int DiscountPercentage { get; set; }
 
     [JsonPropertyName("discountdatefrom")]
     public string DiscountDateFrom { get; set; }
@@ -19,7 +19,7 @@ public class DiscountModel
     public string DiscountDateTill { get; set; }
 
 
-    public DiscountModel(int id, string discountCode, string discountPercentage, string discountDateFrom, string discountDateTill)
+    public DiscountModel(int id, string discountCode, int discountPercentage, string discountDateFrom, string discountDateTill)
     {
         Id = id;
         DiscountCode = discountCode;
