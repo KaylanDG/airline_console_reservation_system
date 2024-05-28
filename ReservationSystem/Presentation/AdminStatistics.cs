@@ -13,6 +13,7 @@ public static class AdminStatistics
         while (!stop)
         {
             Console.Clear();
+            Statistics();
             ViewOptions();
 
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -51,5 +52,14 @@ public static class AdminStatistics
             Console.WriteLine($"{prefix} {_viewOptions[i]}");
             Console.ResetColor();
         }
+    }
+
+    public static void Statistics()
+    {
+        string stats = $"║ Profit: €0 ║ Reservations: 100 ║ New Users: 0 ║";
+        string border = new string('═', stats.Length - 2);
+        Console.WriteLine("╔" + border + "╗");
+        Console.WriteLine(stats);
+        Console.WriteLine("╚" + border + "╝");
     }
 }
