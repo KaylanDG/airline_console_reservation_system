@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 public class DiscountLogic
 {
@@ -9,37 +12,45 @@ public class DiscountLogic
         _discounts = DiscountAccess.LoadAllDiscounts();
     }
 
-    public bool CreateDisount(string discountcode, int discountpercentage, string discountdatefrom, string discountdatetill)
+    public bool CreateDiscount(string discountCode, int discountPercentage, string discountDateFrom, string discountDateTill)
     {
+        if (!IsValidDateFormat(discountDateFrom) || !IsValidDateFormat(discountDateTill))
+        {
+            throw new ArgumentException("Invalid date format. Use dd-MM-yyyy HH:mm.");
+        }
+
+        if (!IsValidDate(discountDateFrom) || !IsValidDate(discountDateTill))
+        {
+            throw new ArgumentException("Discount dates must be in the future.");
+        }
+
+        if (discountPercentage <= 0 || discountPercentage > 100)
+        {
+            throw new ArgumentException("Discount percentage must be between 1 and 100.");
+        }
+
         DiscountModel discount = new DiscountModel(
-        GenerateDiscountId(),
-        discountcode,
-        discountpercentage,
-        discountdatefrom,
-        discountdatetill
+            GenerateDiscountId(),
+            discountCode,
+            discountPercentage,
+            discountDateFrom,
+            discountDateTill
         );
+
         UpdateList(discount);
         return true;
     }
 
     public bool IsValidDateFormat(string input)
     {
-        // Check if date has correct format
         string format = "dd-MM-yyyy HH:mm";
-        DateTime parsedDate;
-        //return true or false
-        return DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out parsedDate);
+        return DateTime.TryParseExact(input, format, null, DateTimeStyles.None, out _);
     }
-
 
     public bool IsValidDate(string input)
     {
-        //check if date is not in the past
-        DateTime now = DateTime.Now;
         DateTime date = DateTime.ParseExact(input, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-
-        if (date < now) return false;
-        return true;
+        return date > DateTime.Now;
     }
 
     public void UpdateList(DiscountModel discount)
@@ -60,33 +71,56 @@ public class DiscountLogic
 
     private int GenerateDiscountId()
     {
-        var discounts = DiscountAccess.LoadAllDiscounts();
-
-        int maxId = discounts.Max(r => r.Id);
-
+        if (_discounts.Count == 0) return 1;
+        int maxId = _discounts.Max(r => r.Id);
         return maxId + 1;
     }
 
-    public bool RemoveDiscount(string DiscountCode)
+    public bool RemoveDiscount(string discountCode)
     {
-        // load in all reservations
-        List<DiscountModel> _discounts = DiscountAccess.LoadAllDiscounts();
-        bool removed = false;
-
-        // foreach reservation check if reservation code is equal to given reservation code
-        // if so remove reservation from list
-        foreach (DiscountModel x in _discounts)
+        int index = _discounts.FindIndex(d => d.DiscountCode == discountCode);
+        if (index != -1)
         {
-            if (x.DiscountCode == DiscountCode)
-            {
-                _discounts.Remove(x);
-                removed = true;
-                break;
-            }
+            _discounts.RemoveAt(index);
+            DiscountAccess.WriteAll(_discounts);
+            return true;
         }
-        // after removing reservation update json
-        DiscountAccess.WriteAll(_discounts);
-        return removed;
+        return false;
     }
 
+    public DiscountModel GetValidDiscount(string discountCode)
+    {
+        var discount = _discounts.FirstOrDefault(d => d.DiscountCode == discountCode);
+        if (discount == null)
+        {
+            throw new ArgumentException("Discount code not found.");
+        }
+
+        DateTime dateFrom = DateTime.ParseExact(discount.DiscountDateFrom, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        DateTime dateTill = DateTime.ParseExact(discount.DiscountDateTill, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+        DateTime now = DateTime.Now;
+
+        if (now < dateFrom || now > dateTill)
+        {
+            throw new InvalidOperationException("Discount code is not valid at this time.");
+        }
+
+        return discount;
+    }
+
+    public bool ApplyDiscount(string discountCode)
+    {
+        try
+        {
+            var discount = GetValidDiscount(discountCode);
+
+            Console.WriteLine($"Discount code {discountCode} applied with {discount.DiscountPercentage}% off.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error applying discount: {ex.Message}");
+            return false;
+        }
+    }
 }
