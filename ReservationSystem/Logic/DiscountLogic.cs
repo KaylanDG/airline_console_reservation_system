@@ -11,8 +11,6 @@ public class DiscountLogic
 
     public bool CreateDisount(string discountcode, int discountpercentage, string discountdatefrom, string discountdatetill)
     {
-        DateTime now = DateTime.Now;
-        string reservationDate = now.ToString("dd-MM-yyyy HH:mm");
         DiscountModel discount = new DiscountModel(
         GenerateDiscountId(),
         discountcode,
