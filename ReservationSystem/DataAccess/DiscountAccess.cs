@@ -6,6 +6,11 @@ public static class DiscountAccess
 
     public static List<DiscountModel> LoadAllDiscounts()
     {
+        if (!File.Exists(path) || new FileInfo(path).Length == 0)
+        {
+            return new List<DiscountModel>(); // Return an empty list if the file is empty or doesn't exist
+        }
+
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<DiscountModel>>(json);
     }

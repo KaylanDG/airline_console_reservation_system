@@ -1,16 +1,13 @@
 using System;
 
-public class Discount
+public static class Discount
 {
-    private DiscountLogic _discountLogic;
+    private static DiscountLogic _discountLogic = new DiscountLogic();
 
-    public Discount()
-    {
-        _discountLogic = new DiscountLogic();
-    }
 
-    public void CreateDiscount()
+    public static void CreateDiscount()
     {
+        Console.Clear();
         Console.WriteLine("Enter Discount Code:");
         string discountCode = Console.ReadLine();
 
