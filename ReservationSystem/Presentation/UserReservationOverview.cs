@@ -132,6 +132,8 @@ public static class UserReservationOverview
 
                 _reservations[_selectedReservation].Passengers[passengerIndex].SeatNumber = seat;
                 _reservations[_selectedReservation].TotalCost += 25;
+
+                _reservations[_selectedReservation].Passengers[passengerIndex].AdditionalServices.Add(new ServiceModel("Changed Seat", 1, 25));
                 _reservationLogic.UpdateList(_reservations[_selectedReservation]);
 
                 Console.WriteLine("Seat succesfully changed.");
