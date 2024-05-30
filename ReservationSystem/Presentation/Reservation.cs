@@ -278,6 +278,22 @@ public static class Reservation
         }
         Console.WriteLine(new string('-', 30));
         Console.WriteLine($"Total price: €{_reservation.TotalCost}");
+
+        Console.WriteLine("Enter discount code (or press Enter to skip):");
+        string discountCode = Console.ReadLine();
+        if (!string.IsNullOrEmpty(discountCode))
+        {
+            bool discountApplied = _reservationLogic.ApplyDiscountToReservation(_reservation, discountCode);
+            if (discountApplied)
+            {
+                Console.WriteLine($"Discount applied! New total price: €{_reservation.TotalCost}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid discount code. No discount applied.");
+            }
+        }
+
         Console.WriteLine($"Book reservation: (Y/N)");
 
         string bookResrevation = Console.ReadLine().ToLower();

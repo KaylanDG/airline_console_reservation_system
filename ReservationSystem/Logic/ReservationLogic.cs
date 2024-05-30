@@ -1,10 +1,30 @@
 public class ReservationLogic
 {
     private List<ReservationModel> _reservations;
+    private DiscountLogic _discountLogic;
+
 
     public ReservationLogic()
     {
         _reservations = ReservationAccess.LoadAll();
+        _discountLogic = new DiscountLogic();
+    }
+
+
+    public bool ApplyDiscountToReservation(ReservationModel reservation, string discountCode)
+    {
+        try
+        {
+            var discount = _discountLogic.GetValidDiscount(discountCode);
+            double discountAmount = (reservation.TotalCost * discount.DiscountPercentage) / 100;
+            reservation.TotalCost -= discountAmount;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error applying discount: {ex.Message}");
+            return false;
+        }
     }
 
     public void UpdateList(ReservationModel reservation)
