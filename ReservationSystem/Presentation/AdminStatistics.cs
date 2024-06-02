@@ -2,7 +2,7 @@ using System.Globalization;
 public static class AdminStatistics
 {
     private static DateTime _date;
-    private static List<String> _viewOptions = new List<string> { "All time", "Monthly", "Weekly", "Daily" };
+    private static List<string> _viewOptions = new List<string> { "All time", "Monthly", "Weekly", "Daily" };
     private static int _selectedOption;
     private static string _searchDate;
     private static StatisticLogic _statisticLogic = new StatisticLogic();
@@ -98,7 +98,7 @@ public static class AdminStatistics
 
     public static void Statistics()
     {
-        (double, int, int) data = _statisticLogic.GetStatistics();
+        (double, int, int, string) data = _statisticLogic.GetStatistics();
 
         switch (_selectedOption)
         {
@@ -121,6 +121,7 @@ public static class AdminStatistics
         }
 
         string stats = $"║ Profit: €{data.Item1} ║ Reservations: {data.Item2} ║ New Users: {data.Item3} ║";
+
         string border = new string('═', stats.Length - 2);
 
         Console.WriteLine($"\n[{_searchDate}]\n");
