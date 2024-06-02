@@ -1,52 +1,22 @@
 [
   {
     "id": 1,
-    "emailAddress": "admin@admin.com",
+    "emailAddress": "admin",
     "password": "admin",
-    "fullName": "Admin",
-    "phone": "0612345678",
-    "date_of_birth": "18-09-2003",
+    "fullName": "admin",
+    "phone": "0675431266",
+    "date_of_birth": "18-03-2003",
     "disabled": false,
     "role": "admin"
   },
   {
     "id": 2,
-    "emailAddress": "n@b.c",
-    "password": "xyz",
-    "fullName": "Nikola Tesla",
-    "phone": "0612345678",
-    "date_of_birth": "18-09-2003",
-    "disabled": false,
-    "role": "user"
-  },
-  {
-    "id": 3,
-    "emailAddress": "t@b.c",
-    "password": "xyz",
-    "fullName": "Thomas Edison",
-    "phone": "0612345678",
-    "date_of_birth": "18-09-2003",
-    "disabled": false,
-    "role": "user"
-  },
-  {
-    "id": 4,
-    "emailAddress": "kaylan@gmail.com",
-    "password": "kaylan1234",
-    "fullName": "Kaylan de Groot",
+    "emailAddress": "gebruiker",
+    "password": "gebruiker",
+    "fullName": "gebruiker",
     "phone": "0675431266",
     "date_of_birth": "18-03-2003",
     "disabled": false,
     "role": "user"
-  },
-  {
-    "id": 5,
-    "emailAddress": "test",
-    "password": "test",
-    "fullName": "test",
-    "phone": "0675431266",
-    "date_of_birth": "18-03-2003",
-    "disabled": false,
-    "role": "admin"
   }
 ]

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 public class ReservationLogic
 {
     private List<ReservationModel> _reservations;
@@ -63,6 +65,8 @@ public class ReservationLogic
     {
         // Load existing reservations from the JSON file
         var reservations = ReservationAccess.LoadAll();
+
+        if (reservations == null || reservations.Count < 1) return 1;
 
         // Find the highest existing ID
         int maxId = reservations.Max(r => r.Id);
@@ -138,15 +142,45 @@ public class ReservationLogic
         return removed;
     }
 
-    public List<ReservationModel> GetReservationsForPage(int page, int pageSize)
+    public List<ReservationModel> GetReservationsForPage(List<ReservationModel> reservations, int page, int pageSize)
     {
-        //Load in all reservations
-        List<ReservationModel> reservations = ReservationAccess.LoadAll();
         //Get the starting index
         int startIndex = (page - 1) * pageSize;
         //Get the size of the sublist
         int count = Math.Min(pageSize, reservations.Count - startIndex);
         // return sublist
         return reservations.GetRange(startIndex, count);
+    }
+
+    public List<ReservationModel> SearchReservations<T>(string filter, T value)
+    {
+        List<ReservationModel> reservations = new List<ReservationModel>();
+
+        foreach (ReservationModel reservation in ReservationAccess.LoadAll())
+        {
+            if (filter == "userId")
+            {
+                if (reservation.UserId.Equals(value)) reservations.Add(reservation);
+            }
+            else if (filter == "reservationCode")
+            {
+                if (reservation.ReservationCode.Equals(value)) reservations.Add(reservation);
+            }
+            else if (filter == "reservationDate")
+            {
+                string date = reservation.ReservationDate.Split(" ")[0];
+                if (date.Equals(value)) reservations.Add(reservation);
+            }
+        }
+        return reservations;
+    }
+
+    public bool IsValidDateFormat(string input)
+    {
+        // Check if date has correct format
+        string format = "dd-MM-yyyy";
+        DateTime parsedDate;
+        //return true or false
+        return DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out parsedDate);
     }
 }

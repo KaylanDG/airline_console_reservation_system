@@ -6,6 +6,7 @@ public static class Reservation
     private static ReservationModel _reservation;
     private static FlightModel _flight;
     private static List<SeatModel> _flightSeats;
+    private static List<PassengerModel> _passengers;
 
     public static void Start()
     {
@@ -39,31 +40,39 @@ public static class Reservation
 
     public static void ReservationProcess()
     {
-        int passengerAmount = PassengerAmount();
+        if (_passengers == null)
+        {
+            int passengerAmount = PassengerAmount();
+            _passengers = new List<PassengerModel>();
+
+            for (int i = 0; i < passengerAmount; i++)
+            {
+                PassengerModel passenger = new PassengerModel(i + 1);
+                Console.Clear();
+                Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
+                string passengerName = Console.ReadLine();
+                while (passengerName == "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nPlease enter your name.\n");
+                    Console.ResetColor();
+                    passengerName = Console.ReadLine();
+                }
+                passenger.FullName = passengerName!;
+                _passengers.Add(passenger);
+            }
+        }
+
         _reservation = new ReservationModel
         {
             FlightId = _flight.Id,
             UserId = AccountsLogic.CurrentAccount!.Id
         };
 
-        for (int i = 0; i < passengerAmount; i++)
+        foreach (PassengerModel passenger in _passengers)
         {
-            PassengerModel passenger = new PassengerModel(i + 1);
 
-            Console.Clear();
-            Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
-            string passengerName = Console.ReadLine();
-            while (passengerName == "")
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nPlease enter your name.\n");
-                Console.ResetColor();
-                passengerName = Console.ReadLine();
-            }
-            passenger.FullName = passengerName!;
-
-
-            Console.WriteLine($"\nSelect a seat for passenger {i + 1}\n");
+            Console.WriteLine($"\nSelect a seat for {passenger.FullName}\n");
             passenger.SeatNumber = SeatSelection();
 
             ServiceModel extraLuggage = ExtraLuggage();
@@ -72,11 +81,11 @@ public static class Reservation
                 passenger.AdditionalServices.Add(extraLuggage);
             }
 
-            _reservation.Passengers.Add(passenger);
             _reservation.TotalCost += _flightLogic.GetSeatPrice(passenger.SeatNumber, _flight);
             _flightSeats = _flightLogic.UpdateFlightSeats(passenger.SeatNumber, _flightSeats);
         }
 
+        _reservation.Passengers = _passengers;
     }
 
 
@@ -256,55 +265,37 @@ public static class Reservation
 
     public static void CompleteReservation(bool isReturnFlight = false)
     {
-        Console.WriteLine($"\nYour reservation\n");
-        Console.WriteLine($"From:\t\t{_flight.From}");
-        Console.WriteLine($"Destination:\t{_flight.Destination}");
-        Console.WriteLine($"Departure:\t{_flight.DepartureTime}");
-        Console.WriteLine("\nPassengers:\n");
+        string reservationPrice = "";
+        reservationPrice += "\nYour reservation\n";
+        reservationPrice += $"From:\t\t{_flight.From}\n";
+        reservationPrice += $"Destination:\t{_flight.Destination}\n";
+        reservationPrice += $"Departure:\t{_flight.DepartureTime}\n";
+        reservationPrice += "\nPassengers:\n";
         for (int i = 1; i <= _reservation.Passengers.Count; i++)
         {
             PassengerModel passenger = _reservation.Passengers[i - 1];
-            Console.WriteLine($" Passenger {i}:\t{passenger.FullName}");
-            Console.WriteLine($" Seat:\t\t{passenger.SeatNumber} - Price: €{_flightLogic.GetSeatPrice(passenger.SeatNumber, _flight)}");
+            reservationPrice += $" Passenger {i}:\t{passenger.FullName}\n";
+            reservationPrice += $" Seat:\t\t{passenger.SeatNumber} - Price: €{_flightLogic.GetSeatPrice(passenger.SeatNumber, _flight)}\n";
             if (passenger.AdditionalServices.Count > 0)
             {
-                Console.WriteLine(" Additional Services");
+                reservationPrice += " Additional Services\n";
                 foreach (ServiceModel service in passenger.AdditionalServices)
                 {
-                    Console.WriteLine($" - {service.ServiceType} / Amount: {service.Quantity} / Price: €{service.Cost}");
+                    reservationPrice += $" - {service.ServiceType} / Amount: {service.Quantity} / Price: €{service.Cost}\n";
                 }
             }
-            Console.WriteLine();
         }
-        Console.WriteLine(new string('-', 30));
-        Console.WriteLine($"Total price: €{_reservation.TotalCost}");
+        reservationPrice += "\n";
+        reservationPrice += new string('-', 30);
+        reservationPrice += $"\nTotal price: €{_reservation.TotalCost}\n";
+        reservationPrice += $"Book reservation: (Y/N)\n";
 
-        Console.WriteLine("Enter discount code (or press Enter to skip):");
-        string discountCode = Console.ReadLine();
-        if (!string.IsNullOrEmpty(discountCode))
-        {
-            bool discountApplied = _reservationLogic.ApplyDiscountToReservation(_reservation, discountCode);
-            if (discountApplied)
-            {
-                Console.WriteLine($"Discount applied! New total price: €{_reservation.TotalCost}");
-            }
-            else
-            {
-                Console.WriteLine("Invalid discount code. No discount applied.");
-            }
-        }
-
-        Console.WriteLine($"Book reservation: (Y/N)");
-
-        string bookResrevation = Console.ReadLine().ToLower();
-        while (bookResrevation != "y" && bookResrevation != "n")
-        {
-            bookResrevation = Console.ReadLine().ToLower();
-        }
+        Menu bookReservationMenu = new Menu(new List<string> { "yes", "no" }, reservationPrice);
+        int bookResrevation = bookReservationMenu.Run();
 
         Console.Clear();
 
-        if (bookResrevation == "y")
+        if (bookResrevation == 0)
         {
             string reservationCode = _reservationLogic.CompleteReservation(_reservation);
 
@@ -361,6 +352,61 @@ public static class Reservation
                 _flight = _flightLogic.GetById(flightID);
                 _flightSeats = _flightLogic.GetFlightSeats(_flight);
 
+                bool Continue = false;
+                while (!Continue)
+                {
+                    string passengerInfo = "Passengers:\n";
+
+                    for (int i = 1; i <= _passengers.Count; i++)
+                    {
+                        PassengerModel passenger = _passengers[i - 1];
+                        passengerInfo += $"Passenger {i}: {passenger.FullName}\n";
+                    }
+
+                    Menu menu = new Menu(new List<string> { "Add passenger", "Remove passenger", "Continue" }, passengerInfo);
+                    int menuOption = menu.Run();
+
+                    if (menuOption == 0)
+                    {
+                        PassengerModel passenger = new PassengerModel(_passengers.Count - 1);
+                        Console.WriteLine("\nEnter the fullname of the new passenger:");
+                        string fullName = Console.ReadLine();
+                        while (fullName == "")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nPlease enter your name.\n");
+                            Console.ResetColor();
+                            fullName = Console.ReadLine();
+                        }
+                        passenger.FullName = fullName;
+                        _passengers.Add(passenger);
+
+                    }
+                    else if (menuOption == 1)
+                    {
+                        if (_passengers.Count == 1)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\nYou cant delete all Passengers.");
+                            Console.WriteLine("\nPress any key to return..");
+                            Console.ReadKey(true);
+                        }
+                        else
+                        {
+                            List<string> names = new List<string>();
+                            foreach (PassengerModel p in _passengers) names.Add($" {p.FullName}");
+
+                            Menu removePassenger = new Menu(names, "Choose which passenger you want to remove.");
+                            int passengerIndex = removePassenger.Run();
+                            _passengers.RemoveAt(passengerIndex);
+                        }
+                    }
+                    else if (menuOption == 2)
+                    {
+                        Continue = true;
+                    }
+                }
+
                 ReservationProcess();
                 ReservationMenu(true);
             }
@@ -406,18 +452,13 @@ public static class Reservation
 
     public static ServiceModel ExtraLuggage()
     {
-        Console.WriteLine("\nDo you want extra luggage (Y/N): ");
-        string extraLuggage = Console.ReadLine().ToLower();
+        Menu extraLuggageMenu = new Menu(new List<string> { "yes", "no" }, "Do you want extra luggage:");
+        int extraLuggage = extraLuggageMenu.Run();
 
-        while (extraLuggage != "y" && extraLuggage != "n")
-        {
-            Console.WriteLine("Wrong input.");
-            Console.WriteLine("Do you want extra luggage (Y/N): ");
-            extraLuggage = Console.ReadLine().ToLower();
-        }
-        if (extraLuggage == "y")
+        if (extraLuggage == 0)
         {
             Console.Clear();
+            int maxLuggageAmount = _flightLogic.MaxLuggageAmount(_flight.Id);
             int extraLuggageAmount = 0;
             ConsoleKey pressedKey = default;
 
@@ -433,6 +474,7 @@ public static class Reservation
                 if (pressedKey == ConsoleKey.UpArrow)
                 {
                     extraLuggageAmount++;
+                    if (extraLuggageAmount > maxLuggageAmount) extraLuggageAmount = maxLuggageAmount;
                 }
                 else if (pressedKey == ConsoleKey.DownArrow)
                 {
