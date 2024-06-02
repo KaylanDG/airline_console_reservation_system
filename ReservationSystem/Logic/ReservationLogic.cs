@@ -3,10 +3,13 @@ using System.Globalization;
 public class ReservationLogic
 {
     private List<ReservationModel> _reservations;
+    private DiscountLogic _discountLogic;
+
 
     public ReservationLogic()
     {
         _reservations = ReservationAccess.LoadAll();
+        _discountLogic = new DiscountLogic();
     }
 
     public void UpdateList(ReservationModel reservation)
