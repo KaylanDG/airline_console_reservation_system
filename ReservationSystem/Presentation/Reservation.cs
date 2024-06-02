@@ -1,9 +1,9 @@
 public static class Reservation
 {
-    private static FlightLogic _flightLogic;
-    private static ReservationLogic _reservationLogic;
-    private static DiscountLogic _discountLogic;
-    private static PlaneLogic _planeLogic;
+    private static FlightLogic _flightLogic = new FlightLogic();
+    private static ReservationLogic _reservationLogic = new ReservationLogic();
+    private static PlaneLogic _planeLogic = new PlaneLogic();
+    private static DiscountLogic _discountLogic = new DiscountLogic();
     private static ReservationModel _reservation;
     private static FlightModel _flight;
     private static List<SeatModel> _flightSeats;
@@ -12,10 +12,6 @@ public static class Reservation
 
     public static void Start()
     {
-        _discountLogic = new DiscountLogic();
-        _flightLogic = new FlightLogic();
-        _reservationLogic = new ReservationLogic();
-        _planeLogic = new PlaneLogic();
 
         if (_flightLogic.GetAvailableFlights().Count <= 0)
         {
@@ -143,6 +139,55 @@ public static class Reservation
             Console.WriteLine("\nEnter seat number (example: A-01):");
             seatNumber = Console.ReadLine().ToUpper();
             if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered does not exist.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatReserved(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already reserved.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatSelected(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already selected.\n");
+                Console.ResetColor();
+            }
+            else
+            {
+                validSeat = true;
+            }
+        }
+
+
+        return seatNumber;
+    }
+
+    public static string SeatSelection(int flightID)
+    {
+        _flight = _flightLogic.GetById(flightID);
+        _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+        SeatOverview();
+        bool validSeat = false;
+        string seatNumber = "";
+
+        while (!validSeat)
+        {
+            Console.WriteLine("It will cost an aditional 25 euros to change your seat.");
+            Console.WriteLine("\nEnter seat number (example: A-01)");
+            Console.WriteLine("Or press enter if you wanna remain in your current seat: ");
+            seatNumber = Console.ReadLine().ToUpper();
+            if (seatNumber == "")
+            {
+                UserReservationOverview.Start();
+            }
+            else if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nThe seat number you entered does not exist.\n");
