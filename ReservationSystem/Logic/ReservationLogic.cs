@@ -12,23 +12,6 @@ public class ReservationLogic
         _discountLogic = new DiscountLogic();
     }
 
-
-    public bool ApplyDiscountToReservation(ReservationModel reservation, string discountCode)
-    {
-        try
-        {
-            var discount = _discountLogic.GetValidDiscount(discountCode);
-            double discountAmount = (reservation.TotalCost * discount.DiscountPercentage) / 100;
-            reservation.TotalCost -= discountAmount;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error applying discount: {ex.Message}");
-            return false;
-        }
-    }
-
     public void UpdateList(ReservationModel reservation)
     {
         int index = _reservations.FindIndex(r => r.Id == reservation.Id);

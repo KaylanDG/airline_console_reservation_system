@@ -88,13 +88,19 @@ public class DiscountLogic
         return false;
     }
 
-    public DiscountModel GetValidDiscount(string discountCode)
+    public DiscountModel GetDiscount(string discountCode)
     {
-        var discount = _discounts.FirstOrDefault(d => d.DiscountCode == discountCode);
-        if (discount == null)
-        {
-            throw new ArgumentException("Discount code not found.");
-        }
+        return _discounts.FirstOrDefault(d => d.DiscountCode == discountCode);
+
+    }
+
+    public bool DoesCodeExist(string discountCode)
+    {
+        return _discounts.Any(x => x.DiscountCode == discountCode);
+    }
+
+    public bool IsCodeValid(DiscountModel discount)
+    {
 
         DateTime dateFrom = DateTime.ParseExact(discount.DiscountDateFrom, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
         DateTime dateTill = DateTime.ParseExact(discount.DiscountDateTill, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
@@ -102,25 +108,14 @@ public class DiscountLogic
 
         if (now < dateFrom || now > dateTill)
         {
-            throw new InvalidOperationException("Discount code is not valid at this time.");
-        }
-
-        return discount;
-    }
-
-    public bool ApplyDiscount(string discountCode)
-    {
-        try
-        {
-            var discount = GetValidDiscount(discountCode);
-
-            Console.WriteLine($"Discount code {discountCode} applied with {discount.DiscountPercentage}% off.");
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error applying discount: {ex.Message}");
             return false;
         }
+
+        return true;
+    }
+
+    public double GetDiscountPrice(DiscountModel discount, double price)
+    {
+        return Math.Round(price / 100 * discount.DiscountPercentage, 2);
     }
 }
