@@ -6,13 +6,16 @@ public class FlightLogic
     private List<FlightModel> _flights;
     private List<PlaneModel> _planes;
     private PlaneLogic _planeLogic;
+    private FlightsAccess _flightsAccess = new FlightsAccess();
+    private PlaneAccess _planesAccess = new PlaneAccess();
+    private ReservationAccess _reservationAccess = new ReservationAccess();
 
 
     public FlightLogic()
     {
         // Load in all flights
-        _flights = FlightsAccess.LoadAllFlights();
-        _planes = PlaneAccess.LoadAllPlanes();
+        _flights = _flightsAccess.LoadAll();
+        _planes = _planesAccess.LoadAll();
         _planeLogic = new PlaneLogic();
 
     }
@@ -23,7 +26,7 @@ public class FlightLogic
 
         // For each flight check if the departure date hasn't passed.
         // if not add the flight to availableFlights.
-        foreach (FlightModel flight in FlightsAccess.LoadAllFlights())
+        foreach (FlightModel flight in _flightsAccess.LoadAll())
         {
             string departureDateTimeString = flight.DepartureTime;
             string format = "dd-MM-yyyy HH:mm";
@@ -109,9 +112,9 @@ public class FlightLogic
         return true;
     }
 
-    public static bool RemoveFlight(int flightid)
+    public bool RemoveFlight(int flightid)
     {
-        List<FlightModel> _flights = FlightsAccess.LoadAllFlights();
+        List<FlightModel> _flights = _flightsAccess.LoadAll();
         bool removed = false;
         foreach (FlightModel x in _flights)
         {
@@ -122,7 +125,7 @@ public class FlightLogic
                 break;
             }
         }
-        FlightsAccess.WriteAll(_flights);
+        _flightsAccess.WriteAll(_flights);
         return removed;
     }
 
@@ -152,13 +155,13 @@ public class FlightLogic
             _flights.Add(flight);
         }
 
-        FlightsAccess.WriteAll(_flights);
+        _flightsAccess.WriteAll(_flights);
     }
 
     private int GenerateFlightId()
     {
         // Load existing reservations from the JSON file
-        var flights = FlightsAccess.LoadAllFlights();
+        var flights = _flightsAccess.LoadAll();
 
         // Find the highest existing ID
         int maxId = flights.Max(r => r.Id);
@@ -170,7 +173,7 @@ public class FlightLogic
     {
         List<ReservationModel> flightReservations = new List<ReservationModel>();
 
-        foreach (var reservation in ReservationAccess.LoadAll())
+        foreach (var reservation in _reservationAccess.LoadAll())
         {
             if (reservation.FlightId == flight.Id)
             {

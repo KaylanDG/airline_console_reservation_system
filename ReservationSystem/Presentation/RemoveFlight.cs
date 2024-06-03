@@ -29,7 +29,7 @@ public static class RemoveFlight
         if (int.TryParse(flightIdString, out int flightId))
         {
 
-            bool removed = FlightLogic.RemoveFlight(flightId);
+            bool removed = _flightLogic.RemoveFlight(flightId);
             if (removed)
             {
                 Console.WriteLine($"Flight with ID {flightId} successfully removed.");
@@ -60,7 +60,7 @@ public static class RemoveFlight
         {
             if (int.TryParse(id, out int flightId))
             {
-                bool removed = FlightLogic.RemoveFlight(flightId);
+                bool removed = _flightLogic.RemoveFlight(flightId);
                 if (removed)
                 {
                     Console.WriteLine($"Flight with ID {flightId} successfully removed.");

@@ -6,10 +6,12 @@ using System.Linq;
 public class DiscountLogic
 {
     private List<DiscountModel> _discounts;
+    private DiscountAccess _discountsAccess = new DiscountAccess();
+
 
     public DiscountLogic()
     {
-        _discounts = DiscountAccess.LoadAllDiscounts();
+        _discounts = _discountsAccess.LoadAll();
     }
 
     public bool CreateDiscount(string discountCode, int discountPercentage, string discountDateFrom, string discountDateTill)
@@ -66,7 +68,7 @@ public class DiscountLogic
             _discounts.Add(discount);
         }
 
-        DiscountAccess.WriteAll(_discounts);
+        _discountsAccess.WriteAll(_discounts);
     }
 
     private int GenerateDiscountId()
@@ -82,7 +84,7 @@ public class DiscountLogic
         if (index != -1)
         {
             _discounts.RemoveAt(index);
-            DiscountAccess.WriteAll(_discounts);
+            _discountsAccess.WriteAll(_discounts);
             return true;
         }
         return false;

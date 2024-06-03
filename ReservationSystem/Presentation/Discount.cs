@@ -3,6 +3,8 @@ using System;
 public static class Discount
 {
     private static DiscountLogic _discountLogic = new DiscountLogic();
+    private static DiscountAccess _discountsAccess = new DiscountAccess();
+
     private static List<DiscountModel> _discounts;
 
     public static void Start()
@@ -17,7 +19,7 @@ public static class Discount
     public static void DiscountOverview()
     {
 
-        _discounts = DiscountAccess.LoadAllDiscounts();
+        _discounts = _discountsAccess.LoadAll();
         Console.WriteLine("| {0,-20} | {1,-20} | {2,-20} | {3,-20} |", "ID", "Code", "Start date", "End date");
         Console.WriteLine(new string('-', 93));
         foreach (DiscountModel d in _discounts)
