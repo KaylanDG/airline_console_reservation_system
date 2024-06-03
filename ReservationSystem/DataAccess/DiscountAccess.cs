@@ -1,10 +1,10 @@
 using System.Text.Json;
 
-public static class DiscountAccess
+public class DiscountAccess : IJsonHandler<DiscountModel>
 {
     public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/discount.json"));
 
-    public static List<DiscountModel> LoadAllDiscounts()
+    public List<DiscountModel> LoadAll()
     {
         if (!File.Exists(path) || new FileInfo(path).Length == 0)
         {
@@ -15,10 +15,10 @@ public static class DiscountAccess
         return JsonSerializer.Deserialize<List<DiscountModel>>(json);
     }
 
-    public static void WriteAll(List<DiscountModel> discounts)
+    public void WriteAll(List<DiscountModel> data)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(discounts, options);
+        string json = JsonSerializer.Serialize(data, options);
         File.WriteAllText(path, json);
     }
 }

@@ -1,19 +1,19 @@
 using System.Text.Json;
 
-public static class PlaneAccess
+public class PlaneAccess : IJsonHandler<PlaneModel>
 {
     public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/planes.json"));
 
-    public static List<PlaneModel> LoadAllPlanes()
+    public List<PlaneModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<PlaneModel>>(json);
     }
 
-    public static void WriteAll(List<PlaneModel> planes)
+    public void WriteAll(List<PlaneModel> data)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(planes, options);
+        string json = JsonSerializer.Serialize(data, options);
         File.WriteAllText(path, json);
     }
 }

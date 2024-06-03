@@ -1,19 +1,19 @@
 using System.Text.Json;
 
-public static class ReservationAccess
+public class ReservationAccess : IJsonHandler<ReservationModel>
 {
     public static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/reservations.json"));
 
-    public static List<ReservationModel> LoadAll()
+    public List<ReservationModel> LoadAll()
     {
         string json = File.ReadAllText(path);
         return JsonSerializer.Deserialize<List<ReservationModel>>(json);
     }
 
-    public static void WriteAll(List<ReservationModel> reservations)
+    public void WriteAll(List<ReservationModel> data)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(reservations, options);
+        string json = JsonSerializer.Serialize(data, options);
         File.WriteAllText(path, json);
     }
 }

@@ -6,19 +6,21 @@ public static class AdminReservationOverview
     private static ReservationLogic _reservationLogic;
     private static FlightLogic _flightLogic;
     private static List<ReservationModel> _reservations;
+    private static ReservationAccess _reservationAccess = new ReservationAccess();
+
     public static void Start()
     {
         _selectedReservation = 0;
         _reservationLogic = new ReservationLogic();
         _flightLogic = new FlightLogic();
-        _reservations = _reservationLogic.GetReservationsForPage(ReservationAccess.LoadAll(), _page, _pageSize);
+        _reservations = _reservationLogic.GetReservationsForPage(_reservationAccess.LoadAll(), _page, _pageSize);
         ReservationOverview();
     }
 
     private static void ReservationOverview()
     {
         // Get the total page amount
-        int pageAmount = (int)Math.Ceiling((double)ReservationAccess.LoadAll().Count / _pageSize);
+        int pageAmount = (int)Math.Ceiling((double)_reservationAccess.LoadAll().Count / _pageSize);
 
         ConsoleKey pressedKey = default;
         bool stopMenu = false;

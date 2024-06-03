@@ -3,9 +3,10 @@ using System.Globalization;
 public class PlaneLogic
 {
     private List<PlaneModel> _planes;
+    private PlaneAccess _planeAcces = new PlaneAccess();
     public PlaneLogic()
     {
-        _planes = PlaneAccess.LoadAllPlanes();
+        _planes = _planeAcces.LoadAll();
     }
 
     public List<PlaneModel> GetPlanes()

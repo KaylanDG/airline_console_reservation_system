@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 public class AccountsLogic
 {
     private List<AccountModel> _accounts;
+    private AccountsAccess _accountsAccess = new AccountsAccess();
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
@@ -17,7 +18,7 @@ public class AccountsLogic
 
     public AccountsLogic()
     {
-        _accounts = AccountsAccess.LoadAll();
+        _accounts = _accountsAccess.LoadAll();
     }
 
 
@@ -36,7 +37,7 @@ public class AccountsLogic
             //add new model
             _accounts.Add(acc);
         }
-        AccountsAccess.WriteAll(_accounts);
+        _accountsAccess.WriteAll(_accounts);
 
     }
 
