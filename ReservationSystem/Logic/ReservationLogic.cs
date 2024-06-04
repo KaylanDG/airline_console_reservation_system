@@ -3,10 +3,14 @@ using System.Globalization;
 public class ReservationLogic
 {
     private List<ReservationModel> _reservations;
+    private DiscountLogic _discountLogic;
+    private ReservationAccess _reservationAccess = new ReservationAccess();
+
 
     public ReservationLogic()
     {
-        _reservations = ReservationAccess.LoadAll();
+        _reservations = _reservationAccess.LoadAll();
+        _discountLogic = new DiscountLogic();
     }
 
     public void UpdateList(ReservationModel reservation)
@@ -22,7 +26,7 @@ public class ReservationLogic
             _reservations.Add(reservation);
         }
 
-        ReservationAccess.WriteAll(_reservations);
+        _reservationAccess.WriteAll(_reservations);
     }
 
     // This method completes the reservation by adding a reservation date
@@ -44,7 +48,7 @@ public class ReservationLogic
     private int GenerateReservationId()
     {
         // Load existing reservations from the JSON file
-        var reservations = ReservationAccess.LoadAll();
+        var reservations = _reservationAccess.LoadAll();
 
         if (reservations == null || reservations.Count < 1) return 1;
 
@@ -84,7 +88,7 @@ public class ReservationLogic
         int AccountID = AccountsLogic.CurrentAccount.Id;
 
         // load in all reservations
-        List<ReservationModel> _reservations = ReservationAccess.LoadAll();
+        List<ReservationModel> _reservations = _reservationAccess.LoadAll();
 
         // create new list to store reservation of current account
         List<ReservationModel> ReturnReservation = new List<ReservationModel>();
@@ -103,7 +107,7 @@ public class ReservationLogic
     public bool RemoveReservation(string ReservationCode)
     {
         // load in all reservations
-        List<ReservationModel> _reservations = ReservationAccess.LoadAll();
+        List<ReservationModel> _reservations = _reservationAccess.LoadAll();
         bool removed = false;
 
         // foreach reservation check if reservation code is equal to given reservation code
@@ -118,7 +122,7 @@ public class ReservationLogic
             }
         }
         // after removing reservation update json
-        ReservationAccess.WriteAll(_reservations);
+        _reservationAccess.WriteAll(_reservations);
         return removed;
     }
 
@@ -136,7 +140,7 @@ public class ReservationLogic
     {
         List<ReservationModel> reservations = new List<ReservationModel>();
 
-        foreach (ReservationModel reservation in ReservationAccess.LoadAll())
+        foreach (ReservationModel reservation in _reservationAccess.LoadAll())
         {
             if (filter == "userId")
             {

@@ -31,6 +31,7 @@ public static class UserReservationOverview
             Console.WriteLine("Press the C key to cancel a reservation");
             Console.WriteLine("Press the S key to search reservations");
             Console.WriteLine("Press the A key to show all reservations");
+            Console.WriteLine("Press the I key to interchange your seat on a reservation");
             Console.WriteLine("Press backspace to return to the menu\n");
 
             if (_reservations.Count > 0)
@@ -106,6 +107,40 @@ public static class UserReservationOverview
             {
                 stopMenu = true;
                 Start();
+            }
+            else if (pressedKey == ConsoleKey.A)
+            {
+                stopMenu = true;
+                Start();
+            }
+            else if (pressedKey == ConsoleKey.I && _reservations.Count > 0)
+            {
+                Console.WriteLine("For who do you want to change your seat: ");
+
+                List<string> names = new List<string>();
+                FlightModel FlightToSearch = _flightLogic.GetById(_reservations[_selectedReservation].FlightId);
+
+                foreach (PassengerModel pr in _reservations[_selectedReservation].Passengers)
+                {
+                    names.Add(pr.FullName);
+                }
+                Menu ChangeSeatPassenger = new Menu(names, "Choose which passenger you want to change the seat of.");
+                int passengerIndex = ChangeSeatPassenger.Run();
+
+
+                string seat = Reservation.SeatSelection(FlightToSearch.Id);
+
+                _reservations[_selectedReservation].Passengers[passengerIndex].SeatNumber = seat;
+                _reservations[_selectedReservation].TotalCost += 25;
+
+                _reservations[_selectedReservation].Passengers[passengerIndex].AdditionalServices.Add(new ServiceModel("Changed Seat", 1, 25));
+                _reservationLogic.UpdateList(_reservations[_selectedReservation]);
+
+                Console.WriteLine("Seat succesfully changed.");
+                Console.WriteLine("Press any key to return.");
+
+                Console.ReadKey(true);
+
             }
         }
     }

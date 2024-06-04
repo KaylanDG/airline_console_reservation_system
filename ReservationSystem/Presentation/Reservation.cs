@@ -1,18 +1,17 @@
 public static class Reservation
 {
-    private static FlightLogic _flightLogic;
-    private static ReservationLogic _reservationLogic;
-    private static PlaneLogic _planeLogic;
+    private static FlightLogic _flightLogic = new FlightLogic();
+    private static ReservationLogic _reservationLogic = new ReservationLogic();
+    private static PlaneLogic _planeLogic = new PlaneLogic();
+    private static DiscountLogic _discountLogic = new DiscountLogic();
     private static ReservationModel _reservation;
     private static FlightModel _flight;
     private static List<SeatModel> _flightSeats;
     private static List<PassengerModel> _passengers;
+    private static bool _dicount = false;
 
     public static void Start()
     {
-        _flightLogic = new FlightLogic();
-        _reservationLogic = new ReservationLogic();
-        _planeLogic = new PlaneLogic();
 
         if (_flightLogic.GetAvailableFlights().Count <= 0)
         {
@@ -169,6 +168,55 @@ public static class Reservation
         return seatNumber;
     }
 
+    public static string SeatSelection(int flightID)
+    {
+        _flight = _flightLogic.GetById(flightID);
+        _flightSeats = _flightLogic.GetFlightSeats(_flight);
+
+        SeatOverview();
+        bool validSeat = false;
+        string seatNumber = "";
+
+        while (!validSeat)
+        {
+            Console.WriteLine("It will cost an aditional 25 euros to change your seat.");
+            Console.WriteLine("\nEnter seat number (example: A-01)");
+            Console.WriteLine("Or press enter if you wanna remain in your current seat: ");
+            seatNumber = Console.ReadLine().ToUpper();
+            if (seatNumber == "")
+            {
+                UserReservationOverview.Start();
+            }
+            else if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered does not exist.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatReserved(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already reserved.\n");
+                Console.ResetColor();
+            }
+
+            else if (_flightLogic.IsSeatSelected(seatNumber, _flightSeats))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nThe seat number you entered is already selected.\n");
+                Console.ResetColor();
+            }
+            else
+            {
+                validSeat = true;
+            }
+        }
+
+
+        return seatNumber;
+    }
+
 
     public static void SeatOverview()
     {
@@ -265,33 +313,67 @@ public static class Reservation
 
     public static void CompleteReservation(bool isReturnFlight = false)
     {
-        string reservationPrice = "";
-        reservationPrice += "\nYour reservation\n";
-        reservationPrice += $"From:\t\t{_flight.From}\n";
-        reservationPrice += $"Destination:\t{_flight.Destination}\n";
-        reservationPrice += $"Departure:\t{_flight.DepartureTime}\n";
-        reservationPrice += "\nPassengers:\n";
-        for (int i = 1; i <= _reservation.Passengers.Count; i++)
+        int bookResrevation = -1;
+
+        while (bookResrevation != 0 && bookResrevation != 1)
         {
-            PassengerModel passenger = _reservation.Passengers[i - 1];
-            reservationPrice += $" Passenger {i}:\t{passenger.FullName}\n";
-            reservationPrice += $" Seat:\t\t{passenger.SeatNumber} - Price: €{_flightLogic.GetSeatPrice(passenger.SeatNumber, _flight)}\n";
-            if (passenger.AdditionalServices.Count > 0)
+            string reservationPrice = "";
+            reservationPrice += "\nYour reservation\n";
+            reservationPrice += $"From:\t\t{_flight.From}\n";
+            reservationPrice += $"Destination:\t{_flight.Destination}\n";
+            reservationPrice += $"Departure:\t{_flight.DepartureTime}\n";
+            reservationPrice += "\nPassengers:\n";
+            for (int i = 1; i <= _reservation.Passengers.Count; i++)
             {
-                reservationPrice += " Additional Services\n";
-                foreach (ServiceModel service in passenger.AdditionalServices)
+                PassengerModel passenger = _reservation.Passengers[i - 1];
+                reservationPrice += $" Passenger {i}:\t{passenger.FullName}\n";
+                reservationPrice += $" Seat:\t\t{passenger.SeatNumber} - Price: €{_flightLogic.GetSeatPrice(passenger.SeatNumber, _flight)}\n";
+                if (passenger.AdditionalServices.Count > 0)
                 {
-                    reservationPrice += $" - {service.ServiceType} / Amount: {service.Quantity} / Price: €{service.Cost}\n";
+                    reservationPrice += " Additional Services\n";
+                    foreach (ServiceModel service in passenger.AdditionalServices)
+                    {
+                        reservationPrice += $" - {service.ServiceType} / Amount: {service.Quantity} / Price: €{service.Cost}\n";
+                    }
                 }
             }
-        }
-        reservationPrice += "\n";
-        reservationPrice += new string('-', 30);
-        reservationPrice += $"\nTotal price: €{_reservation.TotalCost}\n";
-        reservationPrice += $"Book reservation: (Y/N)\n";
+            reservationPrice += "\n";
+            reservationPrice += new string('-', 30);
+            reservationPrice += $"\nTotal price: €{_reservation.TotalCost}\n";
 
-        Menu bookReservationMenu = new Menu(new List<string> { "yes", "no" }, reservationPrice);
-        int bookResrevation = bookReservationMenu.Run();
+            List<string> options = new List<string> { "Book reservation", "Cancel reservation" };
+            if (!_dicount) options.Add("Apply discount");
+
+            Menu bookReservationMenu = new Menu(options, reservationPrice);
+            bookResrevation = bookReservationMenu.Run();
+
+            if (bookResrevation == 2)
+            {
+                Console.WriteLine("Enter a discount code:");
+                string discountCode = Console.ReadLine();
+                if (_discountLogic.DoesCodeExist(discountCode))
+                {
+                    DiscountModel discount = _discountLogic.GetDiscount(discountCode);
+                    if (_discountLogic.IsCodeValid(discount))
+                    {
+                        _reservation.TotalCost -= _discountLogic.GetDiscountPrice(discount, _reservation.TotalCost);
+                        Console.WriteLine("Discount applied");
+                        _dicount = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("This discount is no longer valid");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("This code does not exist");
+                }
+
+                Console.WriteLine("\nPress any key to return..");
+                Console.ReadKey(true);
+            }
+        }
 
         Console.Clear();
 
