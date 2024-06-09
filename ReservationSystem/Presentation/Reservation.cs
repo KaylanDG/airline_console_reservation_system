@@ -31,7 +31,7 @@ public static class Reservation
                 _flightSeats = _flightLogic.GetFlightSeats(_flight);
 
                 ReservationProcess();
-                ReservationMenu();
+                CompleteReservation();
                 MainMenu.Start();
             }
         }
@@ -68,21 +68,8 @@ public static class Reservation
             UserId = AccountsLogic.CurrentAccount!.Id
         };
 
-        foreach (PassengerModel passenger in _passengers)
-        {
-
-            Console.WriteLine($"\nSelect a seat for {passenger.FullName}\n");
-            passenger.SeatNumber = SeatSelection();
-
-            ServiceModel extraLuggage = ExtraLuggage();
-            if (extraLuggage != null)
-            {
-                passenger.AdditionalServices.Add(extraLuggage);
-            }
-
-            _reservation.TotalCost += _flightLogic.GetSeatPrice(passenger.SeatNumber, _flight);
-            _flightSeats = _flightLogic.UpdateFlightSeats(passenger.SeatNumber, _flightSeats);
-        }
+        SeatSelection();
+        ExtraLuggage();
 
         _reservation.Passengers = _passengers;
     }
@@ -128,44 +115,50 @@ public static class Reservation
         return passengerAmount;
     }
 
-    public static string SeatSelection()
+    public static void SeatSelection()
     {
-        SeatOverview();
-        bool validSeat = false;
-        string seatNumber = "";
 
-        while (!validSeat)
+        foreach (PassengerModel passenger in _passengers)
         {
-            Console.WriteLine("\nEnter seat number (example: A-01):");
-            seatNumber = Console.ReadLine().ToUpper();
-            if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nThe seat number you entered does not exist.\n");
-                Console.ResetColor();
-            }
+            Console.WriteLine("Seats:");
+            SeatOverview();
 
-            else if (_flightLogic.IsSeatReserved(seatNumber, _flightSeats))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nThe seat number you entered is already reserved.\n");
-                Console.ResetColor();
-            }
+            bool validSeat = false;
+            string seatNumber = "";
 
-            else if (_flightLogic.IsSeatSelected(seatNumber, _flightSeats))
+            while (!validSeat)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nThe seat number you entered is already selected.\n");
-                Console.ResetColor();
-            }
-            else
-            {
-                validSeat = true;
+                Console.WriteLine($"\nEnter seat number for passenger {passenger.FullName}: (example: A-01):");
+                seatNumber = Console.ReadLine().ToUpper();
+                if (!_planeLogic.DoesSeatExist(seatNumber, _flight.Plane))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe seat number you entered does not exist.\n");
+                    Console.ResetColor();
+                }
+
+                else if (_flightLogic.IsSeatReserved(seatNumber, _flightSeats))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe seat number you entered is already reserved.\n");
+                    Console.ResetColor();
+                }
+
+                else if (_flightLogic.IsSeatSelected(seatNumber, _flightSeats))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nThe seat number you entered is already selected.\n");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    passenger.SeatNumber = seatNumber;
+                    _reservation.TotalCost += _flightLogic.GetSeatPrice(passenger.SeatNumber, _flight);
+                    _flightSeats = _flightLogic.UpdateFlightSeats(passenger.SeatNumber, _flightSeats);
+                    validSeat = true;
+                }
             }
         }
-
-
-        return seatNumber;
     }
 
     public static string SeatSelection(int flightID)
@@ -490,7 +483,7 @@ public static class Reservation
                 }
 
                 ReservationProcess();
-                ReservationMenu(true);
+                CompleteReservation(true);
             }
         }
         else
@@ -506,72 +499,47 @@ public static class Reservation
         }
     }
 
-    public static void ReservationMenu(bool isReturnFlight = false)
+    public static void ExtraLuggage()
     {
-
-        List<string> options = new List<string>() { "Book reservation", "Cancel reservation" };
-        string prompt = "\nSelect an option from the menu\n";
-
-        Menu menu = new Menu(options, prompt);
-        int selectedOption = menu.Run();
-
-        switch (selectedOption)
+        foreach (PassengerModel passenger in _passengers)
         {
-            case 0:
-                CompleteReservation(isReturnFlight);
-                break;
-            case 1:
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nYour reservation has been Canceled.\n");
-                Console.ResetColor();
+            Menu extraLuggageMenu = new Menu(new List<string> { "yes", "no" }, $"Do you want extra luggage for passenger {passenger.FullName}:");
+            int extraLuggage = extraLuggageMenu.Run();
 
-                Console.WriteLine("\nPress any key to return..");
-                Console.ReadKey(true);
-                MainMenu.Start();
-                break;
-        }
-    }
-
-    public static ServiceModel ExtraLuggage()
-    {
-        Menu extraLuggageMenu = new Menu(new List<string> { "yes", "no" }, "Do you want extra luggage:");
-        int extraLuggage = extraLuggageMenu.Run();
-
-        if (extraLuggage == 0)
-        {
-            Console.Clear();
-            int maxLuggageAmount = _flightLogic.MaxLuggageAmount(_flight.Id);
-            int extraLuggageAmount = 0;
-            ConsoleKey pressedKey = default;
-
-            while (pressedKey != ConsoleKey.Enter)
+            if (extraLuggage == 0)
             {
-                Console.WriteLine("\nAmount of extra luggage (1 = 20kg):");
-                Console.WriteLine($"<{extraLuggageAmount}>");
-                Console.WriteLine($"Total price: €{_reservationLogic.ExtraLuggagePrice(extraLuggageAmount)}");
-                Console.WriteLine("\nUse the up/down arrow to add or remove, press enter to confirm\n");
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                pressedKey = keyInfo.Key;
-
-                if (pressedKey == ConsoleKey.UpArrow)
-                {
-                    extraLuggageAmount++;
-                    if (extraLuggageAmount > maxLuggageAmount) extraLuggageAmount = maxLuggageAmount;
-                }
-                else if (pressedKey == ConsoleKey.DownArrow)
-                {
-                    extraLuggageAmount--;
-                    if (extraLuggageAmount < 0) extraLuggageAmount = 0;
-                }
                 Console.Clear();
+                int maxLuggageAmount = _flightLogic.MaxLuggageAmount(_flight.Id);
+                int extraLuggageAmount = 0;
+                ConsoleKey pressedKey = default;
+
+                while (pressedKey != ConsoleKey.Enter)
+                {
+                    Console.WriteLine($"\nAmount of extra luggage for passenger {passenger.FullName}: (1 = 20kg):");
+                    Console.WriteLine($"<{extraLuggageAmount}>");
+                    Console.WriteLine($"Total price: €{_reservationLogic.ExtraLuggagePrice(extraLuggageAmount)}");
+                    Console.WriteLine("\nUse the up/down arrow to add or remove, press enter to confirm\n");
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    pressedKey = keyInfo.Key;
+
+                    if (pressedKey == ConsoleKey.UpArrow)
+                    {
+                        extraLuggageAmount++;
+                        if (extraLuggageAmount > maxLuggageAmount) extraLuggageAmount = maxLuggageAmount;
+                    }
+                    else if (pressedKey == ConsoleKey.DownArrow)
+                    {
+                        extraLuggageAmount--;
+                        if (extraLuggageAmount < 0) extraLuggageAmount = 0;
+                    }
+                    Console.Clear();
+                }
+
+                double price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
+                _reservation.TotalCost += price;
+                passenger.AdditionalServices.Add(new ServiceModel("Extra Luggage", extraLuggageAmount, price));
             }
-
-            double price = _reservationLogic.ExtraLuggagePrice(extraLuggageAmount);
-            _reservation.TotalCost += price;
-            return new ServiceModel("Extra Luggage", extraLuggageAmount, price);
-
         }
-        return null;
     }
 
 }
