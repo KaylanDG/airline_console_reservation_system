@@ -74,7 +74,8 @@ public class AccountsLogic
 
 
         id_var++;
-        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role);
+        string dateCreated = DateTime.Now.ToString("dd-MM-yyyy HH:mm");
+        AccountModel acc = new AccountModel(id_var, email, password, FullName, Phone, DateOfBirth, Invalid, role, dateCreated);
         UpdateList(acc);
         CurrentAccount = acc;
         return acc;

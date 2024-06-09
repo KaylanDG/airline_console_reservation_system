@@ -33,6 +33,7 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                 options.Add("Delete flight(s)");
                 options.Add("edit flight(s)");
                 options.Add("Reservations overview");
+                options.Add("Statistics");
                 options.Add("Discount codes");
             }
         }
@@ -97,15 +98,18 @@ Use the arrow keys to navigate the menu, press enter to select an option.
                     AdminReservationOverview.Start();
                     break;
                 case 8:
-                    Discount.Start();
+                    AdminStatistics.Start();
                     break;
                 case 9:
-                    FlightOverview.Start();
+                    Discount.Start();
                     break;
                 case 10:
-                    AirportInfo.Start();
+                    FlightOverview.Start();
                     break;
                 case 11:
+                    AirportInfo.Start();
+                    break;
+                case 12:
                     Environment.Exit(1);
                     break;
             }

@@ -27,7 +27,10 @@ public class AccountModel
     [JsonPropertyName("role")]
     public string Role { get; set; }
 
-    public AccountModel(int id, string emailAddress, string password, string fullName, string phone, string dateofbirth, bool disabled, string role)
+    [JsonPropertyName("date_created")]
+    public string DateCreated { get; set; }
+
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phone, string dateofbirth, bool disabled, string role, string dateCreated)
     {
         Id = id;
         EmailAddress = emailAddress;
@@ -37,6 +40,7 @@ public class AccountModel
         DateOfBirth = dateofbirth;
         Disabled = disabled;
         Role = role;
+        DateCreated = dateCreated;
     }
 
 }
