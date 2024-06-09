@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": 1,
+    "reservation_code": "GFRBLNE9",
+    "reservation_date": "04-06-2024 10:44",
+    "flight_id": 1,
+    "user_id": 1,
+    "total_cost": 220,
+    "passengers": [
+      {
+        "passenger_id": 1,
+        "full_name": "test",
+        "seat_number": "A-05",
+        "additional_services": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "reservation_code": "XE4BSTBS",
+    "reservation_date": "04-06-2024 10:44",
+    "flight_id": 4,
+    "user_id": 1,
+    "total_cost": 220,
+    "passengers": [
+      {
+        "passenger_id": 1,
+        "full_name": "test",
+        "seat_number": "A-05",
+        "additional_services": []
+      }
+    ]
+  }
+]

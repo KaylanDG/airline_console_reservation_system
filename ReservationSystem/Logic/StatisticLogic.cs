@@ -2,6 +2,8 @@ using System.Globalization;
 
 public class StatisticLogic
 {
+    private ReservationAccess _reservationAccess = new ReservationAccess();
+    private AccountsAccess _accountAccess = new AccountsAccess();
     private List<ReservationModel> _reservations;
     private List<AccountModel> _accounts;
     private FlightLogic _flightLogic;
@@ -9,8 +11,8 @@ public class StatisticLogic
 
     public StatisticLogic()
     {
-        _reservations = ReservationAccess.LoadAll();
-        _accounts = AccountsAccess.LoadAll();
+        _reservations = _reservationAccess.LoadAll();
+        _accounts = _accountAccess.LoadAll();
         _flightLogic = new FlightLogic();
     }
 
@@ -28,8 +30,11 @@ public class StatisticLogic
             foreach (ReservationModel resv in reservations)
             {
                 FlightModel flight = _flightLogic.GetById(resv.FlightId);
-                if (destinations.ContainsKey(flight.Destination)) destinations[flight.Destination] += 1;
-                else destinations[flight.Destination] = 1;
+                if (flight.Destination != "Rotterdam")
+                {
+                    if (destinations.ContainsKey(flight.Destination)) destinations[flight.Destination] += 1;
+                    else destinations[flight.Destination] = 1;
+                }
             }
 
             popularDestination = destinations.MaxBy(x => x.Value).Key;

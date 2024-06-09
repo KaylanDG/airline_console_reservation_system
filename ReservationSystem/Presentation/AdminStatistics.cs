@@ -123,10 +123,13 @@ public static class AdminStatistics
         string stats = $"║ Profit: €{data.Item1} ║ Reservations: {data.Item2} ║ New Users: {data.Item3} ║";
 
         string border = new string('═', stats.Length - 2);
+        string popularDestination = $" Most booked destination: {(data.Item4 != "" ? data.Item4 : "No reservations made")}";
 
         Console.WriteLine($"\n[{_searchDate}]\n");
         Console.WriteLine("╔" + border + "╗");
         Console.WriteLine(stats);
         Console.WriteLine("╚" + border + "╝");
+        Console.WriteLine(popularDestination);
+        Console.WriteLine("═" + border + "═");
     }
 }
