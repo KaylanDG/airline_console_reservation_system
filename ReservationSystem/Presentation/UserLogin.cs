@@ -35,10 +35,12 @@ static class UserLogin
         else
         {
             Console.Clear();
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nNo account found with that email and password\n");
             Console.ResetColor();
+
+            Console.WriteLine("\nPress any key to return..");
+            Console.ReadKey(true);
         }
 
         MainMenu.Start();
