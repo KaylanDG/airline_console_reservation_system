@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 public class ReservationLogic
 {
@@ -166,5 +167,14 @@ public class ReservationLogic
         DateTime parsedDate;
         //return true or false
         return DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out parsedDate);
+    }
+
+    public bool validPassengerName(string name)
+    {
+        Regex nameRegex = new Regex(@"^[A-Za-z ]+$");
+
+        if (!string.IsNullOrWhiteSpace(name) && name.Length <= 50 && nameRegex.IsMatch(name)) return true;
+
+        return false;
     }
 }

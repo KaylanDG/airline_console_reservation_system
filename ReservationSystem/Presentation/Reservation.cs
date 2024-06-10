@@ -50,7 +50,7 @@ public static class Reservation
                 Console.Clear();
                 Console.WriteLine($"\nEnter the full name of passenger {i + 1}:");
                 string passengerName = Console.ReadLine();
-                while (passengerName == "")
+                while (!_reservationLogic.validPassengerName(passengerName))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nPlease enter your name.\n");

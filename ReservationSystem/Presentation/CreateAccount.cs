@@ -18,7 +18,7 @@ public class CreateAccount
 
             Console.WriteLine("\nPlease enter your Full Name");
             string fullName = Console.ReadLine();
-            if (!accountsLogic.ValidName(fullName))
+            while (!accountsLogic.ValidName(fullName))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nIncorrect Full name format. try again:\n");
