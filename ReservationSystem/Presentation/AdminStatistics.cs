@@ -110,9 +110,9 @@ public static class AdminStatistics
                 _searchDate = _date.ToString("Y", CultureInfo.CreateSpecificCulture("en-US"));
                 break;
             case 2:
-                (DateTime, DateTime) week = _statisticLogic.GetWeekBoundaries(_date);
-                data = _statisticLogic.GetStatisticsWeekly(week.Item1, week.Item2);
-                _searchDate = week.Item1.ToString("D", CultureInfo.CreateSpecificCulture("en-US")) + " / " + week.Item2.ToString("D", CultureInfo.CreateSpecificCulture("en-US"));
+                DateTime[] week = _statisticLogic.GetWeekBoundaries(_date);
+                data = _statisticLogic.GetStatisticsWeekly(week[0], week[1]);
+                _searchDate = week[0].ToString("D", CultureInfo.CreateSpecificCulture("en-US")) + " / " + week[1].ToString("D", CultureInfo.CreateSpecificCulture("en-US"));
                 break;
             case 3:
                 data = _statisticLogic.GetStatisticsDaily(_date);
