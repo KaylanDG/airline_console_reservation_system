@@ -70,7 +70,11 @@ Use the arrow keys to navigate the menu, press enter to select an option.
         // Menu options for when user is logged in
         else
         {
-            if (selectedOption == 0) AccountsLogic.Logout();
+            if (selectedOption == 0)
+            {
+                AccountsLogic.Logout();
+                Start();
+            }
             else if (selectedOption == 1) PersonalInfoModify.Start();
             else if (selectedOption == 2) UserReservationOverview.Start();
             else if (selectedOption == 3) Reservation.Start();
