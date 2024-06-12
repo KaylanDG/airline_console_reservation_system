@@ -363,7 +363,6 @@ public class FlightLogic
         //Get the size of the sublist
         int count = Math.Min(pageSize, flights.Count - startIndex);
         // return sublist
-        Console.WriteLine($"{startIndex} {count}");
         return flights.GetRange(startIndex, count);
     }
 
