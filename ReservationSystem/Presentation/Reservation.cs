@@ -29,6 +29,7 @@ public static class Reservation
             {
                 _flight = _flightLogic.GetById(flightID);
                 _flightSeats = _flightLogic.GetFlightSeats(_flight);
+                _passengers = new List<PassengerModel>();
 
                 ReservationProcess();
                 CompleteReservation();
@@ -39,10 +40,9 @@ public static class Reservation
 
     public static void ReservationProcess()
     {
-        if (_passengers == null)
+        if (_passengers.Count <= 0)
         {
             int passengerAmount = PassengerAmount();
-            _passengers = new List<PassengerModel>();
 
             for (int i = 0; i < passengerAmount; i++)
             {

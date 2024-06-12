@@ -133,6 +133,7 @@ static class FlightOverview
         Console.WriteLine("\nEnter a destination (e.g. London):");
         string destination = Console.ReadLine();
         _flights = _flightLogic.GetAvailableFlightsForDestination(destination);
+        _page = 1;
         ShowOverview();
         return;
     }
