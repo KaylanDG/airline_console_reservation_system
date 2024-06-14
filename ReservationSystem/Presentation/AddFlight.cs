@@ -13,6 +13,7 @@ public static class AddFlight
         while (!_flightLogic.IsValidFlightNumber(flightNumber))
         {
             Console.WriteLine("The flight number you entered is not valid, please try again");
+            Console.WriteLine("The flight number should start with 2 letters followed by 4 numbers");
             flightNumber = Console.ReadLine();
         }
 

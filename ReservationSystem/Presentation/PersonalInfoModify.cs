@@ -80,6 +80,8 @@ public static class PersonalInfoModify
         AccountsLogic.CurrentAccount.EmailAddress = NewEmail;
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Email");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
     public static void PasswordModify()
@@ -112,6 +114,8 @@ public static class PersonalInfoModify
         AccountsLogic.CurrentAccount.Password = NewPassword;
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Password");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
     public static void FullNameModify()
@@ -145,6 +149,8 @@ public static class PersonalInfoModify
         AccountsLogic.CurrentAccount.FullName = NewFullname;
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Full name");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
 
@@ -179,6 +185,8 @@ public static class PersonalInfoModify
         AccountsLogic.CurrentAccount.Phone = NewPhone;
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Phone number");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
     public static void DateOfBirthModify()
@@ -212,6 +220,8 @@ public static class PersonalInfoModify
         AccountsLogic.CurrentAccount.DateOfBirth = newDateOfBirth;
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Date of Birth");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
     public static void ChangeDisabilityModify()
@@ -241,6 +251,8 @@ public static class PersonalInfoModify
 
         x.UpdateList(AccountsLogic.CurrentAccount);
         Console.WriteLine("Succesfully changed your Disability");
+        Console.WriteLine("\nPress any key to return..");
+        Console.ReadKey(true);
     }
 
 
