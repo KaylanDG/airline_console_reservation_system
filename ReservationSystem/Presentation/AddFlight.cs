@@ -10,6 +10,12 @@ public static class AddFlight
         Console.Clear();
         Console.WriteLine("Enter a flight number:");
         string flightNumber = Console.ReadLine();
+        while (!_flightLogic.IsValidFlightNumber(flightNumber))
+        {
+            Console.WriteLine("The flight number you entered is not valid, please try again");
+            Console.WriteLine("The flight number should start with 2 letters followed by 4 numbers");
+            flightNumber = Console.ReadLine();
+        }
 
 
         Console.WriteLine("\nChoose which plane you want to use:");
@@ -41,6 +47,11 @@ public static class AddFlight
 
         Console.WriteLine("\nEnter a destination:");
         string destination = Console.ReadLine();
+        while (destination == from)
+        {
+            Console.WriteLine("\nThe destination can not be the same as the departure, please try again:");
+            destination = Console.ReadLine();
+        }
 
         List<string> timeZones = new List<string>
         {

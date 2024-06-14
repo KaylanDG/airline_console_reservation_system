@@ -129,10 +129,8 @@ public class AccountsLogic
     {
         Regex nameRegex = new Regex(@"^[A-Za-z ]+$");
 
-        if (name.Length <= 50 && nameRegex.IsMatch(name) && name != null)
-        {
-            return true;
-        }
+        if (!string.IsNullOrWhiteSpace(name) && name.Length <= 50 && nameRegex.IsMatch(name)) return true;
+
         return false;
     }
 

@@ -18,51 +18,49 @@ public class CreateAccount
 
             Console.WriteLine("\nPlease enter your Full Name");
             string fullName = Console.ReadLine();
-            if (!accountsLogic.ValidName(fullName))
+            while (!accountsLogic.ValidName(fullName))
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("\nIncorrect Full name format.\n");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nIncorrect Full name format. try again:\n");
                 Console.ResetColor();
-                break;
+
+                fullName = Console.ReadLine();
             }
 
             Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
 
-            if (!accountsLogic.ValidEmail(email))
+            while (!accountsLogic.ValidEmail(email))
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("\nIncorrect E-Mail format.\n");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nIncorrect E-Mail format. Try again:\n");
                 Console.ResetColor();
-                break;
+
+                email = Console.ReadLine();
             }
 
             Console.WriteLine("\nPlease enter your password");
             string password = Console.ReadLine();
 
-            if (!accountsLogic.ValidPassword(password))
+            while (!accountsLogic.ValidPassword(password))
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nPassword needs to be at least 8 characters.\n");
                 Console.ResetColor();
-                break;
+                password = Console.ReadLine();
             }
 
             Console.WriteLine("\nPlease enter your phone number");
             string phone = Console.ReadLine();
 
-            if (!accountsLogic.ValidPhone(phone))
+            while (!accountsLogic.ValidPhone(phone))
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nPhone number needs to be at least 10 characters.");
                 Console.WriteLine("Start with a \"0\".");
                 Console.WriteLine("And needs to be all numbers.\n");
                 Console.ResetColor();
-                break;
+                phone = Console.ReadLine();
             }
 
             Console.WriteLine("\nPlease enter your date of birth");

@@ -79,7 +79,7 @@ static class FlightOverview
 
         // top part of overview
         Console.WriteLine();
-        Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20} | {7,-20}", "", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL", "RETURN FLIGHTS");
+        Console.WriteLine("{0,-5} {1,-20} | {2, -15} | {3,-15} {4,-20} -->   {5,-15} {6,-20} | {7,-20}", "ID", "AIRLINES", "FLIGHT NUMBER", "FROM", "DEPARTURE", "TO", "ARRIVAL", "RETURN FLIGHTS");
         Console.WriteLine(new string('-', 141));
 
         // Show flights if there are any
@@ -133,6 +133,7 @@ static class FlightOverview
         Console.WriteLine("\nEnter a destination (e.g. London):");
         string destination = Console.ReadLine();
         _flights = _flightLogic.GetAvailableFlightsForDestination(destination);
+        _page = 1;
         ShowOverview();
         return;
     }

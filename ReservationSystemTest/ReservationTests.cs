@@ -4,10 +4,14 @@ namespace ReservationSystemTest;
 public class ReservationTests
 {
 
+    private PlaneAccess _planeAccess = new PlaneAccess();
+    private ReservationAccess _resvAccess = new ReservationAccess();
+    private FlightsAccess _flightAccess = new FlightsAccess();
+
     [TestMethod]
     public void TestSeatPrice()
     {
-        List<PlaneModel> planes = PlaneAccess.LoadAllPlanes();
+        List<PlaneModel> planes = _planeAccess.LoadAll();
         PlaneLogic logic = new PlaneLogic();
         foreach (PlaneModel plane in planes)
         {
@@ -46,7 +50,7 @@ public class ReservationTests
 
         // Flight with plane Boeing 737
         flightLogic.CreateFlights("test", 1, "test", "test", "GMT", 60, "16-06-2024 10:00", 1);
-        FlightModel newFlight1 = FlightsAccess.LoadAllFlights()[^1];
+        FlightModel newFlight1 = _flightAccess.LoadAll()[^1];
         Assert.AreEqual(132, flightLogic.MaxLuggageAmount(newFlight1.Id));
 
         ReservationModel reservation1 = new ReservationModel();
@@ -61,7 +65,7 @@ public class ReservationTests
 
         // Flight with plane Boeing 787
         flightLogic.CreateFlights("test", 2, "test", "test", "GMT", 60, "16-06-2024 10:00", 1);
-        FlightModel newFlight2 = FlightsAccess.LoadAllFlights()[^1];
+        FlightModel newFlight2 = _flightAccess.LoadAll()[^1];
         Assert.AreEqual(400, flightLogic.MaxLuggageAmount(newFlight2.Id));
 
         ReservationModel reservation2 = new ReservationModel();
@@ -75,7 +79,7 @@ public class ReservationTests
 
         // Flight with plane Airbus 330
         flightLogic.CreateFlights("test", 3, "test", "test", "GMT", 60, "16-06-2024 10:00", 1);
-        FlightModel newFlight3 = FlightsAccess.LoadAllFlights()[^1];
+        FlightModel newFlight3 = _flightAccess.LoadAll()[^1];
         Assert.AreEqual(400, flightLogic.MaxLuggageAmount(newFlight3.Id));
 
         ReservationModel reservation3 = new ReservationModel();
@@ -115,7 +119,7 @@ public class ReservationTests
         FlightLogic flightLogic = new FlightLogic();
 
         flightLogic.CreateFlights("test", 1, "test", "test", "GMT", 60, "16-06-2024 10:00", 1);
-        FlightModel newFlight = FlightsAccess.LoadAllFlights()[^1];
+        FlightModel newFlight = _flightAccess.LoadAll()[^1];
 
         ReservationModel reservation = new ReservationModel();
         PassengerModel passenger = new PassengerModel(1);

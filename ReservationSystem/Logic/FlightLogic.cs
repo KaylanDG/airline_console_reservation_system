@@ -23,13 +23,14 @@ public class FlightLogic
     public List<FlightModel> GetAvailableFlights()
     {
         List<FlightModel> availableFlights = new List<FlightModel>();
+        string format = "dd-MM-yyyy HH:mm";
+
 
         // For each flight check if the departure date hasn't passed.
         // if not add the flight to availableFlights.
         foreach (FlightModel flight in _flightsAccess.LoadAll())
         {
             string departureDateTimeString = flight.DepartureTime;
-            string format = "dd-MM-yyyy HH:mm";
 
             DateTime departureDateTime = DateTime.ParseExact(departureDateTimeString, format, System.Globalization.CultureInfo.InvariantCulture);
             DateTime today = DateTime.Now;
@@ -40,7 +41,7 @@ public class FlightLogic
             }
         }
 
-        return availableFlights;
+        return availableFlights.OrderBy(x => DateTime.ParseExact(x.DepartureTime, format, System.Globalization.CultureInfo.InvariantCulture)).ToList();
     }
 
     public List<FlightModel> GetAvailableFlightsForDestination(string destination)

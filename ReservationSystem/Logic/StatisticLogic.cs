@@ -113,7 +113,7 @@ public class StatisticLogic
 
 
 
-    public (DateTime FirstDayOfWeek, DateTime LastDayOfWeek) GetWeekBoundaries(DateTime date)
+    public DateTime[] GetWeekBoundaries(DateTime date)
     {
         CultureInfo cultureInfo = CultureInfo.CurrentCulture;
         DayOfWeek firstDayOfWeek = cultureInfo.DateTimeFormat.FirstDayOfWeek;
@@ -122,6 +122,6 @@ public class StatisticLogic
         DateTime firstDay = date.AddDays(-1 * diff).Date;
         DateTime lastDay = firstDay.AddDays(6).Date;
 
-        return (firstDay, lastDay);
+        return new DateTime[] { firstDay, lastDay };
     }
 }
