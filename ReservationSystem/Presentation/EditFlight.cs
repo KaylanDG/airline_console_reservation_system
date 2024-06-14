@@ -8,6 +8,7 @@ public static class EditFlight
     public static void Start()
     {
         Console.Clear();
+        flight = null;
         while (flight == default)
         {
             Console.WriteLine("which flight do you want to change (Enter the ID)?");
@@ -92,6 +93,12 @@ public static class EditFlight
             NewFrom = Console.ReadLine();
         }
 
+        while (flight.Destination.Equals(NewFrom))
+        {
+            Console.WriteLine("That's the same as the current destination, try again: ");
+            NewFrom = Console.ReadLine();
+        }
+
         flight.From = NewFrom;
         _flightLogic.UpdateList(flight);
         Console.WriteLine("Succesfully changed the departure place");
@@ -105,6 +112,12 @@ public static class EditFlight
         while (flight.Destination.Equals(NewDestination))
         {
             Console.WriteLine("That's the same as the current destination, try again: ");
+            NewDestination = Console.ReadLine();
+        }
+
+        while (flight.From.Equals(NewDestination))
+        {
+            Console.WriteLine("That's the same as the current departure, try again: ");
             NewDestination = Console.ReadLine();
         }
 
