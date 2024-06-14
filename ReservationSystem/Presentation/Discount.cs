@@ -33,6 +33,11 @@ public static class Discount
         Console.Clear();
         Console.WriteLine("Enter Discount Code:");
         string discountCode = Console.ReadLine();
+        while (_discountLogic.DoesCodeExist(discountCode))
+        {
+            Console.WriteLine("The entered code already exist, please try again");
+            discountCode = Console.ReadLine();
+        }
 
         Console.WriteLine("Enter Discount Percentage (1-100):");
         int discountPercentage = 0;
